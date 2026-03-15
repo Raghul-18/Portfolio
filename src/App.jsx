@@ -998,7 +998,7 @@ export default function Portfolio() {
       {/* ── NAV ── */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 48px", background: dark ? "rgba(18,18,18,0.9)" : "rgba(240,240,240,0.9)", backdropFilter: "blur(12px)", borderBottom: divider }}>
         <div style={{ fontFamily: "'Fira Code',monospace", fontWeight: 600, fontSize: 15, color: "var(--white)", lineHeight: 1.3 }}>
-          Raghul Prasanth
+          Raghul Prasanth S P
           <span style={{ display: "block", fontWeight: 300, color: "var(--mid)", fontSize: 11 }}>Full-Stack Developer · UI/UX Designer</span>
         </div>
         <ul className="nav-links-desktop" style={{ display: "flex", gap: 36, listStyle: "none" }}>
@@ -1072,7 +1072,7 @@ export default function Portfolio() {
         <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
           <FadeIn>
             <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
-              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
+              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth S P</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
             </p>
             <p style={{ fontSize: 12, color: "var(--mid)", maxWidth: 300, lineHeight: 1.7, margin: "32px 0 14px" }}>
               My <em style={{ color: "var(--light)", fontStyle: "italic" }}>core stack</em> spans backend, frontend, cloud infrastructure, and design.
@@ -1100,7 +1100,7 @@ export default function Portfolio() {
           </FadeIn>
           <FadeIn delay={100}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "20px 0" }}>
-              <img src="/photo.jpeg" alt="Raghul Prasanth"
+              <img src="/photo.jpeg" alt="Raghul Prasanth S P"
                 style={{ width: "100%", maxWidth: 280, aspectRatio: "3/4", objectFit: "cover", borderRadius: 16, display: "block" }}
                 onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
               <div style={{ display: "none", width: "100%", maxWidth: 280, aspectRatio: "3/4", background: dark ? "linear-gradient(160deg,#222,#181818)" : "linear-gradient(160deg,#ddd,#e8e8e8)", borderRadius: 16, alignItems: "center", justifyContent: "center", color: "var(--dark)", fontSize: 13, fontFamily: "'Fira Code',monospace" }}>[ photo ]</div>
@@ -1236,7 +1236,7 @@ export default function Portfolio() {
           {/* Left */}
           <FadeIn>
             <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 16 }}>... /Contacts ...</div>
-            <div className="contact-name-size" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(36px,5vw,60px)", fontWeight: 700, color: "var(--white)", lineHeight: 1 }}>Raghul<br />Prasanth</div>
+            <div className="contact-name-size" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(36px,5vw,60px)", fontWeight: 700, color: "var(--white)", lineHeight: 1 }}>Raghul<br />Prasanth S P</div>
             <div style={{ fontSize: 12, color: "var(--mid)", marginTop: 8, marginBottom: 20 }}>Full-Stack Developer · UI/UX Designer</div>
             {/* Social icon buttons */}
             <div style={{ display: "flex", gap: 10, marginBottom: 32, flexWrap: "wrap" }}>
@@ -1322,10 +1322,10 @@ export default function Portfolio() {
         </div>
         <div style={{ marginTop: 48, paddingTop: 24, borderTop: divider, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth</span>
+            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth S P</span>
           </span>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            © {new Date().getFullYear()} Raghul Prasanth. All rights reserved.
+            © {new Date().getFullYear()} Raghul Prasanth S P. All rights reserved.
           </span>
         </div>
       </footer>
