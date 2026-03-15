@@ -314,6 +314,148 @@ function AIVisual() {
   );
 }
 
+/* ─── HERO CAROUSEL ─── */
+function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
+  const trackRef   = useRef(null);
+  const dragRef    = useRef({ dragging: false, startX: 0, startSlide: 0 });
+
+  /* Card dimensions */
+  const CARD_W   = 300;
+  const CARD_GAP = 20;
+  const STEP     = CARD_W + CARD_GAP;
+
+  /* Compute translate so active card is always centred in the viewport */
+  function getTranslate(slide, viewW) {
+    const center = viewW / 2;
+    return center - (slide * STEP + CARD_W / 2);
+  }
+
+  /* ── pointer / touch helpers ── */
+  function onDragStart(clientX) {
+    dragRef.current = { dragging: true, startX: clientX, startSlide: heroSlide };
+  }
+  function onDragEnd(clientX) {
+    if (!dragRef.current.dragging) return;
+    dragRef.current.dragging = false;
+    const dx = clientX - dragRef.current.startX;
+    if (Math.abs(dx) > 40) {
+      const dir = dx < 0 ? 1 : -1;
+      setHeroSlide(s => Math.max(0, Math.min(HERO_ARTICLES.length - 1, s + dir)));
+    }
+  }
+
+  /* mouse */
+  const onMouseDown = e => onDragStart(e.clientX);
+  const onMouseUp   = e => onDragEnd(e.clientX);
+  /* touch */
+  const onTouchStart = e => onDragStart(e.touches[0].clientX);
+  const onTouchEnd   = e => onDragEnd(e.changedTouches[0].clientX);
+
+  const [viewW, setViewW] = useState(800);
+  const wrapRef = useRef(null);
+  useEffect(() => {
+    if (!wrapRef.current) return;
+    const ro = new ResizeObserver(([e]) => setViewW(e.contentRect.width));
+    ro.observe(wrapRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const translate = getTranslate(heroSlide, viewW);
+
+  return (
+    <div style={{ marginTop: 40 }}>
+      {/* Overflow hidden viewport */}
+      <div
+        ref={wrapRef}
+        style={{ overflow: "hidden", cursor: "grab", userSelect: "none", WebkitUserSelect: "none" }}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseLeave={e => { if (dragRef.current.dragging) onDragEnd(e.clientX); }}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        {/* Sliding track */}
+        <div
+          ref={trackRef}
+          style={{
+            display: "flex",
+            gap: CARD_GAP,
+            transform: `translateX(${translate}px)`,
+            transition: "transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)",
+            willChange: "transform",
+            paddingBottom: 4,
+          }}
+        >
+          {HERO_ARTICLES.map((a, i) => {
+            const active = i === heroSlide;
+            return (
+              <div
+                key={i}
+                onClick={() => setHeroSlide(i)}
+                style={{
+                  flex: `0 0 ${CARD_W}px`,
+                  background: active
+                    ? (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)")
+                    : (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"),
+                  border: active
+                    ? (dark ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(0,0,0,0.16)")
+                    : (dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)"),
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  opacity: active ? 1 : 0.38,
+                  transform: active ? "scale(1.04)" : "scale(0.96)",
+                  transition: "opacity 0.4s, transform 0.4s, border-color 0.3s, background 0.3s",
+                  cursor: active ? "default" : "pointer",
+                  pointerEvents: "auto",
+                }}
+              >
+                <div style={{ width: "100%", height: 130, background: "linear-gradient(135deg,#2a2a3a,#3a2a4a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>
+                  {a.emoji}
+                </div>
+                <div style={{ padding: 16 }}>
+                  <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 8, lineHeight: 1.4 }}>{a.title}</h4>
+                  <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.6, marginBottom: 14 }}>{a.desc}</p>
+                  <a href="#" onClick={e => e.stopPropagation()} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>Read more</a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}>
+        <button
+          onClick={() => setHeroSlide(s => Math.max(0, s - 1))}
+          disabled={heroSlide === 0}
+          style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: heroSlide === 0 ? "var(--dark)" : "var(--white)", cursor: heroSlide === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, transition: "color 0.2s", opacity: heroSlide === 0 ? 0.35 : 1 }}>←</button>
+        <button
+          onClick={() => setHeroSlide(s => Math.min(HERO_ARTICLES.length - 1, s + 1))}
+          disabled={heroSlide === HERO_ARTICLES.length - 1}
+          style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: heroSlide === HERO_ARTICLES.length - 1 ? "var(--dark)" : "var(--white)", cursor: heroSlide === HERO_ARTICLES.length - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, transition: "color 0.2s", opacity: heroSlide === HERO_ARTICLES.length - 1 ? 0.35 : 1 }}>→</button>
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          {HERO_ARTICLES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setHeroSlide(i)}
+              style={{
+                width: i === heroSlide ? 18 : 6,
+                height: 6,
+                borderRadius: 3,
+                border: "none",
+                cursor: "pointer",
+                background: i === heroSlide ? "var(--white)" : "var(--dark)",
+                padding: 0,
+                transition: "all 0.3s cubic-bezier(0.25,0.46,0.45,0.94)",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── DINO MINI PREVIEW (looping animation, no interaction) ─── */
 function DinoMiniPreview({ dark }) {
   const canvasRef = useRef(null);
@@ -918,31 +1060,8 @@ export default function Portfolio() {
             >{s.icon}{s.label}</a>
           ))}
         </div>
-        {/* Hero carousel */}
-        <div style={{ marginTop: 40 }}>
-          <div style={{ display: "flex", gap: 14, overflow: "hidden" }}>
-            {HERO_ARTICLES.map((a, i) => {
-              const feat = i === heroSlide;
-              return (
-                <div key={i} style={{ flex: feat ? "0 0 330px" : "0 0 290px", background: feat ? (dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)") : (dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"), border: feat ? (dark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.12)") : (dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)"), borderRadius: 16, overflow: "hidden", opacity: feat ? 1 : 0.4, transition: "all 0.3s" }}>
-                  <div style={{ width: "100%", height: 130, background: "linear-gradient(135deg,#2a2a3a,#3a2a4a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36 }}>{a.emoji}</div>
-                  <div style={{ padding: 16 }}>
-                    <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 8, lineHeight: 1.4 }}>{a.title}</h4>
-                    <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.6, marginBottom: 14 }}>{a.desc}</p>
-                    <a href="#" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>Read more</a>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 14 }}>
-            <button onClick={() => setHeroSlide(s => (s - 1 + HERO_ARTICLES.length) % HERO_ARTICLES.length)} style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>←</button>
-            <button onClick={() => setHeroSlide(s => (s + 1) % HERO_ARTICLES.length)} style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13 }}>→</button>
-            <div style={{ display: "flex", gap: 6 }}>
-              {HERO_ARTICLES.map((_, i) => <button key={i} onClick={() => setHeroSlide(i)} style={{ width: 6, height: 6, borderRadius: "50%", border: "none", cursor: "pointer", background: i === heroSlide ? "var(--white)" : "var(--dark)", padding: 0, transition: "background 0.2s" }} />)}
-            </div>
-          </div>
-        </div>
+        {/* Hero carousel — centered active card, swipeable */}
+        <HeroCarousel dark={dark} heroSlide={heroSlide} setHeroSlide={setHeroSlide} />
       </section>
 
       <hr style={{ border: "none", borderTop: divider }} />
