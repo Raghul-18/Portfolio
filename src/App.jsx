@@ -75,6 +75,7 @@ const PROJECTS = [
       "Designed efficient message routing with concurrency-safe operations supporting multiple parallel users.",
     ],
     visual: "chat",
+    visual: "kana", rev: true,
   },
   {
     id: 5, tags: ["Python", "RAG", "LangChain", "Vector DB", "FastAPI"],
@@ -83,7 +84,7 @@ const PROJECTS = [
       "Built domain-adaptive chatbot using Retrieval-Augmented Generation with vector-based knowledge retrieval.",
       "Optimized search indexing workflows to decrease retrieval latency and enhance response accuracy.",
     ],
-    visual: "ai", rev: true,
+    visual: "ai", 
   },
 ];
 
@@ -142,6 +143,84 @@ const HERO_ARTICLES = [
 
 const RESUME_LINK = "https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link";
 
+/* ─── DINO SOUND ENGINE (Web Audio API — no external files needed) ─── */
+function createDinoSounds() {
+  let ctx = null;
+  function getCtx() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+  function tone(freq, type, vol, attack, sustain, release, startT) {
+    const ac = getCtx();
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.connect(gain); gain.connect(ac.destination);
+    osc.type = type; osc.frequency.setValueAtTime(freq, startT);
+    gain.gain.setValueAtTime(0, startT);
+    gain.gain.linearRampToValueAtTime(vol, startT + attack);
+    gain.gain.setValueAtTime(vol, startT + attack + sustain);
+    gain.gain.linearRampToValueAtTime(0, startT + attack + sustain + release);
+    osc.start(startT); osc.stop(startT + attack + sustain + release + 0.01);
+  }
+  function noise(vol, dur, startT) {
+    const ac = getCtx();
+    const buf = ac.createBuffer(1, ac.sampleRate * dur, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1);
+    const src = ac.createBufferSource();
+    const gain = ac.createGain();
+    const filter = ac.createBiquadFilter();
+    filter.type = "bandpass"; filter.frequency.value = 200;
+    src.buffer = buf;
+    src.connect(filter); filter.connect(gain); gain.connect(ac.destination);
+    gain.gain.setValueAtTime(vol, startT);
+    gain.gain.linearRampToValueAtTime(0, startT + dur);
+    src.start(startT); src.stop(startT + dur);
+  }
+  return {
+    jump() {
+      try {
+        const ac = getCtx(); const t = ac.currentTime;
+        tone(200, "sine", 0.18, 0.01, 0.01, 0.12, t);
+        tone(320, "sine", 0.12, 0.02, 0.02, 0.1,  t + 0.03);
+        tone(480, "sine", 0.08, 0.02, 0.01, 0.08, t + 0.07);
+      } catch(e) {}
+    },
+    land() {
+      try {
+        const ac = getCtx(); const t = ac.currentTime;
+        noise(0.12, 0.06, t);
+        tone(120, "square", 0.06, 0.005, 0.01, 0.05, t);
+      } catch(e) {}
+    },
+    die() {
+      try {
+        const ac = getCtx(); const t = ac.currentTime;
+        tone(400, "sawtooth", 0.2,  0.01, 0.02, 0.08, t);
+        tone(300, "sawtooth", 0.18, 0.01, 0.02, 0.1,  t + 0.06);
+        tone(200, "sawtooth", 0.15, 0.01, 0.04, 0.15, t + 0.12);
+        tone(100, "sawtooth", 0.12, 0.01, 0.06, 0.2,  t + 0.18);
+        noise(0.15, 0.3, t);
+      } catch(e) {}
+    },
+    score(milestone) {
+      try {
+        const ac = getCtx(); const t = ac.currentTime;
+        const freqs = milestone >= 5 ? [523, 659, 784, 1047] : [440, 554, 659];
+        freqs.forEach((f, i) => tone(f, "sine", 0.1, 0.01, 0.04, 0.08, t + i * 0.07));
+      } catch(e) {}
+    },
+    step(frame) {
+      try {
+        if (frame % 6 !== 0) return;
+        const ac = getCtx(); const t = ac.currentTime;
+        noise(0.04, 0.03, t);
+      } catch(e) {}
+    },
+  };
+}
+
 /* ─── ICONS ─── */
 const GithubIcon   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>;
 const LinkedInIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
@@ -166,10 +245,16 @@ function useFadeIn() {
   }, []);
   return [ref, visible];
 }
-function FadeIn({ children, delay = 0, style = {} }) {
+function FadeIn({ children, delay = 0, style = {}, from = "bottom" }) {
   const [ref, visible] = useFadeIn();
+  const transforms = { bottom: "translateY(28px)", top: "translateY(-16px)", left: "translateX(-24px)", right: "translateX(24px)" };
   return (
-    <div ref={ref} style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(18px)", transition: `opacity 0.55s ease ${delay}ms, transform 0.55s ease ${delay}ms`, ...style }}>
+    <div ref={ref} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "none" : (transforms[from] || "translateY(28px)"),
+      transition: `opacity 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+      ...style
+    }}>
       {children}
     </div>
   );
@@ -188,10 +273,17 @@ function StatusBadge({ type }) {
 
 /* ─── DOT RATING ─── */
 function DotRating({ dots, max = 5, color }) {
+  const [ref, visible] = useFadeIn();
   return (
-    <span style={{ display: "inline-flex", gap: 4, alignItems: "center" }}>
+    <span ref={ref} style={{ display: "inline-flex", gap: 4, alignItems: "center" }}>
       {Array.from({ length: max }).map((_, i) => (
-        <span key={i} style={{ width: 7, height: 7, borderRadius: "50%", background: i < dots ? color : "rgba(166,166,166,0.2)", display: "inline-block" }} />
+        <span key={i} style={{
+          width: 7, height: 7, borderRadius: "50%",
+          background: i < dots ? color : "rgba(166,166,166,0.2)",
+          display: "inline-block",
+          transform: visible ? "scale(1)" : "scale(0)",
+          transition: `transform 0.4s cubic-bezier(0.34,1.56,0.64,1) ${i * 60}ms`,
+        }} />
       ))}
     </span>
   );
@@ -574,8 +666,23 @@ function DinoModal({ onClose, dark }) {
   const canvasRef = useRef(null);
   const stateRef  = useRef(null);
   const rafRef    = useRef(null);
+  const soundRef  = useRef(null);
+  const wrapRef   = useRef(null);
+  const [muted, setMuted] = useState(false);
+  const mutedRef = useRef(false);
+
+  const toggleMute = () => {
+    mutedRef.current = !mutedRef.current;
+    setMuted(mutedRef.current);
+  };
 
   useEffect(() => {
+    soundRef.current = createDinoSounds();
+    const snd = () => {
+      if (!mutedRef.current) soundRef.current;
+    };
+    void snd;
+
     const canvas = canvasRef.current;
     const ctx    = canvas.getContext("2d");
     const W = canvas.width  = 700;
@@ -587,7 +694,7 @@ function DinoModal({ onClose, dark }) {
     const SPD0  = 5;
 
     const state = {
-      dino:     { x: 80, y: GND, w: 40, h: 48, vy: 0, onGround: true, dead: false, frame: 0, frameTimer: 0 },
+      dino:     { x: 80, y: GND, w: 40, h: 48, vy: 0, onGround: true, dead: false, frame: 0, frameTimer: 0, wasOnGround: true },
       obstacles: [],
       score:    0,
       hi:       0,
@@ -595,6 +702,10 @@ function DinoModal({ onClose, dark }) {
       spawnT:   0,
       started:  false,
       over:     false,
+      shake:    0,
+      particles: [],
+      lastMilestone: 0,
+      milestoneFlash: 0,
       clouds:   [
         { x: 200, y: 40, w: 80 },
         { x: 500, y: 25, w: 60 },
@@ -604,20 +715,44 @@ function DinoModal({ onClose, dark }) {
     };
     stateRef.current = state;
 
+    function play(name, ...args) {
+      if (!mutedRef.current && soundRef.current) {
+        try { soundRef.current[name](...args); } catch(e) {}
+      }
+    }
+
     function jump() {
       if (!state.started) { state.started = true; return; }
       if (state.over) { restart(); return; }
-      if (state.dino.onGround) { state.dino.vy = JUMP; state.dino.onGround = false; }
+      if (state.dino.onGround) {
+        state.dino.vy = JUMP;
+        state.dino.onGround = false;
+        play("jump");
+        // spawn jump particles
+        for (let i = 0; i < 6; i++) {
+          state.particles.push({
+            x: state.dino.x + state.dino.w / 2,
+            y: GND + state.dino.h,
+            vx: (Math.random() - 0.5) * 3,
+            vy: -(Math.random() * 2 + 1),
+            life: 1, size: Math.random() * 4 + 2, type: "dust"
+          });
+        }
+      }
     }
 
     function restart() {
-      state.dino     = { x: 80, y: GND, w: 40, h: 48, vy: 0, onGround: true, dead: false, frame: 0, frameTimer: 0 };
+      state.dino     = { x: 80, y: GND, w: 40, h: 48, vy: 0, onGround: true, dead: false, frame: 0, frameTimer: 0, wasOnGround: true };
       state.obstacles = [];
       state.score    = 0;
       state.speed    = SPD0;
       state.spawnT   = 0;
       state.started  = true;
       state.over     = false;
+      state.shake    = 0;
+      state.particles = [];
+      state.lastMilestone = 0;
+      state.milestoneFlash = 0;
     }
 
     const onKey = e => { if (["Space","ArrowUp"].includes(e.code)) { e.preventDefault(); jump(); } };
@@ -641,9 +776,18 @@ function DinoModal({ onClose, dark }) {
       ctx.fillRect(d.x, d.y, d.w, d.h);
       // head bump
       ctx.fillRect(d.x + d.w - 10, d.y - 16, 18, 18);
-      // eye
+      // eye (blink on death)
       ctx.fillStyle = dark ? "#121212" : "#ffffff";
-      ctx.fillRect(d.x + d.w + 2, d.y - 12, 5, 5);
+      if (d.dead) {
+        // X eyes
+        ctx.fillStyle = "#e06c75";
+        ctx.fillRect(d.x + d.w + 1, d.y - 13, 3, 3);
+        ctx.fillRect(d.x + d.w + 4, d.y - 10, 3, 3);
+        ctx.fillRect(d.x + d.w + 1, d.y - 10, 3, 3);
+        ctx.fillRect(d.x + d.w + 4, d.y - 13, 3, 3);
+      } else {
+        ctx.fillRect(d.x + d.w + 2, d.y - 12, 5, 5);
+      }
       // legs (animated)
       ctx.fillStyle = d.dead ? "#e06c75" : c;
       if (d.onGround) {
@@ -689,11 +833,26 @@ function DinoModal({ onClose, dark }) {
 
     function loop() {
       rafRef.current = requestAnimationFrame(loop);
+
+      const shakeX = state.shake > 0 ? (Math.random() - 0.5) * state.shake * 6 : 0;
+      const shakeY = state.shake > 0 ? (Math.random() - 0.5) * state.shake * 3 : 0;
+      if (state.shake > 0) state.shake = Math.max(0, state.shake - 0.08);
+
+      ctx.save();
+      ctx.translate(shakeX, shakeY);
+
       ctx.clearRect(0, 0, W, H);
 
       const bg = dark ? "#121212" : "#f0f0f0";
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, W, H);
+
+      // milestone flash overlay
+      if (state.milestoneFlash > 0) {
+        ctx.fillStyle = `rgba(255,255,255,${state.milestoneFlash * 0.12})`;
+        ctx.fillRect(0, 0, W, H);
+        state.milestoneFlash = Math.max(0, state.milestoneFlash - 0.06);
+      }
 
       // clouds
       state.clouds.forEach(cl => {
@@ -707,7 +866,6 @@ function DinoModal({ onClose, dark }) {
       ctx.fillRect(0, GND + state.dino.h + 2, W, 2);
 
       if (!state.started) {
-        // splash screen
         drawDino(state.dino);
         ctx.fillStyle = dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
         ctx.font = "bold 16px 'Fira Code',monospace";
@@ -716,17 +874,37 @@ function DinoModal({ onClose, dark }) {
         ctx.font = "12px 'Fira Code',monospace";
         ctx.fillText("Avoid the cacti!", W / 2, H / 2 + 14);
         ctx.textAlign = "left";
+        ctx.restore();
         return;
       }
 
       if (!state.over) {
         const d = state.dino;
+        const prevOnGround = d.onGround;
 
         // gravity
         d.vy += GRAV;
         d.y  += d.vy;
-        if (d.y >= GND) { d.y = GND; d.vy = 0; d.onGround = true; }
-        else d.onGround = false;
+        if (d.y >= GND) {
+          d.y = GND; d.vy = 0;
+          if (!prevOnGround) {
+            // just landed
+            play("land");
+            for (let i = 0; i < 4; i++) {
+              state.particles.push({
+                x: d.x + d.w / 2 + (Math.random() - 0.5) * 20,
+                y: GND + d.h,
+                vx: (Math.random() - 0.5) * 2.5,
+                vy: -(Math.random() * 1.5 + 0.5),
+                life: 1, size: Math.random() * 3 + 1, type: "dust"
+              });
+            }
+          }
+          d.onGround = true;
+        } else d.onGround = false;
+
+        // footstep sounds
+        if (d.onGround) play("step", d.frame);
 
         // animate legs
         d.frameTimer++;
@@ -735,6 +913,14 @@ function DinoModal({ onClose, dark }) {
         // speed ramp
         state.score  += 1;
         state.speed   = SPD0 + Math.floor(state.score / 300) * 0.8;
+
+        // score milestone every 500pts
+        const milestone = Math.floor(state.score / 500);
+        if (milestone > state.lastMilestone) {
+          state.lastMilestone = milestone;
+          state.milestoneFlash = 1;
+          play("score", milestone);
+        }
 
         // spawn
         state.spawnT++;
@@ -752,10 +938,34 @@ function DinoModal({ onClose, dark }) {
           if (collides(d, o)) {
             state.over = true;
             d.dead     = true;
+            state.shake = 1;
+            play("die");
             if (state.score > state.hi) state.hi = state.score;
+            // death explosion particles
+            for (let i = 0; i < 14; i++) {
+              const angle = (i / 14) * Math.PI * 2;
+              state.particles.push({
+                x: d.x + d.w / 2, y: d.y + d.h / 2,
+                vx: Math.cos(angle) * (Math.random() * 4 + 1),
+                vy: Math.sin(angle) * (Math.random() * 4 + 1) - 2,
+                life: 1, size: Math.random() * 5 + 2, type: "spark"
+              });
+            }
           }
         });
       }
+
+      // draw particles
+      state.particles = state.particles.filter(p => p.life > 0);
+      state.particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.15; p.life -= 0.05;
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.type === "spark"
+          ? (dark ? `rgba(255,${Math.floor(p.life * 200)},80,1)` : "#e06c75")
+          : (dark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.25)");
+        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+        ctx.globalAlpha = 1;
+      });
 
       drawDino(state.dino);
 
@@ -769,7 +979,9 @@ function DinoModal({ onClose, dark }) {
       ctx.textAlign = "left";
 
       if (state.over) {
-        ctx.fillStyle = dark ? "rgba(255,255,255,0.85)" : "rgba(0,0,0,0.75)";
+        ctx.fillStyle = dark ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.6)";
+        ctx.fillRect(W/2 - 160, H/2 - 38, 320, 64);
+        ctx.fillStyle = dark ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.8)";
         ctx.font      = "bold 20px 'Fira Code',monospace";
         ctx.textAlign = "center";
         ctx.fillText("GAME OVER", W / 2, H / 2 - 10);
@@ -778,6 +990,8 @@ function DinoModal({ onClose, dark }) {
         ctx.fillText("Press SPACE or tap to restart", W / 2, H / 2 + 16);
         ctx.textAlign = "left";
       }
+
+      ctx.restore();
     }
 
     loop();
@@ -789,15 +1003,26 @@ function DinoModal({ onClose, dark }) {
   }, [dark]);
 
   return (
-    <div style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(0,0,0,0.75)", backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center", animation: "fadeSlide 0.3s ease" }}
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(0,0,0,0.75)", backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center", animation: "fadeSlide 0.3s ease" }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <div style={{ background: dark ? "#121212" : "#f0f0f0", borderRadius: 20, overflow: "hidden", border: dark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)", maxWidth: "95vw" }}>
+      <div ref={wrapRef} style={{ background: dark ? "#121212" : "#f0f0f0", borderRadius: 20, overflow: "hidden", border: dark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)", maxWidth: "95vw", animation: "fadeSlideUp 0.35s cubic-bezier(0.22,1,0.36,1)" }}>
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)" }}>
           <span style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, color: dark ? "#f5f5f5" : "#121212", fontWeight: 600 }}>🦕 Dino Run</span>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 11, color: dark ? "#a6a6a6" : "#666", fontFamily: "'Fira Code',monospace" }}>SPACE / tap to jump</span>
-            <button onClick={onClose} style={{ background: "transparent", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius: "50%", width: 28, height: 28, color: dark ? "#a6a6a6" : "#666", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>✕</button>
+            {/* Mute toggle */}
+            <button
+              onClick={toggleMute}
+              title={muted ? "Unmute" : "Mute"}
+              style={{ background: "transparent", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius: "50%", width: 28, height: 28, color: dark ? "#a6a6a6" : "#666", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, transition: "border-color 0.2s" }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"}
+              onMouseLeave={e => e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"}
+            >{muted ? "🔇" : "🔊"}</button>
+            <button onClick={onClose} style={{ background: "transparent", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius: "50%", width: 28, height: 28, color: dark ? "#a6a6a6" : "#666", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, transition: "border-color 0.2s" }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"}
+              onMouseLeave={e => e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"}>✕</button>
           </div>
         </div>
         {/* Canvas */}
@@ -973,9 +1198,18 @@ export default function Portfolio() {
         ::-webkit-scrollbar-track{background:var(--bg)}
         ::-webkit-scrollbar-thumb{background:var(--dark);border-radius:2px}
         body{overflow-x:hidden}
-        .role-anim{transition:opacity 0.4s ease,transform 0.4s ease}
-        @keyframes fadeSlide{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+        .role-anim{transition:opacity 0.4s cubic-bezier(0.22,1,0.36,1),transform 0.4s cubic-bezier(0.22,1,0.36,1)}
+        @keyframes fadeSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+        @keyframes fadeSlideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+        @keyframes floatA{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.04) translateY(-18px)}}
+        @keyframes floatB{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(0.96) translateY(14px)}}
+        @keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+        @keyframes scorePopIn{0%{transform:scale(0.6) translateY(4px);opacity:0}60%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:1}}
+        @keyframes dinoJumpParticle{0%{transform:translateY(0) scale(1);opacity:0.8}100%{transform:translateY(-28px) scale(0);opacity:0}}
+        .nav-score-pop{animation:scorePopIn 0.35s cubic-bezier(0.22,1,0.36,1) both}
+        .section-hr{border:none;border-top:1px solid rgba(128,128,128,0.08)}
         @media(max-width:768px){
           .nav-links-desktop{display:none!important}
           .hamburger-btn{display:flex!important}
@@ -998,13 +1232,14 @@ export default function Portfolio() {
       {/* ── NAV ── */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 48px", background: dark ? "rgba(18,18,18,0.9)" : "rgba(240,240,240,0.9)", backdropFilter: "blur(12px)", borderBottom: divider }}>
         <div style={{ fontFamily: "'Fira Code',monospace", fontWeight: 600, fontSize: 15, color: "var(--white)", lineHeight: 1.3 }}>
-          Raghul Prasanth S P
+          Raghul Prasanth
           <span style={{ display: "block", fontWeight: 300, color: "var(--mid)", fontSize: 11 }}>Full-Stack Developer · UI/UX Designer</span>
         </div>
         <ul className="nav-links-desktop" style={{ display: "flex", gap: 36, listStyle: "none" }}>
           {navLinks.map(l => (
-            <li key={l.id}>
-              <button onClick={() => scrollTo(l.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, color: activeSection === l.id ? "var(--white)" : "var(--mid)", fontFamily: "'Open Sans',sans-serif", transition: "color 0.2s" }}>{l.label}</button>
+            <li key={l.id} style={{ position: "relative" }}>
+              <button onClick={() => scrollTo(l.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, color: activeSection === l.id ? "var(--white)" : "var(--mid)", fontFamily: "'Open Sans',sans-serif", transition: "color 0.2s", padding: "4px 0" }}>{l.label}</button>
+              <span style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: 1.5, borderRadius: 1, background: "var(--white)", transform: activeSection === l.id ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left", transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1)" }} />
             </li>
           ))}
         </ul>
@@ -1033,26 +1268,27 @@ export default function Portfolio() {
 
       {/* ── HERO ── */}
       <section id="hero" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "120px 48px 60px", position: "relative", overflow: "hidden" }} className="hero-pad">
-        <div style={{ position: "absolute", top: 80, right: -80, width: 420, height: 420, border: dark ? "1px solid rgba(255,255,255,0.05)" : "1px solid rgba(0,0,0,0.05)", borderRadius: "50%", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: 220, right: 80, width: 180, height: 180, border: dark ? "1px solid rgba(255,255,255,0.03)" : "1px solid rgba(0,0,0,0.03)", borderRadius: "50%", pointerEvents: "none" }} />
-        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 8, letterSpacing: "0.05em" }}>... /Main ...</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
+        <div style={{ position: "absolute", top: 80, right: -80, width: 420, height: 420, border: dark ? "1px solid rgba(255,255,255,0.05)" : "1px solid rgba(0,0,0,0.05)", borderRadius: "50%", pointerEvents: "none", animation: "floatA 9s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", top: 220, right: 80, width: 180, height: 180, border: dark ? "1px solid rgba(255,255,255,0.03)" : "1px solid rgba(0,0,0,0.03)", borderRadius: "50%", pointerEvents: "none", animation: "floatB 7s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", top: 300, right: -20, width: 80, height: 80, border: dark ? "1px solid rgba(255,255,255,0.04)" : "1px solid rgba(0,0,0,0.04)", borderRadius: "50%", pointerEvents: "none", animation: "floatA 11s ease-in-out infinite 2s" }} />
+        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 8, letterSpacing: "0.05em", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s forwards" }}>... /Main ...</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards" }}>
           <div className="hero-title-size role-anim" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(52px,8vw,96px)", fontWeight: 700, lineHeight: 1, color: "var(--white)", letterSpacing: "-0.02em", opacity: roleVisible ? 1 : 0, transform: roleVisible ? "none" : "translateY(8px)" }}>
             {ROLES[roleIdx].split(" ")[0]}
           </div>
-          <button onClick={() => scrollTo("projects")} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s" }}
-            onMouseEnter={e => e.currentTarget.style.transform = "scale(1.03)"}
-            onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
+          <button onClick={() => scrollTo("projects")} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
             Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
           </button>
         </div>
-        <div className="hero-title-size role-anim" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(52px,8vw,96px)", fontWeight: 700, lineHeight: 1, color: "var(--white)", letterSpacing: "-0.02em", textAlign: "right", opacity: roleVisible ? 1 : 0, transform: roleVisible ? "none" : "translateY(8px)" }}>
+        <div className="hero-title-size role-anim" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(52px,8vw,96px)", fontWeight: 700, lineHeight: 1, color: "var(--white)", letterSpacing: "-0.02em", textAlign: "right", opacity: roleVisible ? 1 : 0, transform: roleVisible ? "none" : "translateY(8px)", animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both" }}>
           {ROLES[roleIdx].split(" ").slice(1).join(" ")}
         </div>
-        <p style={{ marginTop: 20, maxWidth: 340, fontSize: 13, color: "var(--mid)", lineHeight: 1.8 }}>
+        <p style={{ marginTop: 20, maxWidth: 340, fontSize: 13, color: "var(--mid)", lineHeight: 1.8, opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.45s forwards" }}>
           My goal is to write <em style={{ fontStyle: "italic", color: "var(--light)" }}>maintainable, clean</em> and <em style={{ fontStyle: "italic", color: "var(--light)" }}>understandable code</em> while crafting <em style={{ fontStyle: "italic", color: "var(--light)" }}>delightful user experiences</em>.
         </p>
-        <div style={{ display: "flex", gap: 10, marginTop: 36, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 10, marginTop: 36, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.55s forwards" }}>
           {[{ icon: <GithubIcon />, label: "Github" }, { icon: <LinkedInIcon />, label: "LinkedIn" }, { icon: <TelegramIcon />, label: "Telegram" }, { icon: <EmailIcon />, label: "E-mail" }].map(s => (
             <a key={s.label} href="#" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.09)"}
@@ -1072,7 +1308,7 @@ export default function Portfolio() {
         <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
           <FadeIn>
             <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
-              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth S P</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
+              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
             </p>
             <p style={{ fontSize: 12, color: "var(--mid)", maxWidth: 300, lineHeight: 1.7, margin: "32px 0 14px" }}>
               My <em style={{ color: "var(--light)", fontStyle: "italic" }}>core stack</em> spans backend, frontend, cloud infrastructure, and design.
@@ -1080,9 +1316,9 @@ export default function Portfolio() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 32 }}>
               {SKILL_CARDS.map(s => (
                 <div key={s.title}
-                  style={{ background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 16, transition: "border-color 0.2s,background 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"; }}>
+                  style={{ background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 16, transition: "border-color 0.25s, background 0.25s, transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s" }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = dark ? "0 8px 24px rgba(0,0,0,0.4)" : "0 8px 24px rgba(0,0,0,0.08)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
                   <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, fontWeight: 600, color: "var(--white)", marginBottom: 7 }}>{s.title}</h4>
                   <p style={{ fontSize: 11, color: "var(--mid)", lineHeight: 1.9 }}>{s.items}</p>
                 </div>
@@ -1100,7 +1336,7 @@ export default function Portfolio() {
           </FadeIn>
           <FadeIn delay={100}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "20px 0" }}>
-              <img src="/photo.jpeg" alt="Raghul Prasanth S P"
+              <img src="/photo.jpeg" alt="Raghul Prasanth"
                 style={{ width: "100%", maxWidth: 280, aspectRatio: "3/4", objectFit: "cover", borderRadius: 16, display: "block" }}
                 onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
               <div style={{ display: "none", width: "100%", maxWidth: 280, aspectRatio: "3/4", background: dark ? "linear-gradient(160deg,#222,#181818)" : "linear-gradient(160deg,#ddd,#e8e8e8)", borderRadius: 16, alignItems: "center", justifyContent: "center", color: "var(--dark)", fontSize: 13, fontFamily: "'Fira Code',monospace" }}>[ photo ]</div>
@@ -1116,8 +1352,9 @@ export default function Portfolio() {
         <FadeIn>
           <SectionHeader label="Work" title="Experience" mb={32} />
           <div style={{ display: "flex", flexDirection: "column" }}>
-            {WORK.map(w => (
-              <div key={w.id} style={{ borderTop: divider }}>
+            {WORK.map((w, wi) => (
+              <FadeIn key={w.id} delay={wi * 80}>
+              <div style={{ borderTop: divider }}>
                 <div className="work-row-grid"
                   onClick={() => setExpandedWork(expandedWork === w.id ? null : w.id)}
                   style={{ display: "grid", gridTemplateColumns: "110px 1fr auto", gap: "0 20px", alignItems: "center", padding: "22px 12px", cursor: "pointer", borderRadius: 8, transition: "background 0.2s", background: expandedWork === w.id ? (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)") : "transparent" }}
@@ -1134,15 +1371,15 @@ export default function Portfolio() {
                     <span style={{ fontSize: 12, color: "var(--mid)" }}>{w.location}</span>
                     <span style={{ fontSize: 11, background: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "2px 8px", color: "var(--mid)", fontFamily: "'Fira Code',monospace" }}>{w.type}</span>
                   </div>
-                  <div style={{ color: "var(--mid)", transition: "transform 0.25s", transform: expandedWork === w.id ? "rotate(180deg)" : "rotate(0deg)", display: "flex" }}>
+                  <div style={{ color: "var(--mid)", transition: "transform 0.3s cubic-bezier(0.22,1,0.36,1)", transform: expandedWork === w.id ? "rotate(180deg)" : "rotate(0deg)", display: "flex" }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6,9 12,15 18,9"/></svg>
                   </div>
                 </div>
                 {expandedWork === w.id && (
-                  <div className="work-expanded-pad" style={{ padding: "0 12px 20px 130px", animation: "fadeSlide 0.3s ease" }}>
+                  <div className="work-expanded-pad" style={{ padding: "0 12px 20px 130px", animation: "fadeSlideUp 0.35s cubic-bezier(0.22,1,0.36,1)" }}>
                     <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
                       {w.bullets.map((b, bi) => (
-                        <li key={bi} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, color: "var(--mid)", lineHeight: 1.7 }}>
+                        <li key={bi} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, color: "var(--mid)", lineHeight: 1.7, opacity: 0, animation: `fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) ${bi * 60}ms forwards` }}>
                           <span style={{ color: dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)", marginTop: 2, flexShrink: 0 }}>▸</span>{b}
                         </li>
                       ))}
@@ -1150,6 +1387,7 @@ export default function Portfolio() {
                   </div>
                 )}
               </div>
+              </FadeIn>
             ))}
           </div>
           <div style={{ textAlign: "right", paddingTop: 16 }}>
@@ -1185,7 +1423,9 @@ export default function Portfolio() {
                   ))}
                 </div>
               </div>
-              <div style={{ direction: "ltr", borderRadius: 16, overflow: "hidden", background: dark ? "#1a1a26" : "#e8e8f0", aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+              <div style={{ direction: "ltr", borderRadius: 16, overflow: "hidden", background: dark ? "#1a1a26" : "#e8e8f0", aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px) scale(1.01)"; e.currentTarget.style.boxShadow = dark ? "0 20px 48px rgba(0,0,0,0.5)" : "0 20px 48px rgba(0,0,0,0.1)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}>
                 {p.visual === "gostat" && <GostatVisual />}
                 {p.visual === "kana"   && <KanaVisual />}
                 {p.visual === "anime"  && <AnimeVisual />}
@@ -1211,9 +1451,9 @@ export default function Portfolio() {
           <div className="art-cards-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
             {articles.map((a, i) => (
               <FadeIn key={`${articlePage}-${i}`} delay={i * 60}>
-                <div style={{ background: dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 20, transition: "border-color 0.2s", height: "100%" }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}>
+                <div style={{ background: dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 20, transition: "border-color 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s", height: "100%" }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)"; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = dark ? "0 12px 32px rgba(0,0,0,0.35)" : "0 12px 32px rgba(0,0,0,0.07)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
                   <div style={{ fontSize: 24, marginBottom: 10 }}>{a.emoji}</div>
                   <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 10, lineHeight: 1.5 }}>{a.title}</h4>
                   <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.7, marginBottom: 16 }}>{a.desc}</p>
@@ -1236,7 +1476,7 @@ export default function Portfolio() {
           {/* Left */}
           <FadeIn>
             <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 16 }}>... /Contacts ...</div>
-            <div className="contact-name-size" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(36px,5vw,60px)", fontWeight: 700, color: "var(--white)", lineHeight: 1 }}>Raghul<br />Prasanth S P</div>
+            <div className="contact-name-size" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(36px,5vw,60px)", fontWeight: 700, color: "var(--white)", lineHeight: 1 }}>Raghul<br />Prasanth</div>
             <div style={{ fontSize: 12, color: "var(--mid)", marginTop: 8, marginBottom: 20 }}>Full-Stack Developer · UI/UX Designer</div>
             {/* Social icon buttons */}
             <div style={{ display: "flex", gap: 10, marginBottom: 32, flexWrap: "wrap" }}>
@@ -1297,10 +1537,10 @@ export default function Portfolio() {
                 marginTop: 16, cursor: "pointer", borderRadius: 16, overflow: "hidden",
                 border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)",
                 background: dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-                transition: "border-color 0.2s, transform 0.2s",
+                transition: "border-color 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s",
               }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.18)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"; e.currentTarget.style.transform = "none"; }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.18)"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = dark ? "0 12px 32px rgba(0,0,0,0.4)" : "0 12px 32px rgba(0,0,0,0.07)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"; e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
             >
               {/* Mini canvas preview */}
               <DinoMiniPreview dark={dark} />
@@ -1322,10 +1562,10 @@ export default function Portfolio() {
         </div>
         <div style={{ marginTop: 48, paddingTop: 24, borderTop: divider, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth S P</span>
+            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth</span>
           </span>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            © {new Date().getFullYear()} Raghul Prasanth S P. All rights reserved.
+            © {new Date().getFullYear()} Raghul Prasanth. All rights reserved.
           </span>
         </div>
       </footer>
@@ -1344,9 +1584,9 @@ export default function Portfolio() {
       <button
         onClick={() => setDinoOpen(true)}
         title="Play Dino Game"
-        style={{ position: "fixed", bottom: 32, right: 32, zIndex: 99, width: 44, height: 44, borderRadius: "50%", background: dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)", border: dark ? "1px solid rgba(255,255,255,0.15)" : "1px solid rgba(0,0,0,0.12)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(8px)", fontSize: 20, transition: "transform 0.2s", animation: "fadeSlide 0.3s ease" }}
-        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.15) rotate(-8deg)"}
-        onMouseLeave={e => e.currentTarget.style.transform = "scale(1) rotate(0deg)"}>
+        style={{ position: "fixed", bottom: 32, right: 32, zIndex: 99, width: 44, height: 44, borderRadius: "50%", background: dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)", border: dark ? "1px solid rgba(255,255,255,0.15)" : "1px solid rgba(0,0,0,0.12)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(8px)", fontSize: 20, transition: "transform 0.25s cubic-bezier(0.34,1.56,0.64,1), background 0.2s", animation: "fadeSlide 0.3s ease" }}
+        onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.2) rotate(-10deg)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.15)"; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = "scale(1) rotate(0deg)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"; }}>
         🦕
       </button>
 
