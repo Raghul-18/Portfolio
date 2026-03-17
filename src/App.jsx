@@ -8,6 +8,29 @@ const FontLink = () => (
 /* ─── DATA ─── */
 const ROLES = ["Full-Stack Developer", "UI/UX Designer"];
 
+/* ─── HERO TITLE COLOR PAIRS ─── */
+const COLOR_COMBOS = [
+  ["#ffffff", "#a78bfa"],
+  ["#f97316", "#ffffff"],
+  ["#22d3ee", "#f472b6"],
+  ["#ffffff", "#34d399"],
+  ["#fbbf24", "#ffffff"],
+  ["#e879f9", "#67e8f9"],
+  ["#ffffff", "#fb7185"],
+  ["#86efac", "#fde047"],
+];
+
+function AnimWord({ text, color, delay = 0, align = "left" }) {
+  const [ref, visible] = useFadeIn();
+  return (
+    <span ref={ref} style={{ display: "block", color, transition: "color 0.7s cubic-bezier(0.22,1,0.36,1)", textAlign: align, lineHeight: 1 }}>
+      {text.split("").map((ch, i) => (
+        <span key={i} style={{ display: "inline-block", opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(32px) rotate(6deg)", transition: `opacity 0.55s cubic-bezier(0.22,1,0.36,1) ${delay + i * 38}ms, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${delay + i * 38}ms`, whiteSpace: ch === " " ? "pre" : "normal" }}>{ch === " " ? "\u00a0" : ch}</span>
+      ))}
+    </span>
+  );
+}
+
 const WORK = [
   {
     id: 1, date: "Jun 2025", dur: "Present", company: "Oracle OFSS",
@@ -75,7 +98,6 @@ const PROJECTS = [
       "Designed efficient message routing with concurrency-safe operations supporting multiple parallel users.",
     ],
     visual: "chat",
-    visual: "kana", rev: true,
   },
   {
     id: 5, tags: ["Python", "RAG", "LangChain", "Vector DB", "FastAPI"],
@@ -1130,72 +1152,82 @@ function ContactForm({ dark }) {
 }
 
 /* ─── HERO COLOR PAIRS ─── */
-// [word1Color, word2Color] for dark mode; [word1Light, word2Light] for light mode
-const HERO_COLOR_PAIRS = [
-  { dark: ["#ffffff", "#a78bfa"], light: ["#121212", "#7c3aed"] }, // White / Violet
-  { dark: ["#f9a8d4", "#ffffff"], light: ["#be185d", "#121212"] }, // Pink / White
-  { dark: ["#7dd3fc", "#fb923c"], light: ["#0284c7", "#ea580c"] }, // Sky / Orange
-  { dark: ["#86efac", "#ffffff"], light: ["#16a34a", "#121212"] }, // Green / White
-  { dark: ["#ffffff", "#f9a8d4"], light: ["#121212", "#be185d"] }, // White / Pink
-  { dark: ["#fb923c", "#7dd3fc"], light: ["#ea580c", "#0284c7"] }, // Orange / Sky
-  { dark: ["#a78bfa", "#86efac"], light: ["#7c3aed", "#16a34a"] }, // Violet / Green
-  { dark: ["#fde047", "#ffffff"], light: ["#ca8a04", "#121212"] }, // Yellow / White
+const HERO_COLOR_PAIRS_DARK = [
+  ["#ffffff", "#a78bfa"],
+  ["#f472b6", "#ffffff"],
+  ["#38bdf8", "#fb923c"],
+  ["#4ade80", "#ffffff"],
+  ["#ffffff", "#f472b6"],
+  ["#fb923c", "#38bdf8"],
+  ["#a78bfa", "#4ade80"],
+  ["#ffffff", "#facc15"],
+];
+const HERO_COLOR_PAIRS_LIGHT = [
+  ["#121212", "#7c3aed"],
+  ["#db2777", "#121212"],
+  ["#0284c7", "#ea580c"],
+  ["#16a34a", "#121212"],
+  ["#121212", "#db2777"],
+  ["#ea580c", "#0284c7"],
+  ["#7c3aed", "#16a34a"],
+  ["#121212", "#ca8a04"],
 ];
 
-/* ─── HERO TITLE (independent per-word colour cycles) ─── */
 function HeroTitle({ dark, roleIdx, roleVisible }) {
-  const [c1, setC1] = useState(0); // word-1 colour index
-  const [c2, setC2] = useState(3); // word-2 colour index (start offset)
+  const pairs = dark ? HERO_COLOR_PAIRS_DARK : HERO_COLOR_PAIRS_LIGHT;
+  const [w1pair, setW1pair] = useState(0);
+  const [w2pair, setW2pair] = useState(3);
+  const [w1vis,  setW1vis]  = useState(true);
+  const [w2vis,  setW2vis]  = useState(true);
 
   useEffect(() => {
-    const t1 = setInterval(() => setC1(i => (i + 1) % HERO_COLOR_PAIRS.length), 2400);
-    return () => clearInterval(t1);
-  }, []);
+    const t = setInterval(() => {
+      setW1vis(false);
+      setTimeout(() => { setW1pair(i => (i + 1) % pairs.length); setW1vis(true); }, 350);
+    }, 2400);
+    return () => clearInterval(t);
+  }, [pairs.length]);
 
   useEffect(() => {
-    // Stagger word-2 by 1.2 s, different cadence
     let t2;
     const delay = setTimeout(() => {
-      t2 = setInterval(() => setC2(i => (i + 1) % HERO_COLOR_PAIRS.length), 3100);
+      t2 = setInterval(() => {
+        setW2vis(false);
+        setTimeout(() => { setW2pair(i => (i + 1) % pairs.length); setW2vis(true); }, 350);
+      }, 3100);
     }, 1200);
     return () => { clearTimeout(delay); clearInterval(t2); };
-  }, []);
+  }, [pairs.length]);
 
-  const pair1 = HERO_COLOR_PAIRS[c1];
-  const pair2 = HERO_COLOR_PAIRS[c2];
-  const col1  = dark ? pair1.dark[0] : pair1.light[0];
-  const col2  = dark ? pair2.dark[1] : pair2.light[1];
+  const word1 = ROLES[roleIdx].split(" ")[0];
+  const word2 = ROLES[roleIdx].split(" ").slice(1).join(" ");
+  const color1 = pairs[w1pair][0];
+  const color2 = pairs[w2pair][1];
 
-  const words = ROLES[roleIdx].split(" ");
-  const word1 = words[0];
-  const word2 = words.slice(1).join(" ");
-
-  const titleStyle = {
+  const baseStyle = {
     fontFamily: "'Fira Code',monospace",
     fontSize: "clamp(52px,8vw,96px)",
     fontWeight: 700,
     lineHeight: 1,
     letterSpacing: "-0.02em",
-    transition: "color 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1)",
-    opacity: roleVisible ? 1 : 0,
-    transform: roleVisible ? "none" : "translateY(8px)",
   };
 
   return (
     <>
-      {/* Word 1 row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards", position: "relative" }}>
-        <span className="hero-title-size" style={{ ...titleStyle, color: col1 }}>{word1}</span>
-        <button onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-          style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
+      <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards" }}>
+        <div className="hero-title-size" style={{ ...baseStyle, color: color1, opacity: (roleVisible && w1vis) ? 1 : 0, transform: (roleVisible && w1vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform" }}>
+          {word1}
+        </div>
+        <button
+          onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+          style={{ display: "flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
           onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
           onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
           Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
         </button>
       </div>
-      {/* Word 2 row */}
-      <div style={{ opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both", position: "relative" }}>
-        <span className="hero-title-size" style={{ ...titleStyle, display: "block", textAlign: "right", color: col2 }}>{word2}</span>
+      <div className="hero-title-size" style={{ ...baseStyle, color: color2, textAlign: "right", opacity: (roleVisible && w2vis) ? 1 : 0, transform: (roleVisible && w2vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform", animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both" }}>
+        {word2}
       </div>
     </>
   );
