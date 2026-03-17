@@ -246,8 +246,8 @@ function createDinoSounds() {
 /* ─── ICONS ─── */
 const GithubIcon   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>;
 const LinkedInIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
-const EmailIcon    = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>;
-const TelegramIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>;
+const EmailIcon    = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>;
+const InstagramIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>;
 const MenuIcon     = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>;
 const CloseIcon    = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
 const SunIcon      = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>;
@@ -430,43 +430,14 @@ function AIVisual() {
 
 /* ─── HERO CAROUSEL ─── */
 function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
-  const trackRef   = useRef(null);
-  const dragRef    = useRef({ dragging: false, startX: 0, startSlide: 0 });
-
-  /* Card dimensions */
   const CARD_W   = 300;
   const CARD_GAP = 20;
   const STEP     = CARD_W + CARD_GAP;
 
-  /* Compute translate so active card is always centred in the viewport */
-  function getTranslate(slide, viewW) {
-    const center = viewW / 2;
-    return center - (slide * STEP + CARD_W / 2);
-  }
-
-  /* ── pointer / touch helpers ── */
-  function onDragStart(clientX) {
-    dragRef.current = { dragging: true, startX: clientX, startSlide: heroSlide };
-  }
-  function onDragEnd(clientX) {
-    if (!dragRef.current.dragging) return;
-    dragRef.current.dragging = false;
-    const dx = clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 40) {
-      const dir = dx < 0 ? 1 : -1;
-      setHeroSlide(s => Math.max(0, Math.min(HERO_ARTICLES.length - 1, s + dir)));
-    }
-  }
-
-  /* mouse */
-  const onMouseDown = e => onDragStart(e.clientX);
-  const onMouseUp   = e => onDragEnd(e.clientX);
-  /* touch */
-  const onTouchStart = e => onDragStart(e.touches[0].clientX);
-  const onTouchEnd   = e => onDragEnd(e.changedTouches[0].clientX);
-
   const [viewW, setViewW] = useState(800);
-  const wrapRef = useRef(null);
+  const wrapRef  = useRef(null);
+  const dragRef  = useRef({ active: false, startX: 0 });
+
   useEffect(() => {
     if (!wrapRef.current) return;
     const ro = new ResizeObserver(([e]) => setViewW(e.contentRect.width));
@@ -474,7 +445,23 @@ function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
     return () => ro.disconnect();
   }, []);
 
-  const translate = getTranslate(heroSlide, viewW);
+  /* Drag-to-swipe — only on the track area, never intercepts button clicks */
+  const handleTrackPointerDown = e => {
+    // ignore if the event originated from a button or anchor
+    if (e.target.closest("button,a")) return;
+    dragRef.current = { active: true, startX: e.clientX };
+  };
+  const handleTrackPointerUp = e => {
+    if (!dragRef.current.active) return;
+    dragRef.current.active = false;
+    const dx = e.clientX - dragRef.current.startX;
+    if (Math.abs(dx) > 40) {
+      const dir = dx < 0 ? 1 : -1;
+      setHeroSlide(s => Math.max(0, Math.min(HERO_ARTICLES.length - 1, s + dir)));
+    }
+  };
+
+  const translate = viewW / 2 - (heroSlide * STEP + CARD_W / 2);
 
   return (
     <div style={{ marginTop: 40 }}>
@@ -482,15 +469,11 @@ function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
       <div
         ref={wrapRef}
         style={{ overflow: "hidden", cursor: "grab", userSelect: "none", WebkitUserSelect: "none" }}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
-        onMouseLeave={e => { if (dragRef.current.dragging) onDragEnd(e.clientX); }}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
+        onPointerDown={handleTrackPointerDown}
+        onPointerUp={handleTrackPointerUp}
+        onPointerLeave={handleTrackPointerUp}
       >
-        {/* Sliding track */}
         <div
-          ref={trackRef}
           style={{
             display: "flex",
             gap: CARD_GAP,
@@ -520,7 +503,6 @@ function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
                   transform: active ? "scale(1.04)" : "scale(0.96)",
                   transition: "opacity 0.4s, transform 0.4s, border-color 0.3s, background 0.3s",
                   cursor: active ? "default" : "pointer",
-                  pointerEvents: "auto",
                 }}
               >
                 <div style={{ width: "100%", height: 130, background: "linear-gradient(135deg,#2a2a3a,#3a2a4a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>
@@ -537,7 +519,7 @@ function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Controls — completely outside the drag zone */}
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}>
         <button
           onClick={() => setHeroSlide(s => Math.max(0, s - 1))}
@@ -719,7 +701,7 @@ function DinoModal({ onClose, dark }) {
       dino:     { x: 80, y: GND, w: 40, h: 48, vy: 0, onGround: true, dead: false, frame: 0, frameTimer: 0, wasOnGround: true },
       obstacles: [],
       score:    0,
-      hi:       0,
+      hi:       (() => { try { return parseInt(localStorage.getItem('dino_hi') || '0'); } catch(e) { return 0; } })(),
       speed:    SPD0,
       spawnT:   0,
       started:  false,
@@ -962,7 +944,10 @@ function DinoModal({ onClose, dark }) {
             d.dead     = true;
             state.shake = 1;
             play("die");
-            if (state.score > state.hi) state.hi = state.score;
+            if (state.score > state.hi) {
+              state.hi = state.score;
+              try { localStorage.setItem('dino_hi', String(state.hi)); } catch(e) {}
+            }
             // death explosion particles
             for (let i = 0; i < 14; i++) {
               const angle = (i / 14) * Math.PI * 2;
@@ -1100,27 +1085,18 @@ function FooterQuote({ dark }) {
 
 /* ─── CONTACT FORM ─── */
 function ContactForm({ dark }) {
-  const [form, setForm]   = useState({ name: "", email: "", subject: "", message: "" });
+  const [form, setForm]     = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState("idle");
-  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
-  const border = dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.1)";
-  const color = dark ? "#f5f5f5" : "#121212";
-  const ph = dark ? "#a6a6a6" : "#888";
+  const [flying, setFlying] = useState(false);
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
   const handleSubmit = async () => {
     if (!form.name || !form.email || !form.message) return;
+    setFlying(true);
     setStatus("sending");
     try {
-      // ─────────────────────────────────────────────────────
-      // EMAILJS SETUP — replace these 3 values:
-      // 1. Sign up free at https://www.emailjs.com
-      // 2. Add Email Service (Gmail etc.) → copy Service ID
-      // 3. Create Template using {{from_name}}, {{from_email}}, {{subject}}, {{message}} → copy Template ID
-      // 4. Account → API Keys → copy Public Key
-      const SERVICE_ID  = "YOUR_SERVICE_ID";
-      const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-      const PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
-      // ─────────────────────────────────────────────────────
+      const SERVICE_ID  = "service_ybw5kni";
+      const TEMPLATE_ID = "template_cvp4p6n";
+      const PUBLIC_KEY  = "MDI6U-Hdup2CDle-t";
       const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ service_id: SERVICE_ID, template_id: TEMPLATE_ID, user_id: PUBLIC_KEY,
@@ -1130,22 +1106,24 @@ function ContactForm({ dark }) {
       else setStatus("error");
     } catch { setStatus("error"); }
   };
-  const inp = { width: "100%", background: bg, border, borderRadius: 10, padding: "12px 14px", color, fontSize: 13, fontFamily: "'Open Sans',sans-serif", outline: "none", transition: "border-color 0.2s", boxSizing: "border-box" };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <style>{`.ci::placeholder{color:${ph}}.ci:focus{border-color:rgba(255,255,255,0.25)!important}`}</style>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="contact-form-grid">
-        <input className="ci" style={inp} name="name" placeholder="Your name" value={form.name} onChange={handleChange} />
-        <input className="ci" style={inp} name="email" placeholder="your@email.com" value={form.email} onChange={handleChange} />
+        <FloatInput dark={dark} name="name"    placeholder="Your name"       value={form.name}    onChange={handleChange} />
+        <FloatInput dark={dark} name="email"   placeholder="your@email.com"  value={form.email}   onChange={handleChange} type="email" />
       </div>
-      <input className="ci" style={inp} name="subject" placeholder="Subject" value={form.subject} onChange={handleChange} />
-      <textarea className="ci" style={{ ...inp, minHeight: 120, resize: "vertical" }} name="message" placeholder="Your message..." value={form.message} onChange={handleChange} />
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <button onClick={handleSubmit} disabled={status === "sending"} style={{ background: dark ? "#fff" : "#121212", color: dark ? "#121212" : "#fff", border: "none", borderRadius: 50, padding: "11px 26px", fontFamily: "'Open Sans',sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer", opacity: status === "sending" ? 0.6 : 1 }}>
-          {status === "sending" ? "Sending…" : "Send Message →"}
-        </button>
-        {status === "success" && <span style={{ fontSize: 12, color: "#22c55e" }}>✓ Message sent!</span>}
-        {status === "error"   && <span style={{ fontSize: 12, color: "#e06c75" }}>Something went wrong. Try again.</span>}
+      <FloatInput   dark={dark} name="subject" placeholder="Subject"         value={form.subject} onChange={handleChange} />
+      <FloatTextarea dark={dark} name="message" placeholder="Your message…"  value={form.message} onChange={handleChange} />
+      <div style={{ display: "flex", alignItems: "center", gap: 14, minHeight: 38 }}>
+        {flying ? (
+          <PaperPlane onDone={() => setFlying(false)} />
+        ) : (
+          <button onClick={handleSubmit} disabled={status === "sending"} style={{ background: dark ? "#fff" : "#121212", color: dark ? "#121212" : "#fff", border: "none", borderRadius: 50, padding: "11px 26px", fontFamily: "'Open Sans',sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer", opacity: status === "sending" ? 0.6 : 1, position:"relative", overflow:"hidden" }}>
+            {status === "sending" ? "Sending…" : "Send Message →"}
+          </button>
+        )}
+        {status === "success" && !flying && <span style={{ fontSize: 12, color: "#22c55e" }}>✓ Message sent!</span>}
+        {status === "error"   && !flying && <span style={{ fontSize: 12, color: "#e06c75" }}>Something went wrong.</span>}
       </div>
     </div>
   );
@@ -1233,6 +1211,666 @@ function HeroTitle({ dark, roleIdx, roleVisible }) {
   );
 }
 
+
+/* ─── CUSTOM CURSOR ─── */
+function CustomCursor() {
+  const dotRef  = useRef(null);
+  const ringRef = useRef(null);
+  const pos     = useRef({ x: -100, y: -100 });
+  const ring    = useRef({ x: -100, y: -100 });
+  const hovering = useRef(false);
+  const rafId   = useRef(null);
+
+  useEffect(() => {
+    const onMove = e => { pos.current = { x: e.clientX, y: e.clientY }; };
+    const onOver = e => {
+      const t = e.target.closest('a,button,[data-magnetic]');
+      hovering.current = !!t;
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseover", onOver);
+
+    function tick() {
+      rafId.current = requestAnimationFrame(tick);
+      const dot  = dotRef.current;
+      const rng  = ringRef.current;
+      if (!dot || !rng) return;
+      dot.style.transform  = `translate(${pos.current.x - 4}px, ${pos.current.y - 4}px)`;
+      ring.current.x += (pos.current.x - ring.current.x) * 0.12;
+      ring.current.y += (pos.current.y - ring.current.y) * 0.12;
+      rng.style.transform  = `translate(${ring.current.x - 20}px, ${ring.current.y - 20}px) scale(${hovering.current ? 1.8 : 1})`;
+      rng.style.opacity    = hovering.current ? "0.6" : "0.35";
+      rng.style.borderColor = hovering.current ? "var(--white)" : "var(--mid)";
+    }
+    tick();
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onOver);
+      cancelAnimationFrame(rafId.current);
+    };
+  }, []);
+
+  return (
+    <>
+      <div ref={dotRef}  style={{ position:"fixed", top:0, left:0, width:8,  height:8,  borderRadius:"50%", background:"var(--white)", pointerEvents:"none", zIndex:9999, transition:"opacity 0.2s" }} />
+      <div ref={ringRef} style={{ position:"fixed", top:0, left:0, width:40, height:40, borderRadius:"50%", border:"1.5px solid var(--mid)", pointerEvents:"none", zIndex:9998, transition:"transform 0.08s linear, opacity 0.2s, border-color 0.2s, scale 0.25s cubic-bezier(0.22,1,0.36,1)" }} />
+    </>
+  );
+}
+
+/* ─── READING PROGRESS BAR ─── */
+function ReadingProgress({ dark }) {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const h = () => {
+      const el  = document.documentElement;
+      const sc  = window.scrollY;
+      const max = el.scrollHeight - el.clientHeight;
+      setPct(max > 0 ? (sc / max) * 100 : 0);
+    };
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  return (
+    <div style={{ position:"fixed", top:0, left:0, right:0, height:2, zIndex:9997, background:"transparent", pointerEvents:"none" }}>
+      <div style={{ height:"100%", width:`${pct}%`, background: dark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)", transition:"width 0.1s linear", borderRadius:"0 1px 1px 0" }} />
+    </div>
+  );
+}
+
+/* ─── RIPPLE ─── */
+function useRipple() {
+  const [ripples, setRipples] = useState([]);
+  const fire = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const id = Date.now();
+    setRipples(r => [...r, { id, x, y }]);
+    setTimeout(() => setRipples(r => r.filter(rp => rp.id !== id)), 900);
+  };
+  const layer = (
+    <div style={{ position:"absolute", inset:0, overflow:"hidden", pointerEvents:"none", borderRadius:"inherit" }}>
+      {ripples.map(rp => (
+        <span key={rp.id} style={{
+          position:"absolute", left: rp.x, top: rp.y,
+          width:8, height:8, borderRadius:"50%",
+          background:"rgba(255,255,255,0.18)",
+          transform:"translate(-50%,-50%) scale(0)",
+          animation:"rippleOut 0.9s cubic-bezier(0.22,1,0.36,1) forwards",
+          pointerEvents:"none",
+        }} />
+      ))}
+    </div>
+  );
+  return [fire, layer];
+}
+
+/* ─── 3D TILT CARD ─── */
+function TiltCard({ children, style = {}, dark }) {
+  const ref = useRef(null);
+  const raf = useRef(null);
+  const cur = useRef({ rx:0, ry:0, gx:50, gy:50 });
+  const tgt = useRef({ rx:0, ry:0, gx:50, gy:50 });
+
+  const onMove = e => {
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top)  / rect.height;
+    tgt.current = { rx: (y - 0.5) * -14, ry: (x - 0.5) * 14, gx: x * 100, gy: y * 100 };
+  };
+  const onLeave = () => { tgt.current = { rx:0, ry:0, gx:50, gy:50 }; };
+
+  useEffect(() => {
+    let running = true;
+    function tick() {
+      if (!running) return;
+      raf.current = requestAnimationFrame(tick);
+      const c = cur.current, t = tgt.current;
+      c.rx += (t.rx - c.rx) * 0.1;
+      c.ry += (t.ry - c.ry) * 0.1;
+      c.gx += (t.gx - c.gx) * 0.1;
+      c.gy += (t.gy - c.gy) * 0.1;
+      if (!ref.current) return;
+      ref.current.style.transform = `perspective(800px) rotateX(${c.rx}deg) rotateY(${c.ry}deg)`;
+      const shine = ref.current.querySelector(".tilt-shine");
+      if (shine) shine.style.background = `radial-gradient(circle at ${c.gx}% ${c.gy}%, rgba(255,255,255,${dark ? 0.07 : 0.12}) 0%, transparent 65%)`;
+    }
+    tick();
+    return () => { running = false; cancelAnimationFrame(raf.current); };
+  }, [dark]);
+
+  return (
+    <div ref={ref}
+      style={{ ...style, position:"relative", transformStyle:"preserve-3d", transition:"box-shadow 0.3s", willChange:"transform" }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}>
+      <div className="tilt-shine" style={{ position:"absolute", inset:0, borderRadius:"inherit", pointerEvents:"none", zIndex:2, transition:"background 0.05s" }} />
+      {children}
+    </div>
+  );
+}
+
+/* ─── MAGNETIC BUTTON ─── */
+function Magnetic({ children, strength = 0.35 }) {
+  const ref = useRef(null);
+  const onMove = e => {
+    const rect = ref.current.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = e.clientX - cx, dy = e.clientY - cy;
+    ref.current.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+  };
+  const onLeave = () => { ref.current.style.transform = "translate(0,0)"; };
+  return (
+    <div ref={ref} style={{ display:"inline-flex", transition:"transform 0.4s cubic-bezier(0.22,1,0.36,1)" }}
+      onMouseMove={onMove} onMouseLeave={onLeave}>
+      {children}
+    </div>
+  );
+}
+
+/* ─── TERMINAL ─── */
+const CONTACT_STEPS = ["name","email","subject","message"];
+
+const ALL_COMMANDS = ["help","message","contact","about","projects","articles","skills","whoami","banner","open","theme","resume","date","time","echo","sudo","rm","hack","coffee","dino","clear","close","exit"];
+
+const ASCII_BANNER = [
+  "  ██████╗  █████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗     ",
+  "  ██╔══██╗██╔══██╗██╔════╝ ██║  ██║██║   ██║██║     ",
+  "  ██████╔╝███████║██║  ███╗███████║██║   ██║██║     ",
+  "  ██╔══██╗██╔══██║██║   ██║██╔══██║██║   ██║██║     ",
+  "  ██║  ██║██║  ██║╚██████╔╝██║  ██║╚██████╔╝███████╗",
+  "  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝",
+  "",
+  "  Full-Stack Developer · UI/UX Designer · Chennai, IN",
+];
+
+function Terminal({ onClose, dark, onThemeToggle }) {
+  const BOOT_LINES = [
+    { type:"ban", text: ASCII_BANNER[0] },
+    { type:"ban", text: ASCII_BANNER[1] },
+    { type:"ban", text: ASCII_BANNER[2] },
+    { type:"ban", text: ASCII_BANNER[3] },
+    { type:"ban", text: ASCII_BANNER[4] },
+    { type:"ban", text: ASCII_BANNER[5] },
+    { type:"ban", text: ASCII_BANNER[6] },
+    { type:"out", text: ASCII_BANNER[7] },
+    { type:"out", text: "" },
+    { type:"sys", text: '  Type "help" for available commands.' },
+  ];
+
+  const [lines,        setLines]       = useState([]);
+  const [input,        setInput]       = useState("");
+  const [hist,         setHist]        = useState([]);
+  const [hIdx,         setHIdx]        = useState(-1);
+  const [contactMode,  setContactMode] = useState(null);
+  const [contactData,  setContactData] = useState({ name:"", email:"", subject:"", message:"" });
+  const [sending,      setSending]     = useState(false);
+  const [tabMatches,   setTabMatches]  = useState([]);
+  const [hackMode,     setHackMode]    = useState(false);
+  const endRef   = useRef(null);
+  const inputRef = useRef(null);
+  const timers   = useRef([]);
+
+  /* ── Typewriter: adds lines one by one with a delay ── */
+  const typeLines = (newLines, delay = 32) => {
+    newLines.forEach((line, idx) => {
+      const t = setTimeout(() => {
+        setLines(l => [...l, line]);
+      }, idx * delay);
+      timers.current.push(t);
+    });
+  };
+
+  /* ── Immediate: add all lines at once ── */
+  const addImmediate = (newLines) => {
+    setLines(l => [...l, ...newLines]);
+  };
+
+  /* Boot */
+  useEffect(() => {
+    typeLines(BOOT_LINES, 40);
+    setTimeout(() => inputRef.current?.focus(), 0);
+    return () => timers.current.forEach(clearTimeout);
+  }, []);
+
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [lines]);
+
+  /* ── Tab completion ── */
+  const handleTab = () => {
+    const val = input.trim().toLowerCase();
+    if (!val) return;
+    const matches = ALL_COMMANDS.filter(c => c.startsWith(val));
+    if (matches.length === 1) {
+      setInput(matches[0]);
+      setTabMatches([]);
+    } else if (matches.length > 1) {
+      setTabMatches(matches);
+      addImmediate([{ type:"sys", text: "  " + matches.join("   ") }]);
+    }
+  };
+
+  /* ── Contact field prompts ── */
+  const fieldPrompt = (step) => ({
+    name:    "  👤 Your name:",
+    email:   "  📧 Your email:",
+    subject: "  📋 Subject:",
+    message: "  💬 Message:",
+  }[step]);
+
+  /* ── Submit via EmailJS (same service as ContactForm) ── */
+  const submitContact = async (data) => {
+    setSending(true);
+    addImmediate([{ type:"sys", text:"" }, { type:"sys", text:"  ✈️  Sending your message..." }]);
+    try {
+      const SERVICE_ID  = "service_ybw5kni";
+      const TEMPLATE_ID = "template_cvp4p6n";
+      const PUBLIC_KEY  = "MDI6U-Hdup2CDle-t";
+      const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id:  SERVICE_ID,
+          template_id: TEMPLATE_ID,
+          user_id:     PUBLIC_KEY,
+          template_params: {
+            from_name:  data.name,
+            from_email: data.email,
+            subject:    data.subject,
+            message:    data.message,
+          },
+        }),
+      });
+      if (res.ok) {
+        typeLines([
+          { type:"ok",  text:"  ✓ Message sent! I'll get back to you soon." },
+          { type:"sys", text:"  Closing terminal..." },
+        ], 40);
+        setTimeout(onClose, 2200);
+      } else {
+        addImmediate([{ type:"err", text:"  ✗ Failed to send. Check your EmailJS keys." }]);
+        setSending(false);
+      }
+    } catch {
+      addImmediate([{ type:"err", text:"  ✗ Network error. Please try the contact form." }]);
+      setSending(false);
+    }
+  };
+
+  /* ── Contact step handler ── */
+  const runContactStep = (value) => {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      addImmediate([
+        { type:"err", text:`  ✗ This field cannot be empty.` },
+        { type:"sys", text: fieldPrompt(contactMode) },
+      ]);
+      return;
+    }
+    if (contactMode === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      addImmediate([
+        { type:"err", text:"  ✗ Invalid email address." },
+        { type:"sys", text: fieldPrompt("email") },
+      ]);
+      return;
+    }
+    addImmediate([{ type:"in", text:`  ${trimmed}` }]);
+    const updated = { ...contactData, [contactMode]: trimmed };
+    setContactData(updated);
+    const idx  = CONTACT_STEPS.indexOf(contactMode);
+    const next = CONTACT_STEPS[idx + 1];
+    if (next) {
+      setContactMode(next);
+      addImmediate([{ type:"sys", text: fieldPrompt(next) }]);
+    } else {
+      setContactMode(null);
+      typeLines([
+        { type:"sys", text:"" },
+        { type:"sys", text:"  ┌─ Review ───────────────────────────────────┐" },
+        { type:"out", text:`  │  Name    › ${updated.name}` },
+        { type:"out", text:`  │  Email   › ${updated.email}` },
+        { type:"out", text:`  │  Subject › ${updated.subject}` },
+        { type:"out", text:`  │  Message › ${updated.message}` },
+        { type:"sys", text:"  └────────────────────────────────────────────┘" },
+      ], 30);
+      setTimeout(() => submitContact(updated), 500);
+    }
+  };
+
+  /* ── Hack easter egg ── */
+  const runHack = () => {
+    setHackMode(true);
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*";
+    let count = 0;
+    const interval = setInterval(() => {
+      const line = Array.from({ length: 48 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+      addImmediate([{ type:"hack", text: "  " + line }]);
+      count++;
+      if (count >= 18) {
+        clearInterval(interval);
+        setHackMode(false);
+        addImmediate([
+          { type:"ok",  text:"  ACCESS GRANTED. Just kidding 😄" },
+          { type:"out", text:"  Nice try though." },
+        ]);
+      }
+    }, 80);
+  };
+
+  /* ── Main command runner ── */
+  const run = (cmd) => {
+    const trimmed = cmd.trim();
+    const lower   = trimmed.toLowerCase();
+    setTabMatches([]);
+
+    if (contactMode) {
+      runContactStep(trimmed);
+      setInput(""); setHIdx(-1);
+      return;
+    }
+
+    addImmediate([{ type:"in", text:`~ % ${trimmed}` }]);
+    setHist(h => [trimmed, ...h.slice(0, 19)]);
+    setHIdx(-1);
+    setInput("");
+    if (!trimmed) return;
+
+    /* ── commands ── */
+    if (lower === "close" || lower === "exit") { setTimeout(onClose, 180); return; }
+    if (lower === "clear") { setLines([]); return; }
+
+    if (lower === "help") {
+      typeLines([
+        { type:"sys", text:"  Commands:" },
+        { type:"out", text:"  message            send me a message" },
+        { type:"out", text:"  whoami             who is Raghul?" },
+        { type:"out", text:"  banner             show ASCII banner" },
+        { type:"out", text:"  skills             tech proficiency" },
+        { type:"out", text:"  open <github|linkedin|instagram|resume>  open link" },
+        { type:"out", text:"  theme <dark|light>  toggle site theme" },
+        { type:"out", text:"  resume             open resume PDF" },
+        { type:"out", text:"  date / time        current date & time" },
+        { type:"out", text:"  echo <text>        echo text" },
+        { type:"out", text:"  about / projects / articles  navigate" },
+        { type:"out", text:"  dino               🦕 " },
+        { type:"out", text:"  hack               👾 " },
+        { type:"out", text:"  coffee             ☕ " },
+        { type:"out", text:"  sudo               🤫 " },
+        { type:"out", text:"  clear              clear terminal" },
+        { type:"out", text:"  close / exit       close terminal" },
+        { type:"sys", text:"  Tip: Tab to autocomplete · ↑↓ for history" },
+      ], 22);
+      return;
+    }
+
+    if (lower === "banner") {
+      typeLines(ASCII_BANNER.map((t, i) => ({ type: i < 6 ? "ban" : "out", text: t })), 40);
+      return;
+    }
+
+    if (lower === "whoami") {
+      typeLines([
+        { type:"sys", text:"  raghul@portfolio" },
+        { type:"out", text:"  ─────────────────────────────────────" },
+        { type:"out", text:"  Name    : Raghul Prasanth" },
+        { type:"out", text:"  Role    : Full-Stack Developer & UI/UX Designer" },
+        { type:"out", text:"  Based   : Chennai, India" },
+        { type:"out", text:"  Stack   : Golang · React · Node.js · PostgreSQL" },
+        { type:"out", text:"  Current : Associate Consultant @ Oracle OFSS" },
+        { type:"out", text:"  Loves   : Clean code, great UX, late nights ☕" },
+        { type:"out", text:"  ─────────────────────────────────────" },
+      ], 30);
+      return;
+    }
+
+    if (lower === "message" || lower === "contact") {
+      setContactData({ name:"", email:"", subject:"", message:"" });
+      setContactMode("name");
+      typeLines([
+        { type:"sys", text:"" },
+        { type:"sys", text:"  📬 New message to Raghul" },
+        { type:"sys", text:"  ─────────────────────────────────────" },
+        { type:"sys", text: fieldPrompt("name") },
+      ], 30);
+      return;
+    }
+
+    if (lower === "skills") {
+      typeLines([
+        { type:"sys", text:"  Tech Proficiency:" },
+        { type:"out", text:"  Golang        ████████░░  4/5" },
+        { type:"out", text:"  React / Next  ██████████  5/5" },
+        { type:"out", text:"  TypeScript    ████████░░  4/5" },
+        { type:"out", text:"  PostgreSQL    ████████░░  4/5" },
+        { type:"out", text:"  Docker        ██████░░░░  3/5" },
+        { type:"out", text:"  Figma         ████████░░  4/5" },
+        { type:"out", text:"  UI/UX Design  ████████░░  4/5" },
+      ], 28);
+      return;
+    }
+
+    if (lower === "resume" || lower === "open resume") {
+      window.open("https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link", "_blank");
+      addImmediate([{ type:"ok", text:"  ✓ Opened resume in new tab." }]);
+      setTimeout(onClose, 900);
+      return;
+    }
+
+    if (lower.startsWith("open ")) {
+      const target = lower.slice(5).trim();
+      const links = {
+        github:    "https://github.com",
+        linkedin:  "https://linkedin.com",
+        instagram: "https://instagram.com",
+        resume:    "https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link",
+      };
+      if (links[target]) {
+        window.open(links[target], "_blank");
+        addImmediate([{ type:"ok", text:`  ✓ Opened ${target} in new tab.` }]);
+        setTimeout(onClose, 900);
+      } else {
+        addImmediate([{ type:"err", text:`  ✗ Unknown target "${target}". Try: github, linkedin, instagram, resume` }]);
+      }
+      return;
+    }
+
+    if (lower.startsWith("theme ")) {
+      const t = lower.slice(6).trim();
+      if (t === "dark" || t === "light") {
+        onThemeToggle(t === "dark");
+        addImmediate([{ type:"ok", text:`  ✓ Theme set to ${t}.` }]);
+        setTimeout(onClose, 700);
+      } else {
+        addImmediate([{ type:"err", text:'  ✗ Usage: theme dark | theme light' }]);
+      }
+      return;
+    }
+
+    if (lower === "date") {
+      addImmediate([{ type:"out", text:`  ${new Date().toDateString()}` }]);
+      return;
+    }
+    if (lower === "time") {
+      addImmediate([{ type:"out", text:`  ${new Date().toLocaleTimeString()}` }]);
+      return;
+    }
+
+    if (lower.startsWith("echo ")) {
+      addImmediate([{ type:"out", text:`  ${trimmed.slice(5)}` }]);
+      return;
+    }
+
+    if (lower === "about")    { document.getElementById("about")?.scrollIntoView({ behavior:"smooth" });    addImmediate([{ type:"out", text:"→ Scrolling to About..." }]);    setTimeout(onClose, 700); return; }
+    if (lower === "projects") { document.getElementById("projects")?.scrollIntoView({ behavior:"smooth" }); addImmediate([{ type:"out", text:"→ Scrolling to Projects..." }]); setTimeout(onClose, 700); return; }
+    if (lower === "articles") { document.getElementById("articles")?.scrollIntoView({ behavior:"smooth" }); addImmediate([{ type:"out", text:"→ Scrolling to Articles..." }]); setTimeout(onClose, 700); return; }
+
+    if (lower === "dino") {
+      addImmediate([{ type:"out", text:"  🦕  Scroll to the footer and click the dino!" }]);
+      setTimeout(onClose, 1200);
+      return;
+    }
+
+    if (lower === "coffee") {
+      typeLines([
+        { type:"out", text:"  ☕  Brewing..." },
+        { type:"out", text:"  Raghul runs on coffee and late-night debugging sessions." },
+        { type:"out", text:"  Current caffeine level: ████████░░  80%" },
+      ], 60);
+      return;
+    }
+
+    if (lower === "hack") {
+      addImmediate([{ type:"sys", text:"  Initialising hack sequence..." }]);
+      setTimeout(runHack, 400);
+      return;
+    }
+
+    if (lower.startsWith("sudo")) {
+      addImmediate([{ type:"err", text:"  sudo: permission denied. Nice try 😄" }]);
+      return;
+    }
+
+    if (lower.startsWith("rm ")) {
+      addImmediate([{ type:"err", text:"  rm: cannot remove '/': you wish 😂" }]);
+      return;
+    }
+
+    addImmediate([{ type:"err", text:`  command not found: ${trimmed}. Type "help".` }]);
+  };
+
+  const onKey = e => {
+    if (sending || hackMode) return;
+    if (e.key === "Enter")  { run(input); }
+    if (e.key === "Tab")    { e.preventDefault(); handleTab(); }
+    if (e.key === "ArrowUp"   && !contactMode) { const i = Math.min(hIdx+1, hist.length-1); setHIdx(i); setInput(hist[i] || ""); }
+    if (e.key === "ArrowDown" && !contactMode) { const i = Math.max(hIdx-1, -1); setHIdx(i); setInput(i === -1 ? "" : hist[i]); }
+    if (e.key === "Escape") {
+      if (contactMode) { setContactMode(null); setContactData({ name:"", email:"", subject:"", message:"" }); addImmediate([{ type:"err", text:"  ✗ Message cancelled." }]); }
+      else onClose();
+    }
+  };
+
+  const lineColor = (type) => {
+    if (type === "in")   return "#a78bfa";
+    if (type === "sys")  return "#fbbf24";
+    if (type === "ok")   return "#34d399";
+    if (type === "err")  return "#f87171";
+    if (type === "ban")  return "#7dd3fc";
+    if (type === "hack") return "#22c55e";
+    return "#e2e8f0";
+  };
+
+  return (
+    <div style={{ position:"fixed", inset:0, zIndex:9990, background:"rgba(0,0,0,0.75)", backdropFilter:"blur(6px)", display:"flex", alignItems:"center", justifyContent:"center" }}
+      onClick={e => e.target === e.currentTarget && onClose()}>
+      <div style={{ width:"min(700px,96vw)", background:"#0a0a0a", borderRadius:16, border:"1px solid rgba(255,255,255,0.1)", overflow:"hidden", boxShadow:"0 40px 100px rgba(0,0,0,0.8)", display:"flex", flexDirection:"column", maxHeight:"90vh" }}>
+
+        {/* ── title bar ── */}
+        <div style={{ display:"flex", alignItems:"center", gap:8, padding:"12px 16px", borderBottom:"1px solid rgba(255,255,255,0.07)", background:"rgba(255,255,255,0.025)", flexShrink:0 }}>
+          {["#f87171","#fbbf24","#34d399"].map(c => (
+            <span key={c} style={{ width:12, height:12, borderRadius:"50%", background:c, cursor: c==="#f87171"?"pointer":"default", flexShrink:0 }}
+              onClick={c==="#f87171" ? onClose : undefined} />
+          ))}
+          <span style={{ marginLeft:8, fontSize:12, color:"#6b7280", fontFamily:"'Fira Code',monospace" }}>
+            raghul@portfolio:~{contactMode ? ` [msg·${contactMode}]` : ""}
+          </span>
+          <span style={{ marginLeft:"auto", fontSize:11, color:"#374151", fontFamily:"'Fira Code',monospace" }}>
+            {hackMode ? "● HACKING" : "● zsh"}
+          </span>
+        </div>
+
+        {/* ── output ── */}
+        <div style={{ flex:1, overflowY:"auto", padding:"16px 20px", fontFamily:"'Fira Code',monospace", fontSize:13, lineHeight:2, minHeight:0 }}>
+          {lines.map((l, i) => (
+            <div key={i} style={{ color: lineColor(l.type), whiteSpace:"pre-wrap", fontWeight: l.type === "ban" ? 700 : 400 }}>{l.text}</div>
+          ))}
+          {/* blinking cursor line */}
+          <div style={{ display:"flex", alignItems:"center", height:20 }}>
+            <span style={{ display:"inline-block", width:8, height:15, background:"#a78bfa", opacity:1, animation:"pulse 1.1s step-end infinite", borderRadius:1 }} />
+          </div>
+          <div ref={endRef} />
+        </div>
+
+        {/* ── input ── */}
+        <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 20px", borderTop:"1px solid rgba(255,255,255,0.07)", background: contactMode ? "rgba(52,211,153,0.04)" : "rgba(167,139,250,0.03)", flexShrink:0, transition:"background 0.3s" }}>
+          <span style={{ color: contactMode ? "#34d399" : "#a78bfa", fontFamily:"'Fira Code',monospace", fontSize:13, flexShrink:0 }}>
+            {contactMode ? `[${contactMode}] ›` : "~ %"}
+          </span>
+          <input
+            ref={inputRef}
+            value={input}
+            onChange={e => { setInput(e.target.value); setTabMatches([]); }}
+            onKeyDown={onKey}
+            disabled={sending || hackMode}
+            style={{ flex:1, background:"transparent", border:"none", outline:"none", color:"#f1f5f9", fontFamily:"'Fira Code',monospace", fontSize:13, caretColor: contactMode ? "#34d399" : "#a78bfa", opacity: (sending || hackMode) ? 0.4 : 1 }}
+            placeholder={contactMode ? `enter your ${contactMode}…` : "type a command… (Tab to complete)"}
+            autoComplete="off" spellCheck="false"
+          />
+        </div>
+
+        {/* ── tab completions ── */}
+        {tabMatches.length > 1 && (
+          <div style={{ padding:"6px 20px 10px", fontFamily:"'Fira Code',monospace", fontSize:12, color:"#6b7280", borderTop:"1px solid rgba(255,255,255,0.04)", display:"flex", gap:16, flexWrap:"wrap" }}>
+            {tabMatches.map(m => <span key={m} style={{ color:"#a78bfa" }}>{m}</span>)}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ─── FLOATING LABEL INPUT ─── */
+function FloatInput({ name, placeholder, value, onChange, type="text", dark }) {
+  const [focused, setFocused] = useState(false);
+  const filled = value.length > 0;
+  const active = focused || filled;
+  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+  const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
+  return (
+    <div style={{ position:"relative", width:"100%" }}>
+      <label style={{ position:"absolute", left:14, top: active ? 6 : "50%", transform: active ? "none" : "translateY(-50%)", fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
+        {placeholder}
+      </label>
+      <input name={name} type={type} value={value} onChange={onChange}
+        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+        style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "22px 14px 8px" : "14px 14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", transition:"border-color 0.2s, padding 0.2s", boxSizing:"border-box" }} />
+    </div>
+  );
+}
+function FloatTextarea({ name, placeholder, value, onChange, dark }) {
+  const [focused, setFocused] = useState(false);
+  const filled = value.length > 0;
+  const active = focused || filled;
+  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+  const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
+  return (
+    <div style={{ position:"relative", width:"100%" }}>
+      <label style={{ position:"absolute", left:14, top: active ? 8 : 14, fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
+        {placeholder}
+      </label>
+      <textarea name={name} value={value} onChange={onChange}
+        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+        style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "26px 14px 10px" : "14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", resize:"vertical", minHeight:120, transition:"border-color 0.2s", boxSizing:"border-box" }} />
+    </div>
+  );
+}
+
+/* ─── PAPER AIRPLANE SEND ─── */
+function PaperPlane({ onDone }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.animate([
+      { transform:"translate(0,0) rotate(0deg)",   opacity:1 },
+      { transform:"translate(180px,-120px) rotate(25deg)", opacity:1, offset:0.6 },
+      { transform:"translate(420px,-60px) rotate(15deg)",  opacity:0 },
+    ], { duration:800, easing:"cubic-bezier(0.22,1,0.36,1)", fill:"forwards" }).onfinish = onDone;
+  }, []);
+  return (
+    <span ref={ref} style={{ display:"inline-block", fontSize:18, pointerEvents:"none" }}>✈️</span>
+  );
+}
+
 /* ─── MAIN APP ─── */
 export default function Portfolio() {
   const [dark, setDark]               = useState(() => typeof window !== "undefined" ? window.matchMedia("(prefers-color-scheme: dark)").matches : true);
@@ -1246,6 +1884,10 @@ export default function Portfolio() {
   const [roleVisible, setRoleVisible] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [dinoOpen, setDinoOpen]           = useState(false);
+  const [terminalOpen, setTerminalOpen]   = useState(false);
+  const [scrollPct, setScrollPct]         = useState(0);
+  const [mousePos, setMousePos]           = useState({ x: 0, y: 0 });
+  const heroRef = useRef(null);
 
   const theme = dark
     ? { "--black":"#121212","--dark":"#3D3D3D","--mid":"#A6A6A6","--light":"#F5F5F5","--white":"#ffffff","--bg":"#121212","--text":"#F5F5F5" }
@@ -1269,8 +1911,28 @@ export default function Portfolio() {
       setActiveSection(cur);
       setShowScrollTop(window.scrollY > 400);
     };
-    window.addEventListener("scroll", handler);
+    window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  /* Terminal shortcut: press "/" */
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        setTerminalOpen(t => !t);
+      }
+      if (e.key === "Escape") setTerminalOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  /* Mouse tracking for spotlight */
+  useEffect(() => {
+    const h = e => setMousePos({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", h, { passive: true });
+    return () => window.removeEventListener("mousemove", h);
   }, []);
 
   /* System dark mode */
@@ -1294,6 +1956,10 @@ export default function Portfolio() {
 
   return (
     <div style={{ ...theme, background: "var(--bg)", color: "var(--text)", fontFamily: "'Open Sans',sans-serif", fontSize: 14, lineHeight: 1.6, overflowX: "hidden", minHeight: "100vh" }}>
+      <ReadingProgress dark={dark} />
+      {/* Spotlight overlay */}
+      <div style={{ position:"fixed", inset:0, pointerEvents:"none", zIndex:1, background:`radial-gradient(circle 380px at ${mousePos.x}px ${mousePos.y}px, transparent 0%, ${dark ? "rgba(0,0,0,0.18)" : "rgba(0,0,0,0.06)"} 100%)` }} />
+      {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} dark={dark} onThemeToggle={v => setDark(v)} />}
       <FontLink />
       <style>{`
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1313,6 +1979,7 @@ export default function Portfolio() {
         @keyframes scorePopIn{0%{transform:scale(0.6) translateY(4px);opacity:0}60%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:1}}
         @keyframes dinoJumpParticle{0%{transform:translateY(0) scale(1);opacity:0.8}100%{transform:translateY(-28px) scale(0);opacity:0}}
         .nav-score-pop{animation:scorePopIn 0.35s cubic-bezier(0.22,1,0.36,1) both}
+        @keyframes rippleOut{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(40);opacity:0}}
         .section-hr{border:none;border-top:1px solid rgba(128,128,128,0.08)}
         @media(max-width:768px){
           .nav-links-desktop{display:none!important}
@@ -1342,7 +2009,7 @@ export default function Portfolio() {
         <ul className="nav-links-desktop" style={{ display: "flex", gap: 36, listStyle: "none" }}>
           {navLinks.map(l => (
             <li key={l.id} style={{ position: "relative" }}>
-              <button onClick={() => scrollTo(l.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, color: activeSection === l.id ? "var(--white)" : "var(--mid)", fontFamily: "'Open Sans',sans-serif", transition: "color 0.2s", padding: "4px 0" }}>{l.label}</button>
+              <Magnetic strength={0.4}><button onClick={() => scrollTo(l.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, color: activeSection === l.id ? "var(--white)" : "var(--mid)", fontFamily: "'Open Sans',sans-serif", transition: "color 0.2s", padding: "4px 0" }}>{l.label}</button></Magnetic>
               <span style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: 1.5, borderRadius: 1, background: "var(--white)", transform: activeSection === l.id ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left", transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1)" }} />
             </li>
           ))}
@@ -1371,17 +2038,21 @@ export default function Portfolio() {
       )}
 
       {/* ── HERO ── */}
-      <section id="hero" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "120px 48px 60px", position: "relative", overflow: "hidden" }} className="hero-pad">
-        <div style={{ position: "absolute", top: 80, right: -80, width: 420, height: 420, border: dark ? "1px solid rgba(255,255,255,0.05)" : "1px solid rgba(0,0,0,0.05)", borderRadius: "50%", pointerEvents: "none", animation: "floatA 9s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", top: 220, right: 80, width: 180, height: 180, border: dark ? "1px solid rgba(255,255,255,0.03)" : "1px solid rgba(0,0,0,0.03)", borderRadius: "50%", pointerEvents: "none", animation: "floatB 7s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", top: 300, right: -20, width: 80, height: 80, border: dark ? "1px solid rgba(255,255,255,0.04)" : "1px solid rgba(0,0,0,0.04)", borderRadius: "50%", pointerEvents: "none", animation: "floatA 11s ease-in-out infinite 2s" }} />
-        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 8, letterSpacing: "0.05em", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s forwards" }}>... /Main ...</div>
+      <section id="hero" ref={heroRef} style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "120px 48px 60px", position: "relative", overflow: "hidden" }} className="hero-pad">
+        <div style={{ position:"absolute", top: 80 + mousePos.y * 0.018, right: -80 - mousePos.x * 0.008, width:420, height:420, border: dark?"1px solid rgba(255,255,255,0.05)":"1px solid rgba(0,0,0,0.05)", borderRadius:"50%", pointerEvents:"none", animation:"floatA 9s ease-in-out infinite", transition:"top 0.6s cubic-bezier(0.22,1,0.36,1), right 0.6s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
+        <div style={{ position:"absolute", top: 220 + mousePos.y * 0.028, right: 80 - mousePos.x * 0.014, width:180, height:180, border: dark?"1px solid rgba(255,255,255,0.03)":"1px solid rgba(0,0,0,0.03)", borderRadius:"50%", pointerEvents:"none", animation:"floatB 7s ease-in-out infinite", transition:"top 0.5s cubic-bezier(0.22,1,0.36,1), right 0.5s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
+        <div style={{ position:"absolute", top: 300 + mousePos.y * 0.038, right: -20 - mousePos.x * 0.02, width:80, height:80, border: dark?"1px solid rgba(255,255,255,0.04)":"1px solid rgba(0,0,0,0.04)", borderRadius:"50%", pointerEvents:"none", animation:"floatA 11s ease-in-out infinite 2s", transition:"top 0.4s cubic-bezier(0.22,1,0.36,1), right 0.4s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
+        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 8, letterSpacing: "0.05em", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s forwards", zIndex:2, position:"relative" }}>... /Main ...</div>
+        <div onClick={() => setTerminalOpen(true)} style={{ position:"absolute", top:130, right:48, zIndex:2, display:"flex", alignItems:"center", gap:6, opacity:0, animation:"fadeSlideUp 0.5s cubic-bezier(0.22,1,0.36,1) 1.2s forwards", cursor:"pointer" }} title="Open terminal">
+          <kbd style={{ fontFamily:"'Fira Code',monospace", fontSize:11, color:"var(--mid)", background: dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)", border: dark?"1px solid rgba(255,255,255,0.12)":"1px solid rgba(0,0,0,0.12)", borderRadius:5, padding:"2px 7px", transition:"all 0.2s" }}>/</kbd>
+          <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Open Sans',sans-serif" }}>terminal</span>
+        </div>
         <HeroTitle dark={dark} roleIdx={roleIdx} roleVisible={roleVisible} />
         <p style={{ marginTop: 20, maxWidth: 340, fontSize: 13, color: "var(--mid)", lineHeight: 1.8, opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.45s forwards" }}>
           My goal is to write <em style={{ fontStyle: "italic", color: "var(--light)" }}>maintainable, clean</em> and <em style={{ fontStyle: "italic", color: "var(--light)" }}>understandable code</em> while crafting <em style={{ fontStyle: "italic", color: "var(--light)" }}>delightful user experiences</em>.
         </p>
         <div style={{ display: "flex", gap: 10, marginTop: 36, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.55s forwards" }}>
-          {[{ icon: <GithubIcon />, label: "Github" }, { icon: <LinkedInIcon />, label: "LinkedIn" }, { icon: <TelegramIcon />, label: "Telegram" }, { icon: <EmailIcon />, label: "E-mail" }].map(s => (
+          {[{ icon: <GithubIcon />, label: "Github" }, { icon: <LinkedInIcon />, label: "LinkedIn" }, { icon: <InstagramIcon />, label: "Instagram" }, { icon: <EmailIcon />, label: "E-mail" }].map(s => (
             <a key={s.label} href="#" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.09)"}
               onMouseLeave={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"}
@@ -1515,15 +2186,13 @@ export default function Portfolio() {
                   ))}
                 </div>
               </div>
-              <div style={{ direction: "ltr", borderRadius: 16, overflow: "hidden", background: dark ? "#1a1a26" : "#e8e8f0", aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px) scale(1.01)"; e.currentTarget.style.boxShadow = dark ? "0 20px 48px rgba(0,0,0,0.5)" : "0 20px 48px rgba(0,0,0,0.1)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}>
+              <TiltCard dark={dark} style={{ direction:"ltr", borderRadius:16, overflow:"hidden", background: dark?"#1a1a26":"#e8e8f0", aspectRatio:"4/3", display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
                 {p.visual === "gostat" && <GostatVisual />}
                 {p.visual === "kana"   && <KanaVisual />}
                 {p.visual === "anime"  && <AnimeVisual />}
                 {p.visual === "chat"   && <ChatVisual />}
                 {p.visual === "ai"     && <AIVisual />}
-              </div>
+              </TiltCard>
             </div>
           </FadeIn>
         ))}
@@ -1573,10 +2242,10 @@ export default function Portfolio() {
             {/* Social icon buttons */}
             <div style={{ display: "flex", gap: 10, marginBottom: 32, flexWrap: "wrap" }}>
               {[
-                { icon: <GithubIcon />,   label: "Github",   href: "#" },
-                { icon: <LinkedInIcon />, label: "LinkedIn", href: "#" },
-                { icon: <EmailIcon />,    label: "E-mail",   href: "#" },
-                { icon: <TelegramIcon />, label: "Telegram", href: "#" },
+                { icon: <GithubIcon />,    label: "Github",    href: "#" },
+                { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "#" },
+                { icon: <EmailIcon />,     label: "E-mail",    href: "#" },
+                { icon: <InstagramIcon />, label: "Instagram", href: "#" },
               ].map(s => (
                 <a key={s.label} href={s.href}
                   title={s.label}
@@ -1686,4 +2355,4 @@ export default function Portfolio() {
       {dinoOpen && <DinoModal onClose={() => setDinoOpen(false)} dark={dark} />}
     </div>
   );
-}
+}// INSERTION_POINT
