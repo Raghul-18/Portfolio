@@ -97,7 +97,7 @@ const PROJECTS = [
       "Engineered multi-room chat using WebSockets with low-latency message broadcast and scalable handling.",
       "Designed efficient message routing with concurrency-safe operations supporting multiple parallel users.",
     ],
-    visual: "chat",
+    visual: "chat", rev: true,
   },
   {
     id: 5, tags: ["Python", "RAG", "LangChain", "Vector DB", "FastAPI"],
