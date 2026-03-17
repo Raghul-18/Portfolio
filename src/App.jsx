@@ -20,6 +20,22 @@ const COLOR_COMBOS = [
   ["#86efac", "#fde047"],
 ];
 
+
+/* ─── ANIMATED GRADIENT MESH ─── */
+function GradientMesh({ dark }) {
+  const colors = dark
+    ? ["#7c3aed","#2563eb","#059669","#7c3aed"]
+    : ["#a78bfa","#60a5fa","#34d399","#a78bfa"];
+  return (
+    <div style={{ position:"absolute", inset:0, overflow:"hidden", pointerEvents:"none", zIndex:0 }}>
+      <div style={{ position:"absolute", width:"70%", height:"70%", top:"-20%", left:"-10%", borderRadius:"50%", background:`radial-gradient(circle, ${colors[0]}18 0%, transparent 70%)`, animation:"floatA 12s ease-in-out infinite", filter:"blur(40px)" }} />
+      <div style={{ position:"absolute", width:"60%", height:"60%", bottom:"-10%", right:"-10%", borderRadius:"50%", background:`radial-gradient(circle, ${colors[1]}14 0%, transparent 70%)`, animation:"floatB 10s ease-in-out infinite 2s", filter:"blur(50px)" }} />
+      <div style={{ position:"absolute", width:"40%", height:"40%", top:"40%", right:"20%", borderRadius:"50%", background:`radial-gradient(circle, ${colors[2]}10 0%, transparent 70%)`, animation:"floatA 14s ease-in-out infinite 4s", filter:"blur(35px)" }} />
+      <div style={{ position:"absolute", inset:0, backgroundImage: dark ? "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)" : "radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0)", backgroundSize:"32px 32px" }} />
+    </div>
+  );
+}
+
 function AnimWord({ text, color, delay = 0, align = "left" }) {
   const [ref, visible] = useFadeIn();
   return (
@@ -97,7 +113,7 @@ const PROJECTS = [
       "Engineered multi-room chat using WebSockets with low-latency message broadcast and scalable handling.",
       "Designed efficient message routing with concurrency-safe operations supporting multiple parallel users.",
     ],
-    visual: "chat", rev: true,
+    visual: "chat", rev:true,
   },
   {
     id: 5, tags: ["Python", "RAG", "LangChain", "Vector DB", "FastAPI"],
@@ -164,6 +180,16 @@ const HERO_ARTICLES = [
 ];
 
 const RESUME_LINK = "https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link";
+
+/* ─── EMAILJS CONFIG (Vite) ──────────────────────────────────────────
+   Add these to your .env file in the project root:
+     VITE_EMAILJS_SERVICE_ID=your_service_id
+     VITE_EMAILJS_TEMPLATE_ID=your_template_id
+     VITE_EMAILJS_PUBLIC_KEY=your_public_key
+   ------------------------------------------------------------------ */
+const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 /* ─── DINO SOUND ENGINE (Web Audio API — no external files needed) ─── */
 function createDinoSounds() {
@@ -293,21 +319,17 @@ function StatusBadge({ type }) {
   );
 }
 
-/* ─── DOT RATING ─── */
+/* ─── SKILL BAR ─── */
 function DotRating({ dots, max = 5, color }) {
   const [ref, visible] = useFadeIn();
+  const pct = (dots / max) * 100;
   return (
-    <span ref={ref} style={{ display: "inline-flex", gap: 4, alignItems: "center" }}>
-      {Array.from({ length: max }).map((_, i) => (
-        <span key={i} style={{
-          width: 7, height: 7, borderRadius: "50%",
-          background: i < dots ? color : "rgba(166,166,166,0.2)",
-          display: "inline-block",
-          transform: visible ? "scale(1)" : "scale(0)",
-          transition: `transform 0.4s cubic-bezier(0.34,1.56,0.64,1) ${i * 60}ms`,
-        }} />
-      ))}
-    </span>
+    <div ref={ref} style={{ display:"flex", alignItems:"center", gap:8, flex:1 }}>
+      <div style={{ flex:1, height:3, borderRadius:2, background:"rgba(128,128,128,0.15)", overflow:"hidden" }}>
+        <div style={{ height:"100%", width: visible ? `${pct}%` : "0%", background: color, borderRadius:2, transition:"width 1s cubic-bezier(0.22,1,0.36,1)" }} />
+      </div>
+      <span style={{ fontSize:10, color:"rgba(128,128,128,0.6)", fontFamily:"'Fira Code',monospace", flexShrink:0, width:20, textAlign:"right" }}>{dots}/{max}</span>
+    </div>
   );
 }
 
@@ -1094,12 +1116,9 @@ function ContactForm({ dark }) {
     setFlying(true);
     setStatus("sending");
     try {
-      const SERVICE_ID  = "service_ybw5kni";
-      const TEMPLATE_ID = "template_cvp4p6n";
-      const PUBLIC_KEY  = "MDI6U-Hdup2CDle-t";
       const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ service_id: SERVICE_ID, template_id: TEMPLATE_ID, user_id: PUBLIC_KEY,
+        body: JSON.stringify({ service_id: EMAILJS_SERVICE_ID, template_id: EMAILJS_TEMPLATE_ID, user_id: EMAILJS_PUBLIC_KEY,
           template_params: { from_name: form.name, from_email: form.email, subject: form.subject, message: form.message } }),
       });
       if (res.ok) { setStatus("success"); setForm({ name: "", email: "", subject: "", message: "" }); }
@@ -1375,14 +1394,14 @@ const CONTACT_STEPS = ["name","email","subject","message"];
 const ALL_COMMANDS = ["help","message","contact","about","projects","articles","skills","whoami","banner","open","theme","resume","date","time","echo","sudo","rm","hack","coffee","dino","clear","close","exit"];
 
 const ASCII_BANNER = [
-  "  ██████╗  █████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗     ",
-  "  ██╔══██╗██╔══██╗██╔════╝ ██║  ██║██║   ██║██║     ",
-  "  ██████╔╝███████║██║  ███╗███████║██║   ██║██║     ",
-  "  ██╔══██╗██╔══██║██║   ██║██╔══██║██║   ██║██║     ",
-  "  ██║  ██║██║  ██║╚██████╔╝██║  ██║╚██████╔╝███████╗",
-  "  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝",
+  " ██████╗  █████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗",
+  " ██╔══██╗██╔══██╗██╔════╝ ██║  ██║██║   ██║██║",
+  " ██████╔╝███████║██║  ███╗███████║██║   ██║██║",
+  " ██╔══██╗██╔══██║██║   ██║██╔══██║██║   ██║██║",
+  " ██║  ██║██║  ██║╚██████╔╝██║  ██║╚██████╔╝███████╗",
+  " ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝",
   "",
-  "  Full-Stack Developer · UI/UX Designer · Chennai, IN",
+  " Full-Stack Dev · UI/UX · Chennai",
 ];
 
 function Terminal({ onClose, dark, onThemeToggle }) {
@@ -1463,16 +1482,13 @@ function Terminal({ onClose, dark, onThemeToggle }) {
     setSending(true);
     addImmediate([{ type:"sys", text:"" }, { type:"sys", text:"  ✈️  Sending your message..." }]);
     try {
-      const SERVICE_ID  = "service_ybw5kni";
-      const TEMPLATE_ID = "template_cvp4p6n";
-      const PUBLIC_KEY  = "MDI6U-Hdup2CDle-t";
       const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          service_id:  SERVICE_ID,
-          template_id: TEMPLATE_ID,
-          user_id:     PUBLIC_KEY,
+          service_id:  EMAILJS_SERVICE_ID,
+          template_id: EMAILJS_TEMPLATE_ID,
+          user_id:     EMAILJS_PUBLIC_KEY,
           template_params: {
             from_name:  data.name,
             from_email: data.email,
@@ -1592,10 +1608,10 @@ function Terminal({ onClose, dark, onThemeToggle }) {
         { type:"out", text:"  date / time        current date & time" },
         { type:"out", text:"  echo <text>        echo text" },
         { type:"out", text:"  about / projects / articles  navigate" },
-        { type:"out", text:"  dino               🦕 " },
-        { type:"out", text:"  hack               👾 " },
-        { type:"out", text:"  coffee             ☕ " },
-        { type:"out", text:"  sudo               🤫 " },
+        { type:"out", text:"  dino               🦕 easter egg" },
+        { type:"out", text:"  hack               👾 easter egg" },
+        { type:"out", text:"  coffee             ☕ easter egg" },
+        { type:"out", text:"  sudo               🤫 easter egg" },
         { type:"out", text:"  clear              clear terminal" },
         { type:"out", text:"  close / exit       close terminal" },
         { type:"sys", text:"  Tip: Tab to autocomplete · ↑↓ for history" },
@@ -1763,7 +1779,7 @@ function Terminal({ onClose, dark, onThemeToggle }) {
   return (
     <div style={{ position:"fixed", inset:0, zIndex:9990, background:"rgba(0,0,0,0.75)", backdropFilter:"blur(6px)", display:"flex", alignItems:"center", justifyContent:"center" }}
       onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ width:"min(700px,96vw)", background:"#0a0a0a", borderRadius:16, border:"1px solid rgba(255,255,255,0.1)", overflow:"hidden", boxShadow:"0 40px 100px rgba(0,0,0,0.8)", display:"flex", flexDirection:"column", maxHeight:"90vh" }}>
+      <div style={{ width:"min(700px,98vw)", background:"#0a0a0a", borderRadius:16, border:"1px solid rgba(255,255,255,0.1)", overflow:"hidden", boxShadow:"0 40px 100px rgba(0,0,0,0.8)", display:"flex", flexDirection:"column", maxHeight:"92vh" }}>
 
         {/* ── title bar ── */}
         <div style={{ display:"flex", alignItems:"center", gap:8, padding:"12px 16px", borderBottom:"1px solid rgba(255,255,255,0.07)", background:"rgba(255,255,255,0.025)", flexShrink:0 }}>
@@ -1780,9 +1796,9 @@ function Terminal({ onClose, dark, onThemeToggle }) {
         </div>
 
         {/* ── output ── */}
-        <div style={{ flex:1, overflowY:"auto", padding:"16px 20px", fontFamily:"'Fira Code',monospace", fontSize:13, lineHeight:2, minHeight:0 }}>
+        <div style={{ flex:1, overflowY:"auto", padding:"14px 16px", fontFamily:"'Fira Code',monospace", fontSize:"clamp(10px,2.5vw,13px)", lineHeight:1.9, minHeight:0, overflowX:"auto", wordBreak:"break-all", WebkitOverflowScrolling:"touch" }}>
           {lines.map((l, i) => (
-            <div key={i} style={{ color: lineColor(l.type), whiteSpace:"pre-wrap", fontWeight: l.type === "ban" ? 700 : 400 }}>{l.text}</div>
+            <div key={i} className={l.type === "ban" ? "terminal-ban" : ""} style={{ color: lineColor(l.type), whiteSpace: l.type === "ban" ? "pre" : "pre-wrap", fontWeight: l.type === "ban" ? 700 : 400, fontSize: l.type === "ban" ? "clamp(7px,1.6vw,13px)" : undefined }}>{l.text}</div>
           ))}
           {/* blinking cursor line */}
           <div style={{ display:"flex", alignItems:"center", height:20 }}>
@@ -1814,6 +1830,80 @@ function Terminal({ onClose, dark, onThemeToggle }) {
             {tabMatches.map(m => <span key={m} style={{ color:"#a78bfa" }}>{m}</span>)}
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+
+
+/* ─── COUNT UP ─── */
+function CountUp({ target, suffix = "", duration = 1800 }) {
+  const [count, setCount] = useState(0);
+  const [ref, visible] = useFadeIn();
+  const started = useRef(false);
+  useEffect(() => {
+    if (!visible || started.current) return;
+    started.current = true;
+    const start = Date.now();
+    const tick = () => {
+      const elapsed = Date.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(ease * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [visible]);
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+/* ─── TIMEZONE WIDGET ─── */
+function TimezoneWidget({ dark }) {
+  const [localTime,   setLocalTime]   = useState("");
+  const [istTime,     setIstTime]     = useState("");
+  const [isWorkHours, setIsWorkHours] = useState(false);
+  const [tzLabel,     setTzLabel]     = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+
+      // Visitor local time
+      const local = now.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit", hour12:true });
+      setLocalTime(local);
+
+      // Detect visitor timezone label (e.g. "EST", "GMT+1")
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const short = now.toLocaleTimeString("en-US", { timeZoneName:"short" }).split(" ").pop();
+        setTzLabel(short || tz);
+      } catch { setTzLabel(""); }
+
+      // IST time for working hours check
+      const istHourStr = now.toLocaleString("en-IN", { timeZone:"Asia/Kolkata", hour:"numeric", hour12:false });
+      const istH = parseInt(istHourStr);
+      setIsWorkHours(istH >= 9 && istH < 22);
+
+      // Show IST time too
+      const ist = now.toLocaleTimeString("en-IN", { timeZone:"Asia/Kolkata", hour:"2-digit", minute:"2-digit", hour12:true });
+      setIstTime(ist);
+    };
+    update();
+    const t = setInterval(update, 15000);
+    return () => clearInterval(t);
+  }, []);
+
+  return (
+    <div style={{ display:"flex", alignItems:"center", gap:12, padding:"12px 16px", background: dark?"rgba(255,255,255,0.03)":"rgba(0,0,0,0.03)", border: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)", borderRadius:12 }}>
+      <span style={{ width:8, height:8, borderRadius:"50%", background: isWorkHours ? "#22c55e" : "#f59e0b", flexShrink:0, animation:"pulse 2s infinite" }} />
+      <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+        <span style={{ fontSize:12, color:"var(--white)", fontFamily:"'Fira Code',monospace" }}>
+          {isWorkHours ? "Available now" : "Outside work hours"} · Chennai, IN
+        </span>
+        <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Fira Code',monospace" }}>
+          Your time: {localTime}{tzLabel ? ` (${tzLabel})` : ""} · IST: {istTime} · Usually responds within 24hrs
+        </span>
       </div>
     </div>
   );
@@ -1879,7 +1969,6 @@ export default function Portfolio() {
   const [expandedWork, setExpandedWork]   = useState(null);
   const [articlePage, setArticlePage]     = useState(0);
   const [heroSlide, setHeroSlide]         = useState(0);
-  const [lang, setLang]               = useState("En");
   const [roleIdx, setRoleIdx]         = useState(0);
   const [roleVisible, setRoleVisible] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -1887,18 +1976,19 @@ export default function Portfolio() {
   const [terminalOpen, setTerminalOpen]   = useState(false);
   const [scrollPct, setScrollPct]         = useState(0);
   const [mousePos, setMousePos]           = useState({ x: 0, y: 0 });
+  const [activeTag, setActiveTag]         = useState(null);
   const heroRef = useRef(null);
 
   const theme = dark
     ? { "--black":"#121212","--dark":"#3D3D3D","--mid":"#A6A6A6","--light":"#F5F5F5","--white":"#ffffff","--bg":"#121212","--text":"#F5F5F5" }
     : { "--black":"#f5f5f5","--dark":"#d0d0d0","--mid":"#666","--light":"#1a1a1a","--white":"#121212","--bg":"#f0f0f0","--text":"#121212" };
 
-  /* Role typing cycle */
+  /* Role typewriter cycle */
   useEffect(() => {
     const t = setInterval(() => {
       setRoleVisible(false);
-      setTimeout(() => { setRoleIdx(i => (i + 1) % ROLES.length); setRoleVisible(true); }, 400);
-    }, 3000);
+      setTimeout(() => { setRoleIdx(i => (i + 1) % ROLES.length); setRoleVisible(true); }, 450);
+    }, 3200);
     return () => clearInterval(t);
   }, []);
 
@@ -1981,6 +2071,7 @@ export default function Portfolio() {
         .nav-score-pop{animation:scorePopIn 0.35s cubic-bezier(0.22,1,0.36,1) both}
         @keyframes rippleOut{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(40);opacity:0}}
         .section-hr{border:none;border-top:1px solid rgba(128,128,128,0.08)}
+        @keyframes meshFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.05)}}
         @media(max-width:768px){
           .nav-links-desktop{display:none!important}
           .hamburger-btn{display:flex!important}
@@ -1997,6 +2088,7 @@ export default function Portfolio() {
           .skills-grid-resp{grid-template-columns:1fr!important}
           .work-row-grid{grid-template-columns:80px 1fr auto!important}
           .work-expanded-pad{padding-left:80px!important}
+          .terminal-ban{font-size:7px!important;letter-spacing:-0.5px!important}
         }
       `}</style>
 
@@ -2039,6 +2131,7 @@ export default function Portfolio() {
 
       {/* ── HERO ── */}
       <section id="hero" ref={heroRef} style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "120px 48px 60px", position: "relative", overflow: "hidden" }} className="hero-pad">
+        <GradientMesh dark={dark} />
         <div style={{ position:"absolute", top: 80 + mousePos.y * 0.018, right: -80 - mousePos.x * 0.008, width:420, height:420, border: dark?"1px solid rgba(255,255,255,0.05)":"1px solid rgba(0,0,0,0.05)", borderRadius:"50%", pointerEvents:"none", animation:"floatA 9s ease-in-out infinite", transition:"top 0.6s cubic-bezier(0.22,1,0.36,1), right 0.6s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
         <div style={{ position:"absolute", top: 220 + mousePos.y * 0.028, right: 80 - mousePos.x * 0.014, width:180, height:180, border: dark?"1px solid rgba(255,255,255,0.03)":"1px solid rgba(0,0,0,0.03)", borderRadius:"50%", pointerEvents:"none", animation:"floatB 7s ease-in-out infinite", transition:"top 0.5s cubic-bezier(0.22,1,0.36,1), right 0.5s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
         <div style={{ position:"absolute", top: 300 + mousePos.y * 0.038, right: -20 - mousePos.x * 0.02, width:80, height:80, border: dark?"1px solid rgba(255,255,255,0.04)":"1px solid rgba(0,0,0,0.04)", borderRadius:"50%", pointerEvents:"none", animation:"floatA 11s ease-in-out infinite 2s", transition:"top 0.4s cubic-bezier(0.22,1,0.36,1), right 0.4s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
@@ -2059,6 +2152,21 @@ export default function Portfolio() {
             >{s.icon}{s.label}</a>
           ))}
         </div>
+        {/* Stats row */}
+        <div style={{ display:"flex", gap:32, marginTop:32, opacity:0, animation:"fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.65s forwards", flexWrap:"wrap" }}>
+          {[
+            { label:"Years exp.", value:1, suffix:"+" },
+            { label:"Projects shipped", value:5, suffix:"+" },
+            { label:"Technologies", value:15, suffix:"+" },
+          ].map(s => (
+            <div key={s.label} style={{ display:"flex", flexDirection:"column", gap:2 }}>
+              <span style={{ fontFamily:"'Fira Code',monospace", fontSize:28, fontWeight:700, color:"var(--white)", lineHeight:1 }}>
+                <CountUp target={s.value} suffix={s.suffix} />
+              </span>
+              <span style={{ fontSize:11, color:"var(--mid)" }}>{s.label}</span>
+            </div>
+          ))}
+        </div>
         {/* Hero carousel — centered active card, swipeable */}
         <HeroCarousel dark={dark} heroSlide={heroSlide} setHeroSlide={setHeroSlide} />
       </section>
@@ -2073,7 +2181,12 @@ export default function Portfolio() {
             <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
               I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
             </p>
-            <p style={{ fontSize: 12, color: "var(--mid)", maxWidth: 300, lineHeight: 1.7, margin: "32px 0 14px" }}>
+            {/* Currently working on badge */}
+            <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16, marginBottom:16 }}>
+              <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite", flexShrink:0 }} />
+              <span style={{ fontSize:12, color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>Currently @ Oracle OFSS · Building cloud-native MVPs</span>
+            </div>
+            <p style={{ fontSize: 12, color: "var(--mid)", maxWidth: 300, lineHeight: 1.7, margin: "16px 0 14px" }}>
               My <em style={{ color: "var(--light)", fontStyle: "italic" }}>core stack</em> spans backend, frontend, cloud infrastructure, and design.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 32 }}>
@@ -2088,10 +2201,10 @@ export default function Portfolio() {
               ))}
             </div>
             <p style={{ fontSize: 12, color: "var(--mid)", marginBottom: 14, fontFamily: "'Fira Code',monospace", letterSpacing: "0.04em" }}>PROFICIENCY</p>
-            <div className="skills-grid-resp" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 32px" }}>
+            <div className="skills-grid-resp" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 32px" }}>
               {SKILLS.map(s => (
-                <div key={s.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                  <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Fira Code',monospace" }}>{s.label}</span>
+                <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <span style={{ fontSize: 11, color: "var(--mid)", fontFamily: "'Fira Code',monospace", width:88, flexShrink:0 }}>{s.label}</span>
                   <DotRating dots={s.dots} color={dotColor} />
                 </div>
               ))}
@@ -2113,49 +2226,58 @@ export default function Portfolio() {
       {/* ── WORK ── */}
       <section id="work" style={{ padding: "80px 48px" }} className="work-pad">
         <FadeIn>
-          <SectionHeader label="Work" title="Experience" mb={32} />
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <SectionHeader label="Work" title="Experience" mb={48} />
+          {/* Vertical timeline */}
+          <div style={{ position:"relative", paddingLeft:32 }}>
+            {/* Timeline spine — left:12 centers on the 12px dots (paddingLeft32 - dotLeft26 + dotRadius6) */}
+            <div style={{ position:"absolute", left:12, top:16, bottom:16, width:1, background: dark?"rgba(255,255,255,0.1)":"rgba(0,0,0,0.1)" }} />
             {WORK.map((w, wi) => (
-              <FadeIn key={w.id} delay={wi * 80}>
-              <div style={{ borderTop: divider }}>
-                <div className="work-row-grid"
-                  onClick={() => setExpandedWork(expandedWork === w.id ? null : w.id)}
-                  style={{ display: "grid", gridTemplateColumns: "110px 1fr auto", gap: "0 20px", alignItems: "center", padding: "22px 12px", cursor: "pointer", borderRadius: 8, transition: "background 0.2s", background: expandedWork === w.id ? (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)") : "transparent" }}
-                  onMouseEnter={e => { if (expandedWork !== w.id) e.currentTarget.style.background = dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)"; }}
-                  onMouseLeave={e => { if (expandedWork !== w.id) e.currentTarget.style.background = "transparent"; }}>
-                  <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 11, color: "var(--mid)" }}>
-                    <div>{w.date}</div><div style={{ opacity: 0.7 }}>{w.dur}</div>
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 12px" }}>
-                    <span style={{ fontWeight: 700, fontSize: 15, color: "var(--white)", fontFamily: "'Fira Code',monospace" }}>{w.company}</span>
-                    <span style={{ fontSize: 12, color: "var(--mid)" }}>·</span>
-                    <span style={{ fontSize: 13, color: "var(--mid)" }}>{w.role}</span>
-                    <span style={{ fontSize: 12, color: "var(--mid)" }}>·</span>
-                    <span style={{ fontSize: 12, color: "var(--mid)" }}>{w.location}</span>
-                    <span style={{ fontSize: 11, background: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "2px 8px", color: "var(--mid)", fontFamily: "'Fira Code',monospace" }}>{w.type}</span>
-                  </div>
-                  <div style={{ color: "var(--mid)", transition: "transform 0.3s cubic-bezier(0.22,1,0.36,1)", transform: expandedWork === w.id ? "rotate(180deg)" : "rotate(0deg)", display: "flex" }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6,9 12,15 18,9"/></svg>
+              <FadeIn key={w.id} delay={wi * 100}>
+                <div style={{ position:"relative", marginBottom: wi < WORK.length-1 ? 40 : 0 }}>
+                  {/* Timeline dot */}
+                  <div style={{ position:"absolute", left:-26, top:6, width:12, height:12, borderRadius:"50%", background: wi === 0 ? "#22c55e" : (dark?"#3D3D3D":"#d0d0d0"), border: wi === 0 ? "2px solid #22c55e" : (dark?"2px solid rgba(255,255,255,0.12)":"2px solid rgba(0,0,0,0.12)"), boxShadow: wi === 0 ? "0 0 0 3px rgba(34,197,94,0.15)" : "none", transition:"all 0.3s" }} />
+                  {/* Card */}
+                  <div onClick={() => setExpandedWork(expandedWork === w.id ? null : w.id)}
+                    style={{ background: expandedWork === w.id ? (dark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.04)") : (dark?"rgba(255,255,255,0.02)":"rgba(0,0,0,0.02)"), border: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)", borderRadius:14, padding:"18px 20px", cursor:"pointer", transition:"background 0.2s, border-color 0.2s, transform 0.2s", userSelect:"none" }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.12)"; e.currentTarget.style.transform="translateX(3px)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)"; e.currentTarget.style.transform="translateX(0)"; }}>
+                    <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:12, flexWrap:"wrap" }}>
+                      <div>
+                        <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap", marginBottom:4 }}>
+                          <span style={{ fontWeight:700, fontSize:15, color:"var(--white)", fontFamily:"'Fira Code',monospace" }}>{w.company}</span>
+                          <span style={{ fontSize:11, background: dark?"rgba(255,255,255,0.05)":"rgba(0,0,0,0.05)", border: dark?"1px solid rgba(255,255,255,0.08)":"1px solid rgba(0,0,0,0.08)", borderRadius:50, padding:"2px 8px", color:"var(--mid)", fontFamily:"'Fira Code',monospace" }}>{w.type}</span>
+                          {wi === 0 && <span style={{ fontSize:11, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"2px 8px", color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>● Current</span>}
+                        </div>
+                        <div style={{ fontSize:13, color:"var(--mid)", marginBottom:2 }}>{w.role}</div>
+                        <div style={{ fontSize:11, color:"var(--mid)", opacity:0.7 }}>{w.location}</div>
+                      </div>
+                      <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+                        <div style={{ textAlign:"right" }}>
+                          <div style={{ fontFamily:"'Fira Code',monospace", fontSize:11, color:"var(--mid)" }}>{w.date}</div>
+                          <div style={{ fontFamily:"'Fira Code',monospace", fontSize:11, color:"var(--mid)", opacity:0.6 }}>→ {w.dur}</div>
+                        </div>
+                        <div style={{ color:"var(--mid)", transition:"transform 0.3s cubic-bezier(0.22,1,0.36,1)", transform: expandedWork === w.id ? "rotate(180deg)" : "rotate(0deg)" }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6,9 12,15 18,9"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                    {expandedWork === w.id && (
+                      <ul style={{ listStyle:"none", display:"flex", flexDirection:"column", gap:8, marginTop:16, paddingTop:16, borderTop: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)" }}>
+                        {w.bullets.map((b, bi) => (
+                          <li key={bi} style={{ display:"flex", gap:10, alignItems:"flex-start", fontSize:13, color:"var(--mid)", lineHeight:1.7, opacity:0, animation:`fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) ${bi * 60}ms forwards` }}>
+                            <span style={{ color:"#22c55e", marginTop:2, flexShrink:0, fontSize:10 }}>▸</span>{b}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
-                {expandedWork === w.id && (
-                  <div className="work-expanded-pad" style={{ padding: "0 12px 20px 130px", animation: "fadeSlideUp 0.35s cubic-bezier(0.22,1,0.36,1)" }}>
-                    <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-                      {w.bullets.map((b, bi) => (
-                        <li key={bi} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, color: "var(--mid)", lineHeight: 1.7, opacity: 0, animation: `fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) ${bi * 60}ms forwards` }}>
-                          <span style={{ color: dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)", marginTop: 2, flexShrink: 0 }}>▸</span>{b}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
               </FadeIn>
             ))}
           </div>
-          <div style={{ textAlign: "right", paddingTop: 16 }}>
-            <p style={{ fontSize: 12, color: "var(--mid)" }}>Total experience</p>
-            <strong style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, color: "var(--white)", fontStyle: "italic" }}>~ 1.5 years</strong>
+          <div style={{ textAlign:"right", paddingTop:24, marginTop:8 }}>
+            <p style={{ fontSize:12, color:"var(--mid)" }}>Total experience</p>
+            <strong style={{ fontFamily:"'Fira Code',monospace", fontSize:13, color:"var(--white)", fontStyle:"italic" }}>~ 1.5 years</strong>
           </div>
         </FadeIn>
       </section>
@@ -2164,8 +2286,15 @@ export default function Portfolio() {
 
       {/* ── PROJECTS ── */}
       <section id="projects" style={{ padding: "80px 48px" }} className="projects-pad">
-        <SectionHeader label="Projects" title="Projects" mb={48} />
-        {PROJECTS.map((p, pi) => (
+        <SectionHeader label="Projects" title="Projects" mb={24} />
+        {/* Tag filter */}
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:40 }}>
+          <button onClick={() => setActiveTag(null)} style={{ background: activeTag === null ? "var(--white)" : "transparent", color: activeTag === null ? "var(--bg)" : "var(--mid)", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius:50, padding:"5px 14px", fontFamily:"'Fira Code',monospace", fontSize:11, cursor:"pointer", transition:"all 0.2s" }}>All</button>
+          {[...new Set(PROJECTS.flatMap(p => p.tags))].map(tag => (
+            <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} style={{ background: activeTag === tag ? "var(--white)" : "transparent", color: activeTag === tag ? "var(--bg)" : "var(--mid)", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius:50, padding:"5px 14px", fontFamily:"'Fira Code',monospace", fontSize:11, cursor:"pointer", transition:"all 0.2s" }}>{tag}</button>
+          ))}
+        </div>
+        {PROJECTS.filter(p => !activeTag || p.tags.includes(activeTag)).map((p, pi) => (
           <FadeIn key={p.id} delay={pi * 60}>
             <div className="project-item-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, padding: "48px 0", borderTop: pi === 0 ? "none" : divider, alignItems: "center", direction: p.rev ? "rtl" : "ltr" }}>
               <div style={{ direction: "ltr" }}>
@@ -2173,7 +2302,9 @@ export default function Portfolio() {
                   {p.status.map(s => <StatusBadge key={s} type={s} />)}
                 </div>
                 <div style={{ display: "flex", gap: 7, flexWrap: "wrap", marginBottom: 14 }}>
-                  {p.tags.map(t => <span key={t} style={{ background: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 6, padding: "4px 10px", fontFamily: "'Fira Code',monospace", fontSize: 11, color: "var(--mid)" }}>{t}</span>)}
+                  {p.tags.map(t => (
+                    <span key={t} onClick={() => setActiveTag(activeTag === t ? null : t)} style={{ background: activeTag === t ? (dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)") : (dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"), border: activeTag === t ? (dark ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,0,0,0.2)") : (dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)"), borderRadius: 6, padding: "4px 10px", fontFamily: "'Fira Code',monospace", fontSize: 11, color: activeTag === t ? "var(--white)" : "var(--mid)", cursor:"pointer", transition:"all 0.2s" }}>{t}</span>
+                  ))}
                 </div>
                 <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 22, fontWeight: 700, color: "var(--white)", marginBottom: 12 }}>{p.name}</div>
                 {p.desc.map((d, di) => <p key={di} style={{ fontSize: 13, color: "var(--mid)", lineHeight: 1.8, marginBottom: 6 }}>{d}</p>)}
@@ -2215,7 +2346,10 @@ export default function Portfolio() {
                 <div style={{ background: dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 20, transition: "border-color 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s", height: "100%" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)"; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = dark ? "0 12px 32px rgba(0,0,0,0.35)" : "0 12px 32px rgba(0,0,0,0.07)"; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-                  <div style={{ fontSize: 24, marginBottom: 10 }}>{a.emoji}</div>
+                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
+                    <span style={{ fontSize: 24 }}>{a.emoji}</span>
+                    <span style={{ fontSize:10, color:"var(--mid)", fontFamily:"'Fira Code',monospace", background: dark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.04)", border: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)", borderRadius:50, padding:"2px 8px" }}>{Math.max(3, Math.ceil(a.desc.split(" ").length / 40 * 5))} min read</span>
+                  </div>
                   <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 10, lineHeight: 1.5 }}>{a.title}</h4>
                   <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.7, marginBottom: 16 }}>{a.desc}</p>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -2255,6 +2389,10 @@ export default function Portfolio() {
                 >{s.icon}</a>
               ))}
             </div>
+            {/* Timezone + availability */}
+            <div style={{ marginBottom:24, display:"flex", flexDirection:"column", gap:8 }}>
+              <TimezoneWidget dark={dark} />
+            </div>
             <ContactForm dark={dark} />
           </FadeIn>
           {/* Right */}
@@ -2282,11 +2420,17 @@ export default function Portfolio() {
                 </button>
               ))}
             </div>
-            <a href={RESUME_LINK} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius: 50, padding: "10px 20px", fontSize: 13, color: "var(--mid)", textDecoration: "none", transition: "all 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.color = "var(--white)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "var(--mid)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"; }}>
-              <DownloadIcon /> Download Resume
-            </a>
+            <div style={{ display:"flex", gap:10, flexWrap:"wrap", alignItems:"center" }}>
+              <a href={RESUME_LINK} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius: 50, padding: "10px 20px", fontSize: 13, color: "var(--mid)", textDecoration: "none", transition: "all 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--white)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "var(--mid)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"; }}>
+                <DownloadIcon /> Download Resume
+              </a>
+              <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Fira Code',monospace", display:"flex", alignItems:"center", gap:5 }}>
+                <span style={{ width:5, height:5, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite" }} />
+                Usually responds within 24hrs
+              </span>
+            </div>
 
             {/* Cycling quote */}
             <FooterQuote dark={dark} />
