@@ -1129,6 +1129,78 @@ function ContactForm({ dark }) {
   );
 }
 
+/* ─── HERO COLOR PAIRS ─── */
+// [word1Color, word2Color] for dark mode; [word1Light, word2Light] for light mode
+const HERO_COLOR_PAIRS = [
+  { dark: ["#ffffff", "#a78bfa"], light: ["#121212", "#7c3aed"] }, // White / Violet
+  { dark: ["#f9a8d4", "#ffffff"], light: ["#be185d", "#121212"] }, // Pink / White
+  { dark: ["#7dd3fc", "#fb923c"], light: ["#0284c7", "#ea580c"] }, // Sky / Orange
+  { dark: ["#86efac", "#ffffff"], light: ["#16a34a", "#121212"] }, // Green / White
+  { dark: ["#ffffff", "#f9a8d4"], light: ["#121212", "#be185d"] }, // White / Pink
+  { dark: ["#fb923c", "#7dd3fc"], light: ["#ea580c", "#0284c7"] }, // Orange / Sky
+  { dark: ["#a78bfa", "#86efac"], light: ["#7c3aed", "#16a34a"] }, // Violet / Green
+  { dark: ["#fde047", "#ffffff"], light: ["#ca8a04", "#121212"] }, // Yellow / White
+];
+
+/* ─── HERO TITLE (independent per-word colour cycles) ─── */
+function HeroTitle({ dark, roleIdx, roleVisible }) {
+  const [c1, setC1] = useState(0); // word-1 colour index
+  const [c2, setC2] = useState(3); // word-2 colour index (start offset)
+
+  useEffect(() => {
+    const t1 = setInterval(() => setC1(i => (i + 1) % HERO_COLOR_PAIRS.length), 2400);
+    return () => clearInterval(t1);
+  }, []);
+
+  useEffect(() => {
+    // Stagger word-2 by 1.2 s, different cadence
+    let t2;
+    const delay = setTimeout(() => {
+      t2 = setInterval(() => setC2(i => (i + 1) % HERO_COLOR_PAIRS.length), 3100);
+    }, 1200);
+    return () => { clearTimeout(delay); clearInterval(t2); };
+  }, []);
+
+  const pair1 = HERO_COLOR_PAIRS[c1];
+  const pair2 = HERO_COLOR_PAIRS[c2];
+  const col1  = dark ? pair1.dark[0] : pair1.light[0];
+  const col2  = dark ? pair2.dark[1] : pair2.light[1];
+
+  const words = ROLES[roleIdx].split(" ");
+  const word1 = words[0];
+  const word2 = words.slice(1).join(" ");
+
+  const titleStyle = {
+    fontFamily: "'Fira Code',monospace",
+    fontSize: "clamp(52px,8vw,96px)",
+    fontWeight: 700,
+    lineHeight: 1,
+    letterSpacing: "-0.02em",
+    transition: "color 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1)",
+    opacity: roleVisible ? 1 : 0,
+    transform: roleVisible ? "none" : "translateY(8px)",
+  };
+
+  return (
+    <>
+      {/* Word 1 row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards", position: "relative" }}>
+        <span className="hero-title-size" style={{ ...titleStyle, color: col1 }}>{word1}</span>
+        <button onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+          style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
+          onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
+          onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
+          Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
+        </button>
+      </div>
+      {/* Word 2 row */}
+      <div style={{ opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both", position: "relative" }}>
+        <span className="hero-title-size" style={{ ...titleStyle, display: "block", textAlign: "right", color: col2 }}>{word2}</span>
+      </div>
+    </>
+  );
+}
+
 /* ─── MAIN APP ─── */
 export default function Portfolio() {
   const [dark, setDark]               = useState(() => typeof window !== "undefined" ? window.matchMedia("(prefers-color-scheme: dark)").matches : true);
@@ -1272,19 +1344,7 @@ export default function Portfolio() {
         <div style={{ position: "absolute", top: 220, right: 80, width: 180, height: 180, border: dark ? "1px solid rgba(255,255,255,0.03)" : "1px solid rgba(0,0,0,0.03)", borderRadius: "50%", pointerEvents: "none", animation: "floatB 7s ease-in-out infinite" }} />
         <div style={{ position: "absolute", top: 300, right: -20, width: 80, height: 80, border: dark ? "1px solid rgba(255,255,255,0.04)" : "1px solid rgba(0,0,0,0.04)", borderRadius: "50%", pointerEvents: "none", animation: "floatA 11s ease-in-out infinite 2s" }} />
         <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 8, letterSpacing: "0.05em", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s forwards" }}>... /Main ...</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards" }}>
-          <div className="hero-title-size role-anim" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(52px,8vw,96px)", fontWeight: 700, lineHeight: 1, color: "var(--white)", letterSpacing: "-0.02em", opacity: roleVisible ? 1 : 0, transform: roleVisible ? "none" : "translateY(8px)" }}>
-            {ROLES[roleIdx].split(" ")[0]}
-          </div>
-          <button onClick={() => scrollTo("projects")} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
-            Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
-          </button>
-        </div>
-        <div className="hero-title-size role-anim" style={{ fontFamily: "'Fira Code',monospace", fontSize: "clamp(52px,8vw,96px)", fontWeight: 700, lineHeight: 1, color: "var(--white)", letterSpacing: "-0.02em", textAlign: "right", opacity: roleVisible ? 1 : 0, transform: roleVisible ? "none" : "translateY(8px)", animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both" }}>
-          {ROLES[roleIdx].split(" ").slice(1).join(" ")}
-        </div>
+        <HeroTitle dark={dark} roleIdx={roleIdx} roleVisible={roleVisible} />
         <p style={{ marginTop: 20, maxWidth: 340, fontSize: 13, color: "var(--mid)", lineHeight: 1.8, opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.45s forwards" }}>
           My goal is to write <em style={{ fontStyle: "italic", color: "var(--light)" }}>maintainable, clean</em> and <em style={{ fontStyle: "italic", color: "var(--light)" }}>understandable code</em> while crafting <em style={{ fontStyle: "italic", color: "var(--light)" }}>delightful user experiences</em>.
         </p>
