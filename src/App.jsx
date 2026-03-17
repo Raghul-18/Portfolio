@@ -150,6 +150,7 @@ const SKILL_CARDS = [
   { title: "Cloud & DB", items: "OCI · Oracle VBCS · PostgreSQL · Redis · MongoDB" },
   { title: "Design",     items: "Figma · Adobe XD · Prototyping · Wireframing · UI/UX" },
   { title: "DevOps",     items: "Docker · Git · JIRA · Kafka · CI/CD · Linux" },
+  { title: "Learning",   items: "Rust · Kubernetes · LLM Fine-tuning", learning: true },
 ];
 
 const ARTICLES_PAGES = [
@@ -328,7 +329,7 @@ function DotRating({ dots, max = 5, color }) {
       <div style={{ flex:1, height:3, borderRadius:2, background:"rgba(128,128,128,0.15)", overflow:"hidden" }}>
         <div style={{ height:"100%", width: visible ? `${pct}%` : "0%", background: color, borderRadius:2, transition:"width 1s cubic-bezier(0.22,1,0.36,1)" }} />
       </div>
-      <span style={{ fontSize:10, color:"rgba(128,128,128,0.6)", fontFamily:"'Fira Code',monospace", flexShrink:0, width:20, textAlign:"right" }}>{dots}/{max}</span>
+      <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Fira Code',monospace", flexShrink:0, width:24, textAlign:"right", fontWeight:500 }}>{dots}<span style={{ opacity:0.4 }}>/{max}</span></span>
     </div>
   );
 }
@@ -1404,7 +1405,7 @@ const ASCII_BANNER = [
   " Full-Stack Dev · UI/UX · Chennai",
 ];
 
-function Terminal({ onClose, dark, onThemeToggle }) {
+function Terminal({ onClose, dark, onThemeToggle, onDinoOpen }) {
   const BOOT_LINES = [
     { type:"ban", text: ASCII_BANNER[0] },
     { type:"ban", text: ASCII_BANNER[1] },
@@ -1675,9 +1676,9 @@ function Terminal({ onClose, dark, onThemeToggle }) {
     if (lower.startsWith("open ")) {
       const target = lower.slice(5).trim();
       const links = {
-        github:    "https://github.com",
-        linkedin:  "https://linkedin.com",
-        instagram: "https://instagram.com",
+        github:    "https://github.com/Raghul-18",
+        linkedin:  "https://www.linkedin.com/in/raghul-prasanth/",
+        instagram: "https://www.instagram.com/rag.hul._/",
         resume:    "https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link",
       };
       if (links[target]) {
@@ -1721,8 +1722,8 @@ function Terminal({ onClose, dark, onThemeToggle }) {
     if (lower === "articles") { document.getElementById("articles")?.scrollIntoView({ behavior:"smooth" }); addImmediate([{ type:"out", text:"→ Scrolling to Articles..." }]); setTimeout(onClose, 700); return; }
 
     if (lower === "dino") {
-      addImmediate([{ type:"out", text:"  🦕  Scroll to the footer and click the dino!" }]);
-      setTimeout(onClose, 1200);
+      addImmediate([{ type:"ok", text:"  🦕  Launching Dino Run..." }]);
+      setTimeout(() => { onClose(); onDinoOpen(); }, 600);
       return;
     }
 
@@ -2049,7 +2050,7 @@ export default function Portfolio() {
       <ReadingProgress dark={dark} />
       {/* Spotlight overlay */}
       <div style={{ position:"fixed", inset:0, pointerEvents:"none", zIndex:1, background:`radial-gradient(circle 380px at ${mousePos.x}px ${mousePos.y}px, transparent 0%, ${dark ? "rgba(0,0,0,0.18)" : "rgba(0,0,0,0.06)"} 100%)` }} />
-      {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} dark={dark} onThemeToggle={v => setDark(v)} />}
+      {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} dark={dark} onThemeToggle={v => setDark(v)} onDinoOpen={() => setDinoOpen(true)} />}
       <FontLink />
       <style>{`
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -2086,6 +2087,8 @@ export default function Portfolio() {
           .work-heading{font-size:clamp(36px,10vw,80px)!important}
           .contact-form-grid{grid-template-columns:1fr!important}
           .skills-grid-resp{grid-template-columns:1fr!important}
+          .about-stack-grid{grid-template-columns:1fr!important}
+          .about-prof-grid{grid-template-columns:1fr 1fr!important}
           .work-row-grid{grid-template-columns:80px 1fr auto!important}
           .work-expanded-pad{padding-left:80px!important}
           .terminal-ban{font-size:7px!important;letter-spacing:-0.5px!important}
@@ -2145,8 +2148,13 @@ export default function Portfolio() {
           My goal is to write <em style={{ fontStyle: "italic", color: "var(--light)" }}>maintainable, clean</em> and <em style={{ fontStyle: "italic", color: "var(--light)" }}>understandable code</em> while crafting <em style={{ fontStyle: "italic", color: "var(--light)" }}>delightful user experiences</em>.
         </p>
         <div style={{ display: "flex", gap: 10, marginTop: 36, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.55s forwards" }}>
-          {[{ icon: <GithubIcon />, label: "Github" }, { icon: <LinkedInIcon />, label: "LinkedIn" }, { icon: <InstagramIcon />, label: "Instagram" }, { icon: <EmailIcon />, label: "E-mail" }].map(s => (
-            <a key={s.label} href="#" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
+          {[
+            { icon: <GithubIcon />,    label: "Github",    href: "https://github.com/Raghul-18" },
+            { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "https://www.linkedin.com/in/raghul-prasanth/" },
+            { icon: <InstagramIcon />, label: "Instagram", href: "https://www.instagram.com/rag.hul._/" },
+            { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghulprasanth@email.com" },
+          ].map(s => (
+            <a key={s.label} href={s.href} target={s.label !== "E-mail" ? "_blank" : undefined} rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.09)"}
               onMouseLeave={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"}
             >{s.icon}{s.label}</a>
@@ -2176,49 +2184,61 @@ export default function Portfolio() {
       {/* ── ABOUT ── */}
       <section id="about" style={{ padding: "80px 48px" }} className="about-pad">
         <SectionHeader label="About" title="About" mb={40} />
-        <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
-          <FadeIn>
+
+        {/* ── Bio + badge ── */}
+        <FadeIn>
+          <div style={{ maxWidth: 680, marginBottom: 40 }}>
             <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
               I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
             </p>
-            {/* Currently working on badge */}
-            <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16, marginBottom:16 }}>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16 }}>
               <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite", flexShrink:0 }} />
               <span style={{ fontSize:12, color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>Currently @ Oracle OFSS · Building cloud-native MVPs</span>
             </div>
-            <p style={{ fontSize: 12, color: "var(--mid)", maxWidth: 300, lineHeight: 1.7, margin: "16px 0 14px" }}>
-              My <em style={{ color: "var(--light)", fontStyle: "italic" }}>core stack</em> spans backend, frontend, cloud infrastructure, and design.
-            </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 32 }}>
-              {SKILL_CARDS.map(s => (
-                <div key={s.title}
-                  style={{ background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 16, transition: "border-color 0.25s, background 0.25s, transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = dark ? "0 8px 24px rgba(0,0,0,0.4)" : "0 8px 24px rgba(0,0,0,0.08)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-                  <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, fontWeight: 600, color: "var(--white)", marginBottom: 7 }}>{s.title}</h4>
-                  <p style={{ fontSize: 11, color: "var(--mid)", lineHeight: 1.9 }}>{s.items}</p>
+          </div>
+        </FadeIn>
+
+        {/* ── Tech stack — 3-col grid ── */}
+        <FadeIn delay={60}>
+          <p style={{ fontSize: 12, color: "var(--mid)", marginBottom: 14, fontFamily: "'Fira Code',monospace", letterSpacing: "0.04em" }}>CORE STACK</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 48 }} className="about-stack-grid">
+            {SKILL_CARDS.map(s => (
+              <div key={s.title}
+                style={{
+                  background: s.learning
+                    ? (dark ? "rgba(167,139,250,0.06)" : "rgba(124,58,237,0.04)")
+                    : (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"),
+                  border: s.learning
+                    ? (dark ? "1px solid rgba(167,139,250,0.2)" : "1px solid rgba(124,58,237,0.15)")
+                    : (dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)"),
+                  borderRadius: 14, padding: 16,
+                  transition: "border-color 0.25s, background 0.25s, transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s"
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = s.learning ? (dark?"rgba(167,139,250,0.4)":"rgba(124,58,237,0.3)") : (dark?"rgba(255,255,255,0.14)":"rgba(0,0,0,0.14)"); e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = dark ? "0 8px 24px rgba(0,0,0,0.4)" : "0 8px 24px rgba(0,0,0,0.08)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = s.learning ? (dark?"rgba(167,139,250,0.2)":"rgba(124,58,237,0.15)") : (dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)"); e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
+                <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:7 }}>
+                  <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, fontWeight: 600, color: s.learning ? (dark?"#a78bfa":"#7c3aed") : "var(--white)", margin:0 }}>{s.title}</h4>
+                  {s.learning && <span style={{ fontSize:9, background: dark?"rgba(167,139,250,0.15)":"rgba(124,58,237,0.1)", color: dark?"#a78bfa":"#7c3aed", border: dark?"1px solid rgba(167,139,250,0.2)":"1px solid rgba(124,58,237,0.2)", borderRadius:50, padding:"1px 7px", fontFamily:"'Fira Code',monospace" }}>in progress</span>}
                 </div>
-              ))}
-            </div>
-            <p style={{ fontSize: 12, color: "var(--mid)", marginBottom: 14, fontFamily: "'Fira Code',monospace", letterSpacing: "0.04em" }}>PROFICIENCY</p>
-            <div className="skills-grid-resp" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 32px" }}>
-              {SKILLS.map(s => (
-                <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <span style={{ fontSize: 11, color: "var(--mid)", fontFamily: "'Fira Code',monospace", width:88, flexShrink:0 }}>{s.label}</span>
-                  <DotRating dots={s.dots} color={dotColor} />
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-          <FadeIn delay={100}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "20px 0" }}>
-              <img src="/photo.jpeg" alt="Raghul Prasanth"
-                style={{ width: "100%", maxWidth: 280, aspectRatio: "3/4", objectFit: "cover", borderRadius: 16, display: "block" }}
-                onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
-              <div style={{ display: "none", width: "100%", maxWidth: 280, aspectRatio: "3/4", background: dark ? "linear-gradient(160deg,#222,#181818)" : "linear-gradient(160deg,#ddd,#e8e8e8)", borderRadius: 16, alignItems: "center", justifyContent: "center", color: "var(--dark)", fontSize: 13, fontFamily: "'Fira Code',monospace" }}>[ photo ]</div>
-            </div>
-          </FadeIn>
-        </div>
+                <p style={{ fontSize: 11, color: "var(--mid)", lineHeight: 1.9, margin:0 }}>{s.items}</p>
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* ── Proficiency — 3-col bars ── */}
+        <FadeIn delay={120}>
+          <p style={{ fontSize: 12, color: "var(--mid)", marginBottom: 20, fontFamily: "'Fira Code',monospace", letterSpacing: "0.04em" }}>PROFICIENCY</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px 48px" }} className="about-prof-grid">
+            {SKILLS.map(s => (
+              <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Fira Code',monospace", width: 88, flexShrink: 0 }}>{s.label}</span>
+                <DotRating dots={s.dots} color={dotColor} />
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+
       </section>
 
       <hr style={{ border: "none", borderTop: divider }} />
@@ -2376,10 +2396,10 @@ export default function Portfolio() {
             {/* Social icon buttons */}
             <div style={{ display: "flex", gap: 10, marginBottom: 32, flexWrap: "wrap" }}>
               {[
-                { icon: <GithubIcon />,    label: "Github",    href: "#" },
-                { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "#" },
-                { icon: <EmailIcon />,     label: "E-mail",    href: "#" },
-                { icon: <InstagramIcon />, label: "Instagram", href: "#" },
+                { icon: <GithubIcon />,    label: "Github",    href: "https://github.com/Raghul-18" },
+                { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "https://www.linkedin.com/in/raghul-prasanth/" },
+                { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghulprasanth@email.com" },
+                { icon: <InstagramIcon />, label: "Instagram", href: "https://www.instagram.com/rag.hul._/" },
               ].map(s => (
                 <a key={s.label} href={s.href}
                   title={s.label}
