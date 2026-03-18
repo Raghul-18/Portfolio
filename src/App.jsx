@@ -134,6 +134,7 @@ const STATUS_CONFIG = {
 };
 
 const SKILLS = [
+  { label: "Python",       dots: 4 },
   { label: "Golang",       dots: 4 },
   { label: "React/Next",   dots: 5 },
   { label: "TypeScript",   dots: 4 },
@@ -145,7 +146,7 @@ const SKILLS = [
 ];
 
 const SKILL_CARDS = [
-  { title: "Backend",    items: "Golang · Node.js · Gin · REST APIs · Microservices · WebSockets" },
+  { title: "Backend",    items: "Python . Golang · Node.js · Gin · REST APIs · Microservices · WebSockets" },
   { title: "Frontend",   items: "React · NextJs · ReactNative · TypeScript · Tailwind CSS" },
   { title: "Cloud & DB", items: "OCI · Oracle VBCS · PostgreSQL · Redis · MongoDB" },
   { title: "Design",     items: "Figma · Adobe XD · Prototyping · Wireframing · UI/UX" },
@@ -1216,13 +1217,13 @@ function HeroTitle({ dark, roleIdx, roleVisible }) {
         <div className="hero-title-size" style={{ ...baseStyle, color: color1, opacity: (roleVisible && w1vis) ? 1 : 0, transform: (roleVisible && w1vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform" }}>
           {word1}
         </div>
-        <button
+        {/* <button
           onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
           style={{ display: "flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
           onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
           onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
           Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
-        </button>
+        </button> */}
       </div>
       <div className="hero-title-size" style={{ ...baseStyle, color: color2, textAlign: "right", opacity: (roleVisible && w2vis) ? 1 : 0, transform: (roleVisible && w2vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform", animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both" }}>
         {word2}
@@ -1655,6 +1656,7 @@ function Terminal({ onClose, dark, onThemeToggle, onDinoOpen }) {
     if (lower === "skills") {
       typeLines([
         { type:"sys", text:"  Tech Proficiency:" },
+        { type:"out", text:"  Python  ████████░░  4/5" },
         { type:"out", text:"  Golang        ████████░░  4/5" },
         { type:"out", text:"  React / Next  ██████████  5/5" },
         { type:"out", text:"  TypeScript    ████████░░  4/5" },
@@ -2143,16 +2145,36 @@ export default function Portfolio() {
           <kbd style={{ fontFamily:"'Fira Code',monospace", fontSize:11, color:"var(--mid)", background: dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)", border: dark?"1px solid rgba(255,255,255,0.12)":"1px solid rgba(0,0,0,0.12)", borderRadius:5, padding:"2px 7px", transition:"all 0.2s" }}>/</kbd>
           <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Open Sans',sans-serif" }}>terminal</span>
         </div>
+
         <HeroTitle dark={dark} roleIdx={roleIdx} roleVisible={roleVisible} />
+
+        {/* Projects button — fixed position below title, never shifts */}
+        <div style={{ opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.4s forwards", marginTop: 20 }}>
+          <button
+            onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
+            Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
+          </button>
+        </div>
+
         <p style={{ marginTop: 20, maxWidth: 340, fontSize: 13, color: "var(--mid)", lineHeight: 1.8, opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.45s forwards" }}>
-          My goal is to write <em style={{ fontStyle: "italic", color: "var(--light)" }}>maintainable, clean</em> and <em style={{ fontStyle: "italic", color: "var(--light)" }}>understandable code</em> while crafting <em style={{ fontStyle: "italic", color: "var(--light)" }}>delightful user experiences</em>.
+          I write{" "}
+          <em style={{ fontStyle: "italic", color: "var(--light)" }}>code that lasts</em>{" "}
+          and build{" "}
+          <em style={{ fontStyle: "italic", color: "var(--light)" }}>interfaces people remember</em>.{" "}
+          Good code shouldn't sacrifice great design.<br></br>I craft full-stack products as{" "}
+          <em style={{ fontStyle: "italic", color: "var(--light)" }}>thoughtful under the hood</em>{" "}
+          as they are on the surface.
         </p>
+
         <div style={{ display: "flex", gap: 10, marginTop: 36, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.55s forwards" }}>
           {[
             { icon: <GithubIcon />,    label: "Github",    href: "https://github.com/Raghul-18" },
             { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "https://www.linkedin.com/in/raghul-prasanth/" },
             { icon: <InstagramIcon />, label: "Instagram", href: "https://www.instagram.com/rag.hul._/" },
-            { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghul.sp18@gmail.com" },
+            { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghulprasanth@email.com" },
           ].map(s => (
             <a key={s.label} href={s.href} target={s.label !== "E-mail" ? "_blank" : undefined} rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.09)"}
@@ -2160,10 +2182,11 @@ export default function Portfolio() {
             >{s.icon}{s.label}</a>
           ))}
         </div>
+
         {/* Stats row */}
         <div style={{ display:"flex", gap:32, marginTop:32, opacity:0, animation:"fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.65s forwards", flexWrap:"wrap" }}>
           {[
-            { label:"Years of Dev exp.", value:5, suffix:"+" },
+            { label:"Years of exp in Dev", value:5, suffix:"+" },
             { label:"Projects shipped", value:10, suffix:"+" },
             { label:"Technologies", value:15, suffix:"+" },
           ].map(s => (
@@ -2175,7 +2198,8 @@ export default function Portfolio() {
             </div>
           ))}
         </div>
-        {/* Hero carousel — centered active card, swipeable */}
+
+        {/* Hero carousel */}
         <HeroCarousel dark={dark} heroSlide={heroSlide} setHeroSlide={setHeroSlide} />
       </section>
 
@@ -2189,7 +2213,7 @@ export default function Portfolio() {
         <FadeIn>
           <div style={{ maxWidth: 680, marginBottom: 40 }}>
             <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
-              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
+              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces, bridging the gap between engineering and design.
             </p>
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16 }}>
               <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite", flexShrink:0 }} />
@@ -2398,7 +2422,7 @@ export default function Portfolio() {
               {[
                 { icon: <GithubIcon />,    label: "Github",    href: "https://github.com/Raghul-18" },
                 { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "https://www.linkedin.com/in/raghul-prasanth/" },
-                { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghulprasanth@email.com" },
+                { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghul.18sp@gmail.com" },
                 { icon: <InstagramIcon />, label: "Instagram", href: "https://www.instagram.com/rag.hul._/" },
               ].map(s => (
                 <a key={s.label} href={s.href}
