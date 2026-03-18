@@ -180,7 +180,7 @@ const HERO_ARTICLES = [
   { title: "React Patterns You Should Know in 2025", desc: "Compound components, render props, and custom hooks reshaping React architecture.", emoji: "⚛️" },
 ];
 
-const RESUME_LINK = "https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link";
+const RESUME_LINK = "https://drive.google.com/file/d/19oHw6GyDolSZwJWGsAWtCfr3ebR9qMf0/view?usp=sharing";
 
 /* ─── EMAILJS CONFIG (Vite) ──────────────────────────────────────────
    Add these to your .env file in the project root:
@@ -2152,7 +2152,7 @@ export default function Portfolio() {
             { icon: <GithubIcon />,    label: "Github",    href: "https://github.com/Raghul-18" },
             { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "https://www.linkedin.com/in/raghul-prasanth/" },
             { icon: <InstagramIcon />, label: "Instagram", href: "https://www.instagram.com/rag.hul._/" },
-            { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghulprasanth@email.com" },
+            { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghul.sp18@gmail.com" },
           ].map(s => (
             <a key={s.label} href={s.href} target={s.label !== "E-mail" ? "_blank" : undefined} rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.09)"}
