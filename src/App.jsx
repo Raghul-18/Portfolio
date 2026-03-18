@@ -2163,8 +2163,8 @@ export default function Portfolio() {
         {/* Stats row */}
         <div style={{ display:"flex", gap:32, marginTop:32, opacity:0, animation:"fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.65s forwards", flexWrap:"wrap" }}>
           {[
-            { label:"Years exp.", value:5, suffix:"+" },
-            { label:"Projects shipped", value:5, suffix:"+" },
+            { label:"Years of Dev exp.", value:5, suffix:"+" },
+            { label:"Projects shipped", value:10, suffix:"+" },
             { label:"Technologies", value:15, suffix:"+" },
           ].map(s => (
             <div key={s.label} style={{ display:"flex", flexDirection:"column", gap:2 }}>
