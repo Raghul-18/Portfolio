@@ -1813,7 +1813,7 @@ function Terminal({ onClose, dark, onThemeToggle, onDinoOpen }) {
       typeLines([
         { type:"sys", text:"  raghul@portfolio" },
         { type:"out", text:"  ─────────────────────────────────────" },
-        { type:"out", text:"  Name    : Raghul Prasanth" },
+        { type:"out", text:"  Name    : Raghul Prasanth S P" },
         { type:"out", text:"  Role    : Full-Stack Developer & UI/UX Designer" },
         { type:"out", text:"  Based   : Chennai, India" },
         { type:"out", text:"  Stack   : Golang · React · Node.js · PostgreSQL" },
@@ -2283,7 +2283,7 @@ export default function Portfolio() {
       {/* ── NAV ── */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 48px", background: dark ? "rgba(18,18,18,0.9)" : "rgba(240,240,240,0.9)", backdropFilter: "blur(12px)", borderBottom: divider }}>
         <div style={{ fontFamily: "'Fira Code',monospace", fontWeight: 600, fontSize: 15, color: "var(--white)", lineHeight: 1.3 }}>
-          Raghul Prasanth
+          Raghul Prasanth S P
           <span style={{ display: "block", fontWeight: 300, color: "var(--mid)", fontSize: 11 }}>Full-Stack Developer · UI/UX Designer</span>
         </div>
         <ul className="nav-links-desktop" style={{ display: "flex", gap: 36, listStyle: "none" }}>
@@ -2695,10 +2695,10 @@ export default function Portfolio() {
         </div>
         <div style={{ marginTop: 48, paddingTop: 24, borderTop: divider, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth</span>
+            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth S P</span>
           </span>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            © {new Date().getFullYear()} Raghul Prasanth. All rights reserved.
+            © {new Date().getFullYear()} Raghul Prasanth S P. All rights reserved.
           </span>
         </div>
       </footer>
