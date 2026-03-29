@@ -124,6 +124,15 @@ const PROJECTS = [
     ],
     visual: "ai", 
   },
+  {
+    id: 6, tags: ["React", "Supabase", "PostgreSQL", "React Query", "Zustand"],
+    name: "Zoro Capital", status: ["private", "indev"],
+    desc: [
+      "Full-stack B2B lending & leasing platform with role-based access for admins, originators, and customers — covering onboarding, deal submission, credit review, contract lifecycle, and a self-service customer portal.",
+      "Features multi-step onboarding with document upload, admin deal queue with contract generation, CRM with prospect pipeline, quote builder, amendment requests, and automated payment status tracking via Supabase Edge Functions.",
+    ],
+    visual: "zoro", rev: true,
+  },
 ];
 
 const STATUS_CONFIG = {
@@ -156,7 +165,7 @@ const SKILL_CARDS = [
 
 const ARTICLES_PAGES = [
   [
-    { title: "Building a Real-Time Kafka + Golang Microservice Pipeline", desc: "A hands-on guide to implementing a production-grade event-driven architecture using Apache Kafka, Golang, and Docker Compose from scratch.", emoji: "🦊" },
+    { title: "I Built an Algorithm to Stop AI from Forgetting. Here's What I Found.", desc: "A technical deep dive into DRIFT — Dynamic Radius Intelligence with Forgetting Tolerance — continual learning, adaptive memory, and why existing AI memory tools all miss the same thing.", emoji: "🧠", link: "https://medium.com/@raghul01020405/i-built-an-algorithm-to-stop-ai-from-forgetting-heres-what-i-found-8c8ad6125741" },
     { title: "Dockerizing a Full-Stack App: Beyond the Basics", desc: "Go beyond hello-world Docker setups — multi-stage builds, secrets management, and orchestration patterns for real-world full-stack applications.", emoji: "🐳" },
     { title: "React Patterns You Should Know in 2025", desc: "A deep dive into compound components, render props, custom hooks, and the emerging patterns reshaping how we think about React architecture today.", emoji: "⚛️" },
     { title: "Designing Fault-Tolerant REST APIs with Gin and PostgreSQL", desc: "From connection pooling and graceful shutdowns to retry logic and circuit breakers — how to build APIs that stay up when everything else falls apart.", emoji: "🛡️" },
@@ -176,7 +185,7 @@ const ARTICLES_PAGES = [
 ];
 
 const HERO_ARTICLES = [
-  { title: "Kafka + Golang Microservice Pipeline", desc: "Building a real-time event-driven architecture using Apache Kafka, Golang, and Docker from scratch.", emoji: "🦊" },
+  { title: "I Built an Algorithm to Stop AI from Forgetting", desc: "DRIFT: adaptive memory protection for continual learning — why AI assistants forget, and how to stop it mathematically.", emoji: "🧠", link: "https://medium.com/@raghul01020405/i-built-an-algorithm-to-stop-ai-from-forgetting-heres-what-i-found-8c8ad6125741" },
   { title: "Dockerizing a Full-Stack App: Beyond the Basics", desc: "Multi-stage builds, secrets management, and orchestration patterns for real-world apps.", emoji: "🐳" },
   { title: "React Patterns You Should Know in 2025", desc: "Compound components, render props, and custom hooks reshaping React architecture.", emoji: "⚛️" },
 ];
@@ -189,9 +198,9 @@ const RESUME_LINK = "https://drive.google.com/file/d/19oHw6GyDolSZwJWGsAWtCfr3eb
      VITE_EMAILJS_TEMPLATE_ID=your_template_id
      VITE_EMAILJS_PUBLIC_KEY=your_public_key
    ------------------------------------------------------------------ */
-const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const EMAILJS_SERVICE_ID  = "";
+const EMAILJS_TEMPLATE_ID = "";
+const EMAILJS_PUBLIC_KEY  = "";
 
 /* ─── DINO SOUND ENGINE (Web Audio API — no external files needed) ─── */
 function createDinoSounds() {
@@ -452,6 +461,69 @@ function AIVisual() {
   );
 }
 
+function ZoroVisual() {
+  const statuses = [
+    { label: "Submitted",  color: "#60a5fa" },
+    { label: "In review",  color: "#fbbf24" },
+    { label: "Approved",   color: "#34d399" },
+    { label: "Declined",   color: "#f87171" },
+  ];
+  const rows = [
+    { ref: "ZC-2026-48201", client: "TechWorks Ltd",     amount: "£1,089/mo", st: 2 },
+    { ref: "ZC-2026-51874", client: "BuildRight Co",     amount: "£2,340/mo", st: 1 },
+    { ref: "ZC-2026-39045", client: "Sunrise Bakeries",  amount: "£420/mo",   st: 0 },
+  ];
+  return (
+    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", gap: 8 }}>
+      {/* Top bar */}
+      <div style={{ background: "#12121e", borderRadius: 8, padding: "8px 12px", display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#f97316", flexShrink: 0 }} />
+        <span style={{ fontFamily: "'Fira Code',monospace", fontSize: 10, color: "#f97316", fontWeight: 700, letterSpacing: 1 }}>ZORO CAPITAL</span>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 4 }}>
+          {["#ff5f57","#febc2e","#28c840"].map(c => (
+            <div key={c} style={{ width: 7, height: 7, borderRadius: "50%", background: c }} />
+          ))}
+        </div>
+      </div>
+      {/* KPI row */}
+      <div style={{ display: "flex", gap: 6 }}>
+        {[
+          { label: "Active contracts", val: "24",   color: "#34d399" },
+          { label: "Portfolio value",  val: "£2.4M", color: "#60a5fa" },
+          { label: "Pending review",   val: "7",    color: "#fbbf24" },
+        ].map(k => (
+          <div key={k.label} style={{ flex: 1, background: "#1a1a2e", borderRadius: 7, padding: "7px 8px" }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: k.color, fontFamily: "'Fira Code',monospace" }}>{k.val}</div>
+            <div style={{ fontSize: 8, color: "#6b6b80", marginTop: 1, lineHeight: 1.3 }}>{k.label}</div>
+          </div>
+        ))}
+      </div>
+      {/* Deal queue rows */}
+      <div style={{ flex: 1, background: "#1a1a2e", borderRadius: 8, overflow: "hidden" }}>
+        <div style={{ padding: "5px 10px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 6 }}>
+          {["Reference","Client","Status"].map(h => (
+            <div key={h} style={{ fontSize: 8, color: "#6b6b80", fontFamily: "'Fira Code',monospace", textTransform: "uppercase", letterSpacing: .5 }}>{h}</div>
+          ))}
+        </div>
+        {rows.map((r, i) => (
+          <div key={i} style={{ padding: "6px 10px", borderBottom: i < rows.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none", display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 6, alignItems: "center" }}>
+            <div style={{ fontSize: 8, color: "#f97316", fontFamily: "'Fira Code',monospace" }}>{r.ref}</div>
+            <div style={{ fontSize: 9, color: "#d4d4d4" }}>{r.client}</div>
+            <div style={{ fontSize: 8, fontWeight: 700, color: statuses[r.st].color, background: statuses[r.st].color + "18", borderRadius: 4, padding: "1px 6px", whiteSpace: "nowrap" }}>
+              {statuses[r.st].label}
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Monthly amount */}
+      <div style={{ background: "linear-gradient(90deg,#f9731615,#60a5fa10)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 7, padding: "6px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: 9, color: "#6b6b80" }}>Monthly book</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#f97316", fontFamily: "'Fira Code',monospace" }}>£48,200</span>
+      </div>
+    </div>
+  );
+}
+
 /* ─── HERO CAROUSEL ─── */
 function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
   const CARD_W   = 300;
@@ -535,7 +607,7 @@ function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
                 <div style={{ padding: 16 }}>
                   <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 8, lineHeight: 1.4 }}>{a.title}</h4>
                   <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.6, marginBottom: 14 }}>{a.desc}</p>
-                  <a href="#" onClick={e => e.stopPropagation()} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>Read more</a>
+                  <a href={a.link || "#"} target={a.link ? "_blank" : undefined} rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>Read more</a>
                 </div>
               </div>
             );
@@ -1108,13 +1180,88 @@ function FooterQuote({ dark }) {
 }
 
 /* ─── CONTACT FORM ─── */
+function FloatInput({ name, placeholder, value, onChange, type = "text", dark, error }) {
+  const [focused, setFocused] = useState(false);
+  const filled = value.length > 0;
+  const active = focused || filled;
+  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+  const borderC = error
+    ? "#e06c75"
+    : focused
+    ? dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"
+    : dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)";
+  return (
+    <div style={{ position: "relative", width: "100%" }}>
+      <label style={{ position: "absolute", left: 14, top: active ? 6 : "50%", transform: active ? "none" : "translateY(-50%)", fontSize: active ? 10 : 13, color: error ? "#e06c75" : focused ? (dark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)") : "var(--mid)", transition: "all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents: "none", fontFamily: "'Open Sans',sans-serif", zIndex: 1 }}>
+        {placeholder}
+      </label>
+      <input name={name} type={type} value={value} onChange={onChange}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ width: "100%", background: bg, border: `1px solid ${borderC}`, borderRadius: 10, padding: active ? "22px 14px 8px" : "14px 14px", color: dark ? "#f5f5f5" : "#121212", fontSize: 13, fontFamily: "'Open Sans',sans-serif", outline: "none", transition: "border-color 0.2s, padding 0.2s", boxSizing: "border-box" }} />
+    </div>
+  );
+}
+
+function FloatTextarea({ name, placeholder, value, onChange, dark, error }) {
+  const [focused, setFocused] = useState(false);
+  const filled = value.length > 0;
+  const active = focused || filled;
+  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+  const borderC = error
+    ? "#e06c75"
+    : focused
+    ? dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"
+    : dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)";
+  return (
+    <div style={{ position: "relative", width: "100%" }}>
+      <label style={{ position: "absolute", left: 14, top: active ? 8 : 14, fontSize: active ? 10 : 13, color: error ? "#e06c75" : focused ? (dark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)") : "var(--mid)", transition: "all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents: "none", fontFamily: "'Open Sans',sans-serif", zIndex: 1 }}>
+        {placeholder}
+      </label>
+      <textarea name={name} value={value} onChange={onChange}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ width: "100%", background: bg, border: `1px solid ${borderC}`, borderRadius: 10, padding: active ? "26px 14px 10px" : "14px", color: dark ? "#f5f5f5" : "#121212", fontSize: 13, fontFamily: "'Open Sans',sans-serif", outline: "none", resize: "vertical", minHeight: 120, transition: "border-color 0.2s", boxSizing: "border-box" }} />
+    </div>
+  );
+}
+
 function ContactForm({ dark }) {
   const [form, setForm]     = useState({ name: "", email: "", subject: "", message: "" });
+  const [errors, setErrors] = useState({ name: false, email: false, subject: false, message: false });
+  const [touched, setTouched] = useState({ name: false, email: false, subject: false, message: false });
   const [status, setStatus] = useState("idle");
   const [flying, setFlying] = useState(false);
-  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+
+  const validate = (field, value) => {
+    if (field === "email") return value.trim() === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    return value.trim() === "";
+  };
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+    if (touched[name]) setErrors(er => ({ ...er, [name]: validate(name, value) }));
+  };
+
+  const handleBlur = e => {
+    const { name, value } = e.target;
+    setTouched(t => ({ ...t, [name]: true }));
+    setErrors(er => ({ ...er, [name]: validate(name, value) }));
+  };
+
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.message) return;
+    const newTouched = { name: true, email: true, subject: true, message: true };
+    const newErrors = {
+      name:    validate("name",    form.name),
+      email:   validate("email",   form.email),
+      subject: validate("subject", form.subject),
+      message: validate("message", form.message),
+    };
+    setTouched(newTouched);
+    setErrors(newErrors);
+    if (Object.values(newErrors).some(Boolean)) return;
+
     setFlying(true);
     setStatus("sending");
     try {
@@ -1123,23 +1270,24 @@ function ContactForm({ dark }) {
         body: JSON.stringify({ service_id: EMAILJS_SERVICE_ID, template_id: EMAILJS_TEMPLATE_ID, user_id: EMAILJS_PUBLIC_KEY,
           template_params: { from_name: form.name, from_email: form.email, subject: form.subject, message: form.message } }),
       });
-      if (res.ok) { setStatus("success"); setForm({ name: "", email: "", subject: "", message: "" }); }
+      if (res.ok) { setStatus("success"); setForm({ name: "", email: "", subject: "", message: "" }); setTouched({ name: false, email: false, subject: false, message: false }); setErrors({ name: false, email: false, subject: false, message: false }); }
       else setStatus("error");
     } catch { setStatus("error"); }
   };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="contact-form-grid">
-        <FloatInput dark={dark} name="name"    placeholder="Your name"       value={form.name}    onChange={handleChange} />
-        <FloatInput dark={dark} name="email"   placeholder="your@email.com"  value={form.email}   onChange={handleChange} type="email" />
+        <FloatInput dark={dark} name="name"    placeholder="Your name"      value={form.name}    onChange={handleChange} onBlur={handleBlur} error={errors.name} />
+        <FloatInput dark={dark} name="email"   placeholder="your@email.com" value={form.email}   onChange={handleChange} onBlur={handleBlur} error={errors.email} type="email" />
       </div>
-      <FloatInput   dark={dark} name="subject" placeholder="Subject"         value={form.subject} onChange={handleChange} />
-      <FloatTextarea dark={dark} name="message" placeholder="Your message…"  value={form.message} onChange={handleChange} />
+      <FloatInput   dark={dark} name="subject" placeholder="Subject"        value={form.subject} onChange={handleChange} onBlur={handleBlur} error={errors.subject} />
+      <FloatTextarea dark={dark} name="message" placeholder="Your message…" value={form.message} onChange={handleChange} onBlur={handleBlur} error={errors.message} />
       <div style={{ display: "flex", alignItems: "center", gap: 14, minHeight: 38 }}>
         {flying ? (
           <PaperPlane onDone={() => setFlying(false)} />
         ) : (
-          <button onClick={handleSubmit} disabled={status === "sending"} style={{ background: dark ? "#fff" : "#121212", color: dark ? "#121212" : "#fff", border: "none", borderRadius: 50, padding: "11px 26px", fontFamily: "'Open Sans',sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer", opacity: status === "sending" ? 0.6 : 1, position:"relative", overflow:"hidden" }}>
+          <button onClick={handleSubmit} disabled={status === "sending"} style={{ background: dark ? "#fff" : "#121212", color: dark ? "#121212" : "#fff", border: "none", borderRadius: 50, padding: "11px 26px", fontFamily: "'Open Sans',sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer", opacity: status === "sending" ? 0.6 : 1, position: "relative", overflow: "hidden" }}>
             {status === "sending" ? "Sending…" : "Send Message →"}
           </button>
         )}
@@ -1149,6 +1297,7 @@ function ContactForm({ dark }) {
     </div>
   );
 }
+
 
 /* ─── HERO COLOR PAIRS ─── */
 const HERO_COLOR_PAIRS_DARK = [
@@ -1171,6 +1320,43 @@ const HERO_COLOR_PAIRS_LIGHT = [
   ["#7c3aed", "#16a34a"],
   ["#121212", "#ca8a04"],
 ];
+
+const GLITCH_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&";
+
+function useGlitchText(target) {
+  const [display, setDisplay] = useState(target);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    let frame = 0;
+    const totalFrames = 18;
+    const len = Math.max(target.length, display.length);
+
+    function tick() {
+      frame++;
+      const progress = frame / totalFrames;
+      const resolved = Math.floor(progress * target.length);
+      let next = "";
+      for (let i = 0; i < len; i++) {
+        if (i < resolved) {
+          next += target[i] ?? "";
+        } else if (i < target.length) {
+          next += GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+        } else {
+          next += "";
+        }
+      }
+      setDisplay(next);
+      if (frame < totalFrames) rafRef.current = setTimeout(tick, 28);
+      else setDisplay(target);
+    }
+
+    rafRef.current = setTimeout(tick, 0);
+    return () => clearTimeout(rafRef.current);
+  }, [target]);
+
+  return display;
+}
 
 function HeroTitle({ dark, roleIdx, roleVisible }) {
   const pairs = dark ? HERO_COLOR_PAIRS_DARK : HERO_COLOR_PAIRS_LIGHT;
@@ -1198,10 +1384,14 @@ function HeroTitle({ dark, roleIdx, roleVisible }) {
     return () => { clearTimeout(delay); clearInterval(t2); };
   }, [pairs.length]);
 
-  const word1 = ROLES[roleIdx].split(" ")[0];
-  const word2 = ROLES[roleIdx].split(" ").slice(1).join(" ");
+  const role = ROLES[roleIdx];
+  const word1 = role.split(" ")[0];
+  const word2 = role.split(" ").slice(1).join(" ");
   const color1 = pairs[w1pair][0];
   const color2 = pairs[w2pair][1];
+
+  const glitchWord1 = useGlitchText(word1);
+  const glitchWord2 = useGlitchText(word2);
 
   const baseStyle = {
     fontFamily: "'Fira Code',monospace",
@@ -1215,18 +1405,11 @@ function HeroTitle({ dark, roleIdx, roleVisible }) {
     <>
       <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards" }}>
         <div className="hero-title-size" style={{ ...baseStyle, color: color1, opacity: (roleVisible && w1vis) ? 1 : 0, transform: (roleVisible && w1vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform" }}>
-          {word1}
+          {glitchWord1}
         </div>
-        {/* <button
-          onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-          style={{ display: "flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
-          onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
-          Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
-        </button> */}
       </div>
       <div className="hero-title-size" style={{ ...baseStyle, color: color2, textAlign: "right", opacity: (roleVisible && w2vis) ? 1 : 0, transform: (roleVisible && w2vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform", animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both" }}>
-        {word2}
+        {glitchWord2}
       </div>
     </>
   );
@@ -1913,40 +2096,40 @@ function TimezoneWidget({ dark }) {
 }
 
 /* ─── FLOATING LABEL INPUT ─── */
-function FloatInput({ name, placeholder, value, onChange, type="text", dark }) {
-  const [focused, setFocused] = useState(false);
-  const filled = value.length > 0;
-  const active = focused || filled;
-  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
-  const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
-  return (
-    <div style={{ position:"relative", width:"100%" }}>
-      <label style={{ position:"absolute", left:14, top: active ? 6 : "50%", transform: active ? "none" : "translateY(-50%)", fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
-        {placeholder}
-      </label>
-      <input name={name} type={type} value={value} onChange={onChange}
-        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-        style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "22px 14px 8px" : "14px 14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", transition:"border-color 0.2s, padding 0.2s", boxSizing:"border-box" }} />
-    </div>
-  );
-}
-function FloatTextarea({ name, placeholder, value, onChange, dark }) {
-  const [focused, setFocused] = useState(false);
-  const filled = value.length > 0;
-  const active = focused || filled;
-  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
-  const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
-  return (
-    <div style={{ position:"relative", width:"100%" }}>
-      <label style={{ position:"absolute", left:14, top: active ? 8 : 14, fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
-        {placeholder}
-      </label>
-      <textarea name={name} value={value} onChange={onChange}
-        onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
-        style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "26px 14px 10px" : "14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", resize:"vertical", minHeight:120, transition:"border-color 0.2s", boxSizing:"border-box" }} />
-    </div>
-  );
-}
+// function FloatInput({ name, placeholder, value, onChange, type="text", dark }) {
+//   const [focused, setFocused] = useState(false);
+//   const filled = value.length > 0;
+//   const active = focused || filled;
+//   const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+//   const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
+//   return (
+//     <div style={{ position:"relative", width:"100%" }}>
+//       <label style={{ position:"absolute", left:14, top: active ? 6 : "50%", transform: active ? "none" : "translateY(-50%)", fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
+//         {placeholder}
+//       </label>
+//       <input name={name} type={type} value={value} onChange={onChange}
+//         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+//         style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "22px 14px 8px" : "14px 14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", transition:"border-color 0.2s, padding 0.2s", boxSizing:"border-box" }} />
+//     </div>
+//   );
+// }
+// function FloatTextarea({ name, placeholder, value, onChange, dark }) {
+//   const [focused, setFocused] = useState(false);
+//   const filled = value.length > 0;
+//   const active = focused || filled;
+//   const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+//   const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
+//   return (
+//     <div style={{ position:"relative", width:"100%" }}>
+//       <label style={{ position:"absolute", left:14, top: active ? 8 : 14, fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
+//         {placeholder}
+//       </label>
+//       <textarea name={name} value={value} onChange={onChange}
+//         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+//         style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "26px 14px 10px" : "14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", resize:"vertical", minHeight:120, transition:"border-color 0.2s", boxSizing:"border-box" }} />
+//     </div>
+//   );
+// }
 
 /* ─── PAPER AIRPLANE SEND ─── */
 function PaperPlane({ onDone }) {
@@ -1986,11 +2169,11 @@ export default function Portfolio() {
     ? { "--black":"#121212","--dark":"#3D3D3D","--mid":"#A6A6A6","--light":"#F5F5F5","--white":"#ffffff","--bg":"#121212","--text":"#F5F5F5" }
     : { "--black":"#f5f5f5","--dark":"#d0d0d0","--mid":"#666","--light":"#1a1a1a","--white":"#121212","--bg":"#f0f0f0","--text":"#121212" };
 
-  /* Role typewriter cycle */
+  /* Role glitch cycle */
   useEffect(() => {
     const t = setInterval(() => {
       setRoleVisible(false);
-      setTimeout(() => { setRoleIdx(i => (i + 1) % ROLES.length); setRoleVisible(true); }, 450);
+      setTimeout(() => { setRoleIdx(i => (i + 1) % ROLES.length); setRoleVisible(true); }, 80);
     }, 3200);
     return () => clearInterval(t);
   }, []);
@@ -2367,6 +2550,7 @@ export default function Portfolio() {
                 {p.visual === "anime"  && <AnimeVisual />}
                 {p.visual === "chat"   && <ChatVisual />}
                 {p.visual === "ai"     && <AIVisual />}
+                {p.visual === "zoro"   && <ZoroVisual />}
               </TiltCard>
             </div>
           </FadeIn>
@@ -2397,10 +2581,10 @@ export default function Portfolio() {
                   <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 10, lineHeight: 1.5 }}>{a.title}</h4>
                   <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.7, marginBottom: 16 }}>{a.desc}</p>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <a href="#" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none", transition: "opacity 0.2s" }}
+                    <a href={a.link || "#"} target={a.link ? "_blank" : undefined} rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none", transition: "opacity 0.2s" }}
                       onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
                       onMouseLeave={e => e.currentTarget.style.opacity = "1"}>Read more</a>
-                    <button style={{ width: 28, height: 28, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}>→</button>
+                    <a href={a.link || "#"} target={a.link ? "_blank" : undefined} rel="noreferrer" style={{ width: 28, height: 28, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, textDecoration: "none" }}>→</a>
                   </div>
                 </div>
               </FadeIn>
