@@ -190,7 +190,7 @@ const HERO_ARTICLES = [
   { title: "React Patterns You Should Know in 2025", desc: "Compound components, render props, and custom hooks reshaping React architecture.", emoji: "⚛️" },
 ];
 
-const RESUME_LINK = "https://drive.google.com/file/d/19oHw6GyDolSZwJWGsAWtCfr3ebR9qMf0/view?usp=sharing";
+const RESUME_LINK = "https://drive.google.com/file/d/1nhl979AV7NmIj4Q0GMf-iMP0ksQfDO16/view?usp=sharing";
 
 /* ─── EMAILJS CONFIG (Vite) ──────────────────────────────────────────
    Add these to your .env file in the project root:
