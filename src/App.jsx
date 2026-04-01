@@ -80,6 +80,15 @@ const WORK = [
 /* status: live | opensource | indev | private */
 const PROJECTS = [
   {
+    id: 7, tags: ["Python", "Machine Learning", "Continual Learning", "Algorithm", "AI"],
+    name: "DRIFT", status: ["opensource"],
+    desc: [
+      "DRIFT (Dynamic Radius Intelligence with Forgetting Tolerance) — an algorithm designed to prevent catastrophic forgetting in AI systems through adaptive memory protection and continual learning.",
+      "Published research exploring why AI assistants lose prior knowledge during training updates, and a mathematical framework to stop it with adaptive radius-based memory retention.",
+    ],
+    visual: "drift", rev: true
+  },
+  {
     id: 1, tags: ["Golang", "TypeScript", "Gin", "NextJs", "PostgreSQL", "Redis"],
     name: "Gostat", status: ["live", "opensource"],
     desc: [
@@ -186,8 +195,6 @@ const ARTICLES_PAGES = [
 
 const HERO_ARTICLES = [
   { title: "I Built an Algorithm to Stop AI from Forgetting", desc: "DRIFT: adaptive memory protection for continual learning — why AI assistants forget, and how to stop it mathematically.", emoji: "🧠", link: "https://medium.com/@raghul01020405/i-built-an-algorithm-to-stop-ai-from-forgetting-heres-what-i-found-8c8ad6125741" },
-  { title: "Dockerizing a Full-Stack App: Beyond the Basics", desc: "Multi-stage builds, secrets management, and orchestration patterns for real-world apps.", emoji: "🐳" },
-  { title: "React Patterns You Should Know in 2025", desc: "Compound components, render props, and custom hooks reshaping React architecture.", emoji: "⚛️" },
 ];
 
 const RESUME_LINK = "https://drive.google.com/file/d/1nhl979AV7NmIj4Q0GMf-iMP0ksQfDO16/view?usp=sharing";
@@ -524,126 +531,384 @@ function ZoroVisual() {
   );
 }
 
-/* ─── HERO CAROUSEL ─── */
-function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
-  const CARD_W   = 300;
-  const CARD_GAP = 20;
-  const STEP     = CARD_W + CARD_GAP;
+// /* ─── DRIFT MINI VISUAL (crisp SVG-based, no emoji) ─── */
+// function DriftMiniVisual() {
+//   const [tick, setTick] = useState(0);
+//   useEffect(() => {
+//     const t = setInterval(() => setTick(n => n + 1), 80);
+//     return () => clearInterval(t);
+//   }, []);
 
-  const [viewW, setViewW] = useState(800);
-  const wrapRef  = useRef(null);
-  const dragRef  = useRef({ active: false, startX: 0 });
+//   const W = 520, H = 144;
+//   const pts = 32;
+//   const forgettingPts = Array.from({ length: pts }, (_, i) => {
+//     const x = (i / (pts - 1)) * W;
+//     const y = snap(H - H * Math.exp(-i / 7) * 0.85 - 2);
+//     return `${x},${y}`;
+//   }).join(" ");
+//   const driftPts = Array.from({ length: pts }, (_, i) => {
+//     const x = snap((i / (pts - 1)) * W);
+//     const decay = Math.exp(-i / 22) * 0.82;
+//     const ripple = Math.sin(i * 0.7 + tick * 0.18) * 0.025;
+//     const y = H - H * (decay + ripple + 0.1) - 2;
+//     return `${x},${y}`;
+//   }).join(" ");
+
+//   const nodes = [
+//     { cx: 22,  cy: 28, r: 5,  label: "M₁", protected: true  },
+//     { cx: 62,  cy: 16, r: 4.5,label: "M₂", protected: true  },
+//     { cx: 104, cy: 30, r: 6,  label: "M₃", protected: false },
+//     { cx: 146, cy: 14, r: 4.5,label: "M₄", protected: true  },
+//     { cx: 186, cy: 26, r: 5,  label: "M₅", protected: true  },
+//   ];
+//   const edges = [[0,1],[1,2],[2,3],[3,4],[0,3]];
+//   const pulse = (base, i) => base + Math.sin(tick * 0.12 + i * 1.1) * 1.2;
+
+//   return (
+//     <div style={{ width:"100%", height:"100%", background:"#0d1117", display:"flex", flexDirection:"column", gap:6, padding:"12px 14px", fontFamily:"'Fira Code',monospace", overflow:"hidden" }}>
+//       {/* Header row */}
+//       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+//         <div style={{ display:"flex", alignItems:"center", gap:5 }}>
+//           <span style={{ width:5, height:5, borderRadius:"50%", background:"#a78bfa", display:"inline-block", animation:"pulse 1.8s infinite" }} />
+//           <span style={{ fontSize:8, color:"#a78bfa", letterSpacing:"0.1em", fontWeight:700 }}>DRIFT</span>
+//         </div>
+//         <span style={{ fontSize:7, color:"#3d4a5a", letterSpacing:"0.06em" }}>MEMORY PROTECTION ACTIVE</span>
+//       </div>
+
+//       {/* Neural graph */}
+//       <div style={{ background:"#111827", borderRadius:7, padding:"6px 8px" }}>
+//         <span style={{ fontSize:7, color:"#3d4a5a", display:"block", marginBottom:4 }}>MEMORY GRAPH · T+{tick % 99 + 1}</span>
+//         <svg width="100%" viewBox="0 0 210 46" style={{ display:"block", overflow:"visible" }}>
+//           {edges.map(([a,b], i) => (
+//             <line key={i}
+//               x1={nodes[a].cx} y1={nodes[a].cy}
+//               x2={nodes[b].cx} y2={nodes[b].cy}
+//               stroke={nodes[a].protected && nodes[b].protected ? "rgba(167,139,250,0.28)" : "rgba(255,255,255,0.07)"}
+//               strokeWidth="0.9"
+//               strokeDasharray={nodes[a].protected && nodes[b].protected ? "none" : "3,3"}
+//             />
+//           ))}
+//           {nodes.map((n, i) => (
+//             <g key={i}>
+//               {n.protected && (
+//                 <circle cx={n.cx} cy={n.cy} r={pulse(n.r + 5.5, i)}
+//                   fill="none" stroke="rgba(167,139,250,0.18)" strokeWidth="0.9" />
+//               )}
+//               <circle cx={n.cx} cy={n.cy} r={pulse(n.r, i)}
+//                 fill={n.protected ? "rgba(167,139,250,0.22)" : "rgba(239,68,68,0.15)"}
+//                 stroke={n.protected ? "#a78bfa" : "#ef4444"}
+//                 strokeWidth="1.1"
+//               />
+//               <text x={n.cx} y={n.cy + 3} textAnchor="middle" fontSize="5.5" fill={n.protected ? "#c4b5fd" : "#fca5a5"} fontFamily="'Fira Code',monospace">{n.label}</text>
+//             </g>
+//           ))}
+//         </svg>
+//       </div>
+
+//       {/* Retention curves */}
+//       <div style={{ background:"#111827", borderRadius:7, padding:"5px 8px", flex:1 }}>
+//         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:3 }}>
+//           <span style={{ fontSize:7, color:"#3d4a5a" }}>RETENTION OVER TIME</span>
+//           <div style={{ display:"flex", gap:8 }}>
+//             <span style={{ fontSize:6.5, color:"#ef4444", display:"flex", alignItems:"center", gap:2 }}>
+//               <svg width="10" height="3" viewBox="0 0 10 3"><line x1="0" y1="1.5" x2="10" y2="1.5" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2,2"/></svg>
+//               No protection
+//             </span>
+//             <span style={{ fontSize:6.5, color:"#a78bfa", display:"flex", alignItems:"center", gap:2 }}>
+//               <svg width="10" height="3" viewBox="0 0 10 3"><line x1="0" y1="1.5" x2="10" y2="1.5" stroke="#a78bfa" strokeWidth="1.5"/></svg>
+//               DRIFT
+//             </span>
+//           </div>
+//         </div>
+//         <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display:"block" }}>
+//           {[0.25,0.5,0.75].map(f => (
+//             <line key={f} x1="0" y1={H*f} x2={W} y2={H*f} stroke="rgba(255,255,255,0.035)" strokeWidth="1"/>
+//           ))}
+//           <polyline points={forgettingPts} fill="none" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3,3" opacity="0.7"/>
+//           <polyline points={`0,${H} ${driftPts} ${W},${H}`} fill="rgba(167,139,250,0.07)" stroke="none"/>
+//           <polyline points={driftPts} fill="none" stroke="#a78bfa" strokeWidth="1.5" opacity="0.9"/>
+//         </svg>
+//       </div>
+
+//       {/* Stats row */}
+//       <div style={{ display:"flex", gap:4 }}>
+//         {[
+//           { label:"Radius", val:"adaptive", color:"#a78bfa" },
+//           { label:"FT Score", val:(0.91 + Math.sin(tick*0.05)*0.02).toFixed(2), color:"#34d399" },
+//           { label:"Forgetting", val:"↓ 73%", color:"#fbbf24" },
+//         ].map(s => (
+//           <div key={s.label} style={{ flex:1, background:"rgba(255,255,255,0.025)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:5, padding:"3px 5px" }}>
+//             <div style={{ fontSize:6.5, color:"#3d4a5a", marginBottom:1 }}>{s.label}</div>
+//             <div style={{ fontSize:8, fontWeight:700, color:s.color }}>{s.val}</div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+function DriftMiniVisual() {
+  const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    if (!wrapRef.current) return;
-    const ro = new ResizeObserver(([e]) => setViewW(e.contentRect.width));
-    ro.observe(wrapRef.current);
-    return () => ro.disconnect();
+    const t = setInterval(() => setTick(n => n + 1), 80);
+    return () => clearInterval(t);
   }, []);
 
-  /* Drag-to-swipe — only on the track area, never intercepts button clicks */
-  const handleTrackPointerDown = e => {
-    // ignore if the event originated from a button or anchor
-    if (e.target.closest("button,a")) return;
-    dragRef.current = { active: true, startX: e.clientX };
-  };
-  const handleTrackPointerUp = e => {
-    if (!dragRef.current.active) return;
-    dragRef.current.active = false;
-    const dx = e.clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 40) {
-      const dir = dx < 0 ? 1 : -1;
-      setHeroSlide(s => Math.max(0, Math.min(HERO_ARTICLES.length - 1, s + dir)));
+  // 🔥 Retina resolution
+  const W = 520, H = 144;
+  const pts = 40;
+
+  const snap = (n) => Math.round(n * 2) / 2;
+
+  // 🔥 Smooth path generator (instead of polyline)
+  const buildPath = (points) => {
+    let d = `M ${points[0][0]} ${points[0][1]}`;
+    for (let i = 1; i < points.length - 1; i++) {
+      const [x0, y0] = points[i - 1];
+      const [x1, y1] = points[i];
+      const [x2, y2] = points[i + 1];
+
+      const cx = (x1 + x2) / 2;
+      const cy = (y1 + y2) / 2;
+
+      d += ` Q ${x1} ${y1} ${cx} ${cy}`;
     }
+    return d;
   };
 
-  const translate = viewW / 2 - (heroSlide * STEP + CARD_W / 2);
+  const forgettingArr = Array.from({ length: pts }, (_, i) => {
+    const x = snap((i / (pts - 1)) * W);
+    const y = snap(H - H * Math.exp(-i / 7) * 0.85 - 2);
+    return [x, y];
+  });
+
+  const driftArr = Array.from({ length: pts }, (_, i) => {
+    const x = snap((i / (pts - 1)) * W);
+    const decay = Math.exp(-i / 22) * 0.82;
+    const ripple = Math.sin(i * 0.7 + tick * 0.18) * 0.02;
+    const y = snap(H - H * (decay + ripple + 0.1) - 2);
+    return [x, y];
+  });
+
+  const forgettingPath = buildPath(forgettingArr);
+  const driftPath = buildPath(driftArr);
+
+  const nodes = [
+    { cx: 44,  cy: 56, r: 6,  label: "M₁", protected: true  },
+    { cx: 124, cy: 32, r: 5,  label: "M₂", protected: true  },
+    { cx: 208, cy: 60, r: 7,  label: "M₃", protected: false },
+    { cx: 292, cy: 28, r: 5,  label: "M₄", protected: true  },
+    { cx: 372, cy: 52, r: 6,  label: "M₅", protected: true  },
+  ];
+
+  const edges = [[0,1],[1,2],[2,3],[3,4],[0,3]];
+
+  const pulse = (base, i) =>
+    snap(base + Math.sin(tick * 0.12 + i * 1.1) * 1);
 
   return (
-    <div style={{ marginTop: 40 }}>
-      {/* Overflow hidden viewport */}
-      <div
-        ref={wrapRef}
-        style={{ overflow: "hidden", cursor: "grab", userSelect: "none", WebkitUserSelect: "none" }}
-        onPointerDown={handleTrackPointerDown}
-        onPointerUp={handleTrackPointerUp}
-        onPointerLeave={handleTrackPointerUp}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: CARD_GAP,
-            transform: `translateX(${translate}px)`,
-            transition: "transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)",
-            willChange: "transform",
-            paddingBottom: 4,
-          }}
-        >
-          {HERO_ARTICLES.map((a, i) => {
-            const active = i === heroSlide;
-            return (
-              <div
-                key={i}
-                onClick={() => setHeroSlide(i)}
-                style={{
-                  flex: `0 0 ${CARD_W}px`,
-                  background: active
-                    ? (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)")
-                    : (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"),
-                  border: active
-                    ? (dark ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(0,0,0,0.16)")
-                    : (dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)"),
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  opacity: active ? 1 : 0.38,
-                  transform: active ? "scale(1.04)" : "scale(0.96)",
-                  transition: "opacity 0.4s, transform 0.4s, border-color 0.3s, background 0.3s",
-                  cursor: active ? "default" : "pointer",
-                }}
-              >
-                <div style={{ width: "100%", height: 130, background: "linear-gradient(135deg,#2a2a3a,#3a2a4a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>
-                  {a.emoji}
-                </div>
-                <div style={{ padding: 16 }}>
-                  <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 8, lineHeight: 1.4 }}>{a.title}</h4>
-                  <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.6, marginBottom: 14 }}>{a.desc}</p>
-                  <a href={a.link || "#"} target={a.link ? "_blank" : undefined} rel="noreferrer" onClick={e => e.stopPropagation()} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>Read more</a>
-                </div>
-              </div>
-            );
-          })}
+    <div style={{
+      width:"100%",
+      height:"100%",
+      background:"#0d1117",
+      display:"flex",
+      flexDirection:"column",
+      gap:6,
+      padding:"12px 14px",
+      fontFamily:"'Fira Code',monospace",
+      overflow:"hidden",
+      transform:"translateZ(0)"
+    }}>
+
+      {/* HEADER */}
+      <div style={{ display:"flex", justifyContent:"space-between" }}>
+        <div style={{ display:"flex", gap:5, alignItems:"center" }}>
+          <span style={{ width:5, height:5, borderRadius:"50%", background:"#a78bfa" }} />
+          <span style={{ fontSize:8, color:"#a78bfa", fontWeight:700 }}>DRIFT</span>
         </div>
+        <span style={{ fontSize:7, color:"#3d4a5a" }}>MEMORY PROTECTION ACTIVE</span>
       </div>
 
-      {/* Controls — completely outside the drag zone */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}>
-        <button
-          onClick={() => setHeroSlide(s => Math.max(0, s - 1))}
-          disabled={heroSlide === 0}
-          style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: heroSlide === 0 ? "var(--dark)" : "var(--white)", cursor: heroSlide === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, transition: "color 0.2s", opacity: heroSlide === 0 ? 0.35 : 1 }}>←</button>
-        <button
-          onClick={() => setHeroSlide(s => Math.min(HERO_ARTICLES.length - 1, s + 1))}
-          disabled={heroSlide === HERO_ARTICLES.length - 1}
-          style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: heroSlide === HERO_ARTICLES.length - 1 ? "var(--dark)" : "var(--white)", cursor: heroSlide === HERO_ARTICLES.length - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, transition: "color 0.2s", opacity: heroSlide === HERO_ARTICLES.length - 1 ? 0.35 : 1 }}>→</button>
-        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {HERO_ARTICLES.map((_, i) => (
-            <button
+      {/* GRAPH */}
+      <div style={{ background:"#111827", borderRadius:7, padding:"6px 8px" }}>
+        <span style={{ fontSize:7, color:"#3d4a5a" }}>
+          MEMORY GRAPH · T+{tick % 99 + 1}
+        </span>
+
+        <svg
+          width="100%"
+          viewBox="0 0 420 90"
+          style={{ display:"block", shapeRendering:"geometricPrecision" }}
+        >
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="1.2" result="b"/>
+              <feMerge>
+                <feMergeNode in="b"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          {edges.map(([a,b], i) => (
+            <line
               key={i}
-              onClick={() => setHeroSlide(i)}
-              style={{
-                width: i === heroSlide ? 18 : 6,
-                height: 6,
-                borderRadius: 3,
-                border: "none",
-                cursor: "pointer",
-                background: i === heroSlide ? "var(--white)" : "var(--dark)",
-                padding: 0,
-                transition: "all 0.3s cubic-bezier(0.25,0.46,0.45,0.94)",
-              }}
+              x1={nodes[a].cx} y1={nodes[a].cy}
+              x2={nodes[b].cx} y2={nodes[b].cy}
+              stroke="rgba(167,139,250,0.25)"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
             />
           ))}
-        </div>
+
+          {nodes.map((n, i) => (
+            <g key={i} filter={n.protected ? "url(#glow)" : "none"}>
+              {n.protected && (
+                <circle
+                  cx={n.cx}
+                  cy={n.cy}
+                  r={pulse(n.r + 6, i)}
+                  fill="none"
+                  stroke="rgba(167,139,250,0.15)"
+                />
+              )}
+              <circle
+                cx={n.cx}
+                cy={n.cy}
+                r={pulse(n.r, i)}
+                fill={n.protected ? "rgba(167,139,250,0.25)" : "rgba(239,68,68,0.15)"}
+                stroke={n.protected ? "#a78bfa" : "#ef4444"}
+                strokeWidth="1.2"
+              />
+              <text
+                x={n.cx}
+                y={n.cy}
+                fontSize="6"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill={n.protected ? "#c4b5fd" : "#fca5a5"}
+              >
+                {n.label}
+              </text>
+            </g>
+          ))}
+        </svg>
       </div>
+
+      {/* CURVES */}
+      <div style={{ background:"#111827", borderRadius:7, padding:"5px 8px", flex:1 }}>
+        <svg
+          width="100%"
+          viewBox={`0 0 ${W} ${H}`}
+          style={{ display:"block", shapeRendering:"geometricPrecision" }}
+        >
+          <path
+            d={forgettingPath}
+            fill="none"
+            stroke="#ef4444"
+            strokeWidth="1.2"
+            strokeDasharray="3,3"
+            opacity="0.7"
+            vectorEffect="non-scaling-stroke"
+          />
+
+          <path
+            d={driftPath}
+            fill="none"
+            stroke="#a78bfa"
+            strokeWidth="1.6"
+            vectorEffect="non-scaling-stroke"
+          />
+
+          <path
+            d={`${driftPath} L ${W} ${H} L 0 ${H} Z`}
+            fill="rgba(167,139,250,0.06)"
+          />
+        </svg>
+      </div>
+
+      {/* STATS */}
+      <div style={{ display:"flex", gap:4 }}>
+        {[
+          { label:"Radius", val:"adaptive", color:"#a78bfa" },
+          { label:"FT Score", val:(0.91 + Math.sin(tick*0.05)*0.02).toFixed(2), color:"#34d399" },
+          { label:"Forgetting", val:"↓ 73%", color:"#fbbf24" },
+        ].map(s => (
+          <div key={s.label} style={{
+            flex:1,
+            background:"rgba(255,255,255,0.025)",
+            border:"1px solid rgba(255,255,255,0.05)",
+            borderRadius:5,
+            padding:"3px 5px"
+          }}>
+            <div style={{ fontSize:6.5, color:"#3d4a5a" }}>{s.label}</div>
+            <div style={{ fontSize:8, fontWeight:700, color:s.color }}>{s.val}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+/* ─── HERO FEATURED ARTICLE (replaces carousel when only 1 item) ─── */
+function HeroCarousel({ dark }) {
+  const a = HERO_ARTICLES[0];
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div style={{ marginTop: 40, opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.75s forwards" }}>
+      {/* Label */}
+      <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+        <span style={{ fontFamily:"'Fira Code',monospace", fontSize:10, color:"var(--mid)", letterSpacing:"0.08em" }}>... /latest-writing ...</span>
+        <span style={{ height:1, flex:1, maxWidth:60, background: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }} />
+      </div>
+
+      {/* Featured card — horizontal split */}
+      <a
+        href={a.link || "#"}
+        target={a.link ? "_blank" : undefined}
+        rel="noreferrer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "200px 1fr",
+          borderRadius: 16,
+          overflow: "hidden",
+          border: dark
+            ? `1px solid ${hovered ? "rgba(167,139,250,0.35)" : "rgba(255,255,255,0.08)"}`
+            : `1px solid ${hovered ? "rgba(109,40,217,0.3)"  : "rgba(0,0,0,0.08)"}`,
+          background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.025)",
+          textDecoration: "none",
+          transition: "border-color 0.3s, box-shadow 0.3s, transform 0.35s cubic-bezier(0.22,1,0.36,1)",
+          transform: hovered ? "translateY(-3px)" : "none",
+          boxShadow: hovered
+            ? (dark ? "0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.12)" : "0 12px 36px rgba(0,0,0,0.1)")
+            : "none",
+          maxWidth: 580,
+        }}
+      >
+        {/* Left — DRIFT live visual */}
+        <div style={{ height: 160, overflow:"hidden", flexShrink:0, position:"relative" }}>
+          <DriftMiniVisual />
+          {/* Subtle right-edge fade into the card body */}
+          <div style={{ position:"absolute", top:0, right:0, width:32, height:"100%", background: dark ? "linear-gradient(to right, transparent, rgba(18,18,18,0.55))" : "linear-gradient(to right, transparent, rgba(240,240,240,0.55))", pointerEvents:"none" }} />
+        </div>
+
+        {/* Right — text content */}
+        <div style={{ padding:"18px 20px", display:"flex", flexDirection:"column", justifyContent:"center", gap:8 }}>
+          {/* Badge */}
+          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <span style={{ fontFamily:"'Fira Code',monospace", fontSize:9, color:"#a78bfa", background:"rgba(167,139,250,0.1)", border:"1px solid rgba(167,139,250,0.2)", borderRadius:50, padding:"2px 8px", letterSpacing:"0.06em" }}>FEATURED ARTICLE</span>
+          </div>
+          <h4 style={{ fontFamily:"'Fira Code',monospace", fontSize:13, fontWeight:600, color:"var(--white)", lineHeight:1.45, margin:0 }}>{a.title}</h4>
+          <p style={{ fontSize:11, color:"var(--mid)", lineHeight:1.65, margin:0 }}>{a.desc}</p>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:6, marginTop:2 }}>
+            <span style={{ fontSize:11, fontWeight:600, color: hovered ? "#a78bfa" : "var(--light)", transition:"color 0.25s", fontFamily:"'Open Sans',sans-serif" }}>Read on Medium</span>
+            <span style={{ fontSize:13, color: hovered ? "#a78bfa" : "var(--mid)", transition:"color 0.25s, transform 0.25s", display:"inline-block", transform: hovered ? "translateX(3px)" : "none" }}>→</span>
+          </div>
+        </div>
+      </a>
     </div>
   );
 }
@@ -2383,7 +2648,7 @@ export default function Portfolio() {
         </div>
 
         {/* Hero carousel */}
-        <HeroCarousel dark={dark} heroSlide={heroSlide} setHeroSlide={setHeroSlide} />
+        <HeroCarousel dark={dark} />
       </section>
 
       <hr style={{ border: "none", borderTop: divider }} />
@@ -2545,6 +2810,7 @@ export default function Portfolio() {
                 </div>
               </div>
               <TiltCard dark={dark} style={{ direction:"ltr", borderRadius:16, overflow:"hidden", background: dark?"#1a1a26":"#e8e8f0", aspectRatio:"4/3", display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
+                {p.visual === "drift"  && <DriftMiniVisual />}
                 {p.visual === "gostat" && <GostatVisual />}
                 {p.visual === "kana"   && <KanaVisual />}
                 {p.visual === "anime"  && <AnimeVisual />}
@@ -2559,7 +2825,7 @@ export default function Portfolio() {
 
       <hr style={{ border: "none", borderTop: divider }} />
 
-      {/* ── ARTICLES ── */}
+      {/* ── ARTICLES ──
       <section id="articles" style={{ padding: "80px 48px" }} className="articles-pad">
         <SectionHeader label="Articles" title="Articles" mb={48} />
         <div style={{ display: "grid", gridTemplateColumns: "36px 1fr", gap: "0 24px" }}>
@@ -2591,7 +2857,7 @@ export default function Portfolio() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── FOOTER / CONTACT ── */}
       <footer id="contact" style={{ borderTop: divider, padding: "64px 48px 40px" }} className="footer-pad">
