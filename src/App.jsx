@@ -86,17 +86,19 @@ const PROJECTS = [
       "DRIFT (Dynamic Radius Intelligence with Forgetting Tolerance) — an algorithm designed to prevent catastrophic forgetting in AI systems through adaptive memory protection and continual learning.",
       "Published research exploring why AI assistants lose prior knowledge during training updates, and a mathematical framework to stop it with adaptive radius-based memory retention.",
     ],
-    visual: "drift", rev: true
+    visual: "drift", rev: true,
+    articleLink: "https://medium.com/@raghul01020405/i-built-an-algorithm-to-stop-ai-from-forgetting-heres-what-i-found-8c8ad6125741",
   },
   {
     id: 1, tags: ["Golang", "TypeScript", "Gin", "NextJs", "PostgreSQL", "Redis"],
-    name: "Gostat", status: ["live", "opensource"],
+    name: "Gostat", status: ["indev"],
     desc: [
       "GOStat — a cutting-edge microservice-based application designed to handle HTTP request authentication and statistics with finesse.",
       "This project comprises several key microservices, each contributing to its overall functionality and prowess.",
     ],
     visual: "gostat",
   },
+  /* Kana Master — temporarily hidden
   {
     id: 2, tags: ["TypeScript", "ReactNative", "Redux Toolkit", "i18n", "iOS"],
     name: "Kana Master", status: ["indev"],
@@ -106,6 +108,8 @@ const PROJECTS = [
     ],
     visual: "kana", rev: true,
   },
+  */
+  /* Anime Sentry — temporarily hidden
   {
     id: 3, tags: ["Golang", "GORM", "PostgreSQL", "i18n", "goquery", "gcron"],
     name: "Anime Sentry", status: ["indev"],
@@ -115,6 +119,7 @@ const PROJECTS = [
     ],
     visual: "anime",
   },
+  */
   {
     id: 4, tags: ["WebSockets", "Golang", "React", "Redis", "PostgreSQL"],
     name: "Distributed Real-Time Chat", status: ["live"],
@@ -123,6 +128,7 @@ const PROJECTS = [
       "Designed efficient message routing with concurrency-safe operations supporting multiple parallel users.",
     ],
     visual: "chat", rev:true,
+    githubLink: "https://github.com/Raghul-18/Let-s-Txt.git",
   },
   {
     id: 5, tags: ["Python", "RAG", "LangChain", "Vector DB", "FastAPI"],
@@ -131,16 +137,18 @@ const PROJECTS = [
       "Built domain-adaptive chatbot using Retrieval-Augmented Generation with vector-based knowledge retrieval.",
       "Optimized search indexing workflows to decrease retrieval latency and enhance response accuracy.",
     ],
-    visual: "ai", 
+    visual: "ai",
+    githubLink: "https://github.com/Raghul-18/universal_chatbot.git",
   },
   {
     id: 6, tags: ["React", "Supabase", "PostgreSQL", "React Query", "Zustand"],
-    name: "Zoro Capital", status: ["private", "indev"],
+    name: "Lender", status: ["private", "indev"],
     desc: [
       "Full-stack B2B lending & leasing platform with role-based access for admins, originators, and customers — covering onboarding, deal submission, credit review, contract lifecycle, and a self-service customer portal.",
       "Features multi-step onboarding with document upload, admin deal queue with contract generation, CRM with prospect pipeline, quote builder, amendment requests, and automated payment status tracking via Supabase Edge Functions.",
     ],
     visual: "zoro", rev: true,
+    githubLink: "https://github.com/Raghul-18/Lender.git",
   },
 ];
 
@@ -2801,12 +2809,23 @@ export default function Portfolio() {
                 <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 22, fontWeight: 700, color: "var(--white)", marginBottom: 12 }}>{p.name}</div>
                 {p.desc.map((d, di) => <p key={di} style={{ fontSize: 13, color: "var(--mid)", lineHeight: 1.8, marginBottom: 6 }}>{d}</p>)}
                 <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
-                  {["⌘","↗"].map(ic => (
-                    <a key={ic} href="#" style={{ width: 36, height: 36, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, textDecoration: "none", transition: "background 0.2s" }}
+                  {p.githubLink && (
+                    <a href={p.githubLink} target="_blank" rel="noreferrer" title="View on GitHub" style={{ width: 36, height: 36, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, textDecoration: "none", transition: "background 0.2s" }}
                       onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}
                       onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-                    >{ic}</a>
-                  ))}
+                    >⌘</a>
+                  )}
+                  {p.articleLink && (
+                    <a href={p.articleLink} target="_blank" rel="noreferrer" title="Read Article" style={{ width: 36, height: 36, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, textDecoration: "none", transition: "background 0.2s" }}
+                      onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                    >↗</a>
+                  )}
+                  {!p.githubLink && !p.articleLink && (
+                    ["⌘","↗"].map(ic => (
+                      <a key={ic} href="#" style={{ width: 36, height: 36, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: "var(--mid)", cursor: "default", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, textDecoration: "none", opacity: 0.35 }}>{ic}</a>
+                    ))
+                  )}
                 </div>
               </div>
               <TiltCard dark={dark} style={{ direction:"ltr", borderRadius:16, overflow:"hidden", background: dark?"#1a1a26":"#e8e8f0", aspectRatio:"4/3", display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>

@@ -9,48 +9,39 @@ const FontLink = () => (
 const ROLES = ["Full-Stack Developer", "UI/UX Designer"];
 
 /* ─── HERO TITLE COLOR PAIRS ─── */
-/* Each role maps to a [word1Color, word2Color] pair.
-   Pairs rotate independently on a separate slower cycle so you get
-   fresh combinations without repeating. */
 const COLOR_COMBOS = [
-  /* pair 0 */ ["#ffffff", "#a78bfa"],   // white  + violet
-  /* pair 1 */ ["#f97316", "#ffffff"],   // orange + white
-  /* pair 2 */ ["#22d3ee", "#f472b6"],   // cyan   + pink
-  /* pair 3 */ ["#ffffff", "#34d399"],   // white  + emerald
-  /* pair 4 */ ["#fbbf24", "#ffffff"],   // amber  + white
-  /* pair 5 */ ["#e879f9", "#67e8f9"],   // fuchsia+ sky
-  /* pair 6 */ ["#ffffff", "#fb7185"],   // white  + rose
-  /* pair 7 */ ["#86efac", "#fde047"],   // green  + yellow
+  ["#ffffff", "#a78bfa"],
+  ["#f97316", "#ffffff"],
+  ["#22d3ee", "#f472b6"],
+  ["#ffffff", "#34d399"],
+  ["#fbbf24", "#ffffff"],
+  ["#e879f9", "#67e8f9"],
+  ["#ffffff", "#fb7185"],
+  ["#86efac", "#fde047"],
 ];
 
-/* Letter-by-letter animated title word */
+
+/* ─── ANIMATED GRADIENT MESH ─── */
+function GradientMesh({ dark }) {
+  const colors = dark
+    ? ["#7c3aed","#2563eb","#059669","#7c3aed"]
+    : ["#a78bfa","#60a5fa","#34d399","#a78bfa"];
+  return (
+    <div style={{ position:"absolute", inset:0, overflow:"hidden", pointerEvents:"none", zIndex:0 }}>
+      <div style={{ position:"absolute", width:"70%", height:"70%", top:"-20%", left:"-10%", borderRadius:"50%", background:`radial-gradient(circle, ${colors[0]}18 0%, transparent 70%)`, animation:"floatA 12s ease-in-out infinite", filter:"blur(40px)" }} />
+      <div style={{ position:"absolute", width:"60%", height:"60%", bottom:"-10%", right:"-10%", borderRadius:"50%", background:`radial-gradient(circle, ${colors[1]}14 0%, transparent 70%)`, animation:"floatB 10s ease-in-out infinite 2s", filter:"blur(50px)" }} />
+      <div style={{ position:"absolute", width:"40%", height:"40%", top:"40%", right:"20%", borderRadius:"50%", background:`radial-gradient(circle, ${colors[2]}10 0%, transparent 70%)`, animation:"floatA 14s ease-in-out infinite 4s", filter:"blur(35px)" }} />
+      <div style={{ position:"absolute", inset:0, backgroundImage: dark ? "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)" : "radial-gradient(circle at 1px 1px, rgba(0,0,0,0.04) 1px, transparent 0)", backgroundSize:"32px 32px" }} />
+    </div>
+  );
+}
+
 function AnimWord({ text, color, delay = 0, align = "left" }) {
   const [ref, visible] = useFadeIn();
   return (
-    <span
-      ref={ref}
-      style={{
-        display: "block",
-        color,
-        transition: `color 0.7s cubic-bezier(0.22,1,0.36,1)`,
-        textAlign: align,
-        lineHeight: 1,
-      }}
-    >
+    <span ref={ref} style={{ display: "block", color, transition: "color 0.7s cubic-bezier(0.22,1,0.36,1)", textAlign: align, lineHeight: 1 }}>
       {text.split("").map((ch, i) => (
-        <span
-          key={i}
-          style={{
-            display: "inline-block",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "none" : "translateY(32px) rotate(6deg)",
-            transition: `opacity 0.55s cubic-bezier(0.22,1,0.36,1) ${delay + i * 38}ms,
-                         transform 0.55s cubic-bezier(0.22,1,0.36,1) ${delay + i * 38}ms`,
-            whiteSpace: ch === " " ? "pre" : "normal",
-          }}
-        >
-          {ch === " " ? "\u00a0" : ch}
-        </span>
+        <span key={i} style={{ display: "inline-block", opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(32px) rotate(6deg)", transition: `opacity 0.55s cubic-bezier(0.22,1,0.36,1) ${delay + i * 38}ms, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${delay + i * 38}ms`, whiteSpace: ch === " " ? "pre" : "normal" }}>{ch === " " ? "\u00a0" : ch}</span>
       ))}
     </span>
   );
@@ -89,6 +80,15 @@ const WORK = [
 /* status: live | opensource | indev | private */
 const PROJECTS = [
   {
+    id: 7, tags: ["Python", "Machine Learning", "Continual Learning", "Algorithm", "AI"],
+    name: "DRIFT", status: ["opensource"],
+    desc: [
+      "DRIFT (Dynamic Radius Intelligence with Forgetting Tolerance) — an algorithm designed to prevent catastrophic forgetting in AI systems through adaptive memory protection and continual learning.",
+      "Published research exploring why AI assistants lose prior knowledge during training updates, and a mathematical framework to stop it with adaptive radius-based memory retention.",
+    ],
+    visual: "drift", rev: true
+  },
+  {
     id: 1, tags: ["Golang", "TypeScript", "Gin", "NextJs", "PostgreSQL", "Redis"],
     name: "Gostat", status: ["live", "opensource"],
     desc: [
@@ -122,7 +122,7 @@ const PROJECTS = [
       "Engineered multi-room chat using WebSockets with low-latency message broadcast and scalable handling.",
       "Designed efficient message routing with concurrency-safe operations supporting multiple parallel users.",
     ],
-    visual: "chat",
+    visual: "chat", rev:true,
   },
   {
     id: 5, tags: ["Python", "RAG", "LangChain", "Vector DB", "FastAPI"],
@@ -131,7 +131,16 @@ const PROJECTS = [
       "Built domain-adaptive chatbot using Retrieval-Augmented Generation with vector-based knowledge retrieval.",
       "Optimized search indexing workflows to decrease retrieval latency and enhance response accuracy.",
     ],
-    visual: "ai", rev: true,
+    visual: "ai", 
+  },
+  {
+    id: 6, tags: ["React", "Supabase", "PostgreSQL", "React Query", "Zustand"],
+    name: "Zoro Capital", status: ["private", "indev"],
+    desc: [
+      "Full-stack B2B lending & leasing platform with role-based access for admins, originators, and customers — covering onboarding, deal submission, credit review, contract lifecycle, and a self-service customer portal.",
+      "Features multi-step onboarding with document upload, admin deal queue with contract generation, CRM with prospect pipeline, quote builder, amendment requests, and automated payment status tracking via Supabase Edge Functions.",
+    ],
+    visual: "zoro", rev: true,
   },
 ];
 
@@ -143,6 +152,7 @@ const STATUS_CONFIG = {
 };
 
 const SKILLS = [
+  { label: "Python",       dots: 4 },
   { label: "Golang",       dots: 4 },
   { label: "React/Next",   dots: 5 },
   { label: "TypeScript",   dots: 4 },
@@ -154,16 +164,17 @@ const SKILLS = [
 ];
 
 const SKILL_CARDS = [
-  { title: "Backend",    items: "Golang · Node.js · Gin · REST APIs · Microservices · WebSockets" },
+  { title: "Backend",    items: "Python . Golang · Node.js · Gin · REST APIs · Microservices · WebSockets" },
   { title: "Frontend",   items: "React · NextJs · ReactNative · TypeScript · Tailwind CSS" },
   { title: "Cloud & DB", items: "OCI · Oracle VBCS · PostgreSQL · Redis · MongoDB" },
   { title: "Design",     items: "Figma · Adobe XD · Prototyping · Wireframing · UI/UX" },
   { title: "DevOps",     items: "Docker · Git · JIRA · Kafka · CI/CD · Linux" },
+  { title: "Learning",   items: "Rust · Kubernetes · LLM Fine-tuning", learning: true },
 ];
 
 const ARTICLES_PAGES = [
   [
-    { title: "Building a Real-Time Kafka + Golang Microservice Pipeline", desc: "A hands-on guide to implementing a production-grade event-driven architecture using Apache Kafka, Golang, and Docker Compose from scratch.", emoji: "🦊" },
+    { title: "I Built an Algorithm to Stop AI from Forgetting. Here's What I Found.", desc: "A technical deep dive into DRIFT — Dynamic Radius Intelligence with Forgetting Tolerance — continual learning, adaptive memory, and why existing AI memory tools all miss the same thing.", emoji: "🧠", link: "https://medium.com/@raghul01020405/i-built-an-algorithm-to-stop-ai-from-forgetting-heres-what-i-found-8c8ad6125741" },
     { title: "Dockerizing a Full-Stack App: Beyond the Basics", desc: "Go beyond hello-world Docker setups — multi-stage builds, secrets management, and orchestration patterns for real-world full-stack applications.", emoji: "🐳" },
     { title: "React Patterns You Should Know in 2025", desc: "A deep dive into compound components, render props, custom hooks, and the emerging patterns reshaping how we think about React architecture today.", emoji: "⚛️" },
     { title: "Designing Fault-Tolerant REST APIs with Gin and PostgreSQL", desc: "From connection pooling and graceful shutdowns to retry logic and circuit breakers — how to build APIs that stay up when everything else falls apart.", emoji: "🛡️" },
@@ -183,12 +194,20 @@ const ARTICLES_PAGES = [
 ];
 
 const HERO_ARTICLES = [
-  { title: "Kafka + Golang Microservice Pipeline", desc: "Building a real-time event-driven architecture using Apache Kafka, Golang, and Docker from scratch.", emoji: "🦊" },
-  { title: "Dockerizing a Full-Stack App: Beyond the Basics", desc: "Multi-stage builds, secrets management, and orchestration patterns for real-world apps.", emoji: "🐳" },
-  { title: "React Patterns You Should Know in 2025", desc: "Compound components, render props, and custom hooks reshaping React architecture.", emoji: "⚛️" },
+  { title: "I Built an Algorithm to Stop AI from Forgetting", desc: "DRIFT: adaptive memory protection for continual learning — why AI assistants forget, and how to stop it mathematically.", emoji: "🧠", link: "https://medium.com/@raghul01020405/i-built-an-algorithm-to-stop-ai-from-forgetting-heres-what-i-found-8c8ad6125741" },
 ];
 
-const RESUME_LINK = "https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link";
+const RESUME_LINK = "https://drive.google.com/file/d/1nhl979AV7NmIj4Q0GMf-iMP0ksQfDO16/view?usp=sharing";
+
+/* ─── EMAILJS CONFIG (Vite) ──────────────────────────────────────────
+   Add these to your .env file in the project root:
+     VITE_EMAILJS_SERVICE_ID=your_service_id
+     VITE_EMAILJS_TEMPLATE_ID=your_template_id
+     VITE_EMAILJS_PUBLIC_KEY=your_public_key
+   ------------------------------------------------------------------ */
+const EMAILJS_SERVICE_ID  = "";
+const EMAILJS_TEMPLATE_ID = "";
+const EMAILJS_PUBLIC_KEY  = "";
 
 /* ─── DINO SOUND ENGINE (Web Audio API — no external files needed) ─── */
 function createDinoSounds() {
@@ -271,8 +290,8 @@ function createDinoSounds() {
 /* ─── ICONS ─── */
 const GithubIcon   = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>;
 const LinkedInIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
-const EmailIcon    = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>;
-const TelegramIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>;
+const EmailIcon    = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>;
+const InstagramIcon = () => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>;
 const MenuIcon     = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>;
 const CloseIcon    = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
 const SunIcon      = () => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>;
@@ -318,21 +337,17 @@ function StatusBadge({ type }) {
   );
 }
 
-/* ─── DOT RATING ─── */
+/* ─── SKILL BAR ─── */
 function DotRating({ dots, max = 5, color }) {
   const [ref, visible] = useFadeIn();
+  const pct = (dots / max) * 100;
   return (
-    <span ref={ref} style={{ display: "inline-flex", gap: 4, alignItems: "center" }}>
-      {Array.from({ length: max }).map((_, i) => (
-        <span key={i} style={{
-          width: 7, height: 7, borderRadius: "50%",
-          background: i < dots ? color : "rgba(166,166,166,0.2)",
-          display: "inline-block",
-          transform: visible ? "scale(1)" : "scale(0)",
-          transition: `transform 0.4s cubic-bezier(0.34,1.56,0.64,1) ${i * 60}ms`,
-        }} />
-      ))}
-    </span>
+    <div ref={ref} style={{ display:"flex", alignItems:"center", gap:8, flex:1 }}>
+      <div style={{ flex:1, height:3, borderRadius:2, background:"rgba(128,128,128,0.15)", overflow:"hidden" }}>
+        <div style={{ height:"100%", width: visible ? `${pct}%` : "0%", background: color, borderRadius:2, transition:"width 1s cubic-bezier(0.22,1,0.36,1)" }} />
+      </div>
+      <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Fira Code',monospace", flexShrink:0, width:24, textAlign:"right", fontWeight:500 }}>{dots}<span style={{ opacity:0.4 }}>/{max}</span></span>
+    </div>
   );
 }
 
@@ -453,144 +468,447 @@ function AIVisual() {
   );
 }
 
-/* ─── HERO CAROUSEL ─── */
-function HeroCarousel({ dark, heroSlide, setHeroSlide }) {
-  const trackRef   = useRef(null);
-  const dragRef    = useRef({ dragging: false, startX: 0, startSlide: 0 });
-
-  /* Card dimensions */
-  const CARD_W   = 300;
-  const CARD_GAP = 20;
-  const STEP     = CARD_W + CARD_GAP;
-
-  /* Compute translate so active card is always centred in the viewport */
-  function getTranslate(slide, viewW) {
-    const center = viewW / 2;
-    return center - (slide * STEP + CARD_W / 2);
-  }
-
-  /* ── pointer / touch helpers ── */
-  function onDragStart(clientX) {
-    dragRef.current = { dragging: true, startX: clientX, startSlide: heroSlide };
-  }
-  function onDragEnd(clientX) {
-    if (!dragRef.current.dragging) return;
-    dragRef.current.dragging = false;
-    const dx = clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 40) {
-      const dir = dx < 0 ? 1 : -1;
-      setHeroSlide(s => Math.max(0, Math.min(HERO_ARTICLES.length - 1, s + dir)));
-    }
-  }
-
-  /* mouse */
-  const onMouseDown = e => onDragStart(e.clientX);
-  const onMouseUp   = e => onDragEnd(e.clientX);
-  /* touch */
-  const onTouchStart = e => onDragStart(e.touches[0].clientX);
-  const onTouchEnd   = e => onDragEnd(e.changedTouches[0].clientX);
-
-  const [viewW, setViewW] = useState(800);
-  const wrapRef = useRef(null);
-  useEffect(() => {
-    if (!wrapRef.current) return;
-    const ro = new ResizeObserver(([e]) => setViewW(e.contentRect.width));
-    ro.observe(wrapRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const translate = getTranslate(heroSlide, viewW);
-
+function ZoroVisual() {
+  const statuses = [
+    { label: "Submitted",  color: "#60a5fa" },
+    { label: "In review",  color: "#fbbf24" },
+    { label: "Approved",   color: "#34d399" },
+    { label: "Declined",   color: "#f87171" },
+  ];
+  const rows = [
+    { ref: "ZC-2026-48201", client: "TechWorks Ltd",     amount: "£1,089/mo", st: 2 },
+    { ref: "ZC-2026-51874", client: "BuildRight Co",     amount: "£2,340/mo", st: 1 },
+    { ref: "ZC-2026-39045", client: "Sunrise Bakeries",  amount: "£420/mo",   st: 0 },
+  ];
   return (
-    <div style={{ marginTop: 40 }}>
-      {/* Overflow hidden viewport */}
-      <div
-        ref={wrapRef}
-        style={{ overflow: "hidden", cursor: "grab", userSelect: "none", WebkitUserSelect: "none" }}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
-        onMouseLeave={e => { if (dragRef.current.dragging) onDragEnd(e.clientX); }}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      >
-        {/* Sliding track */}
-        <div
-          ref={trackRef}
-          style={{
-            display: "flex",
-            gap: CARD_GAP,
-            transform: `translateX(${translate}px)`,
-            transition: "transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94)",
-            willChange: "transform",
-            paddingBottom: 4,
-          }}
-        >
-          {HERO_ARTICLES.map((a, i) => {
-            const active = i === heroSlide;
-            return (
-              <div
-                key={i}
-                onClick={() => setHeroSlide(i)}
-                style={{
-                  flex: `0 0 ${CARD_W}px`,
-                  background: active
-                    ? (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)")
-                    : (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"),
-                  border: active
-                    ? (dark ? "1px solid rgba(255,255,255,0.14)" : "1px solid rgba(0,0,0,0.16)")
-                    : (dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)"),
-                  borderRadius: 16,
-                  overflow: "hidden",
-                  opacity: active ? 1 : 0.38,
-                  transform: active ? "scale(1.04)" : "scale(0.96)",
-                  transition: "opacity 0.4s, transform 0.4s, border-color 0.3s, background 0.3s",
-                  cursor: active ? "default" : "pointer",
-                  pointerEvents: "auto",
-                }}
-              >
-                <div style={{ width: "100%", height: 130, background: "linear-gradient(135deg,#2a2a3a,#3a2a4a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 40 }}>
-                  {a.emoji}
-                </div>
-                <div style={{ padding: 16 }}>
-                  <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 8, lineHeight: 1.4 }}>{a.title}</h4>
-                  <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.6, marginBottom: 14 }}>{a.desc}</p>
-                  <a href="#" onClick={e => e.stopPropagation()} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none" }}>Read more</a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 16 }}>
-        <button
-          onClick={() => setHeroSlide(s => Math.max(0, s - 1))}
-          disabled={heroSlide === 0}
-          style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: heroSlide === 0 ? "var(--dark)" : "var(--white)", cursor: heroSlide === 0 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, transition: "color 0.2s", opacity: heroSlide === 0 ? 0.35 : 1 }}>←</button>
-        <button
-          onClick={() => setHeroSlide(s => Math.min(HERO_ARTICLES.length - 1, s + 1))}
-          disabled={heroSlide === HERO_ARTICLES.length - 1}
-          style={{ width: 34, height: 34, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", background: "transparent", color: heroSlide === HERO_ARTICLES.length - 1 ? "var(--dark)" : "var(--white)", cursor: heroSlide === HERO_ARTICLES.length - 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, transition: "color 0.2s", opacity: heroSlide === HERO_ARTICLES.length - 1 ? 0.35 : 1 }}>→</button>
-        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          {HERO_ARTICLES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setHeroSlide(i)}
-              style={{
-                width: i === heroSlide ? 18 : 6,
-                height: 6,
-                borderRadius: 3,
-                border: "none",
-                cursor: "pointer",
-                background: i === heroSlide ? "var(--white)" : "var(--dark)",
-                padding: 0,
-                transition: "all 0.3s cubic-bezier(0.25,0.46,0.45,0.94)",
-              }}
-            />
+    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", gap: 8 }}>
+      {/* Top bar */}
+      <div style={{ background: "#12121e", borderRadius: 8, padding: "8px 12px", display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#f97316", flexShrink: 0 }} />
+        <span style={{ fontFamily: "'Fira Code',monospace", fontSize: 10, color: "#f97316", fontWeight: 700, letterSpacing: 1 }}>ZORO CAPITAL</span>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 4 }}>
+          {["#ff5f57","#febc2e","#28c840"].map(c => (
+            <div key={c} style={{ width: 7, height: 7, borderRadius: "50%", background: c }} />
           ))}
         </div>
       </div>
+      {/* KPI row */}
+      <div style={{ display: "flex", gap: 6 }}>
+        {[
+          { label: "Active contracts", val: "24",   color: "#34d399" },
+          { label: "Portfolio value",  val: "£2.4M", color: "#60a5fa" },
+          { label: "Pending review",   val: "7",    color: "#fbbf24" },
+        ].map(k => (
+          <div key={k.label} style={{ flex: 1, background: "#1a1a2e", borderRadius: 7, padding: "7px 8px" }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: k.color, fontFamily: "'Fira Code',monospace" }}>{k.val}</div>
+            <div style={{ fontSize: 8, color: "#6b6b80", marginTop: 1, lineHeight: 1.3 }}>{k.label}</div>
+          </div>
+        ))}
+      </div>
+      {/* Deal queue rows */}
+      <div style={{ flex: 1, background: "#1a1a2e", borderRadius: 8, overflow: "hidden" }}>
+        <div style={{ padding: "5px 10px", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 6 }}>
+          {["Reference","Client","Status"].map(h => (
+            <div key={h} style={{ fontSize: 8, color: "#6b6b80", fontFamily: "'Fira Code',monospace", textTransform: "uppercase", letterSpacing: .5 }}>{h}</div>
+          ))}
+        </div>
+        {rows.map((r, i) => (
+          <div key={i} style={{ padding: "6px 10px", borderBottom: i < rows.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none", display: "grid", gridTemplateColumns: "1fr 1fr auto", gap: 6, alignItems: "center" }}>
+            <div style={{ fontSize: 8, color: "#f97316", fontFamily: "'Fira Code',monospace" }}>{r.ref}</div>
+            <div style={{ fontSize: 9, color: "#d4d4d4" }}>{r.client}</div>
+            <div style={{ fontSize: 8, fontWeight: 700, color: statuses[r.st].color, background: statuses[r.st].color + "18", borderRadius: 4, padding: "1px 6px", whiteSpace: "nowrap" }}>
+              {statuses[r.st].label}
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Monthly amount */}
+      <div style={{ background: "linear-gradient(90deg,#f9731615,#60a5fa10)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 7, padding: "6px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: 9, color: "#6b6b80" }}>Monthly book</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: "#f97316", fontFamily: "'Fira Code',monospace" }}>£48,200</span>
+      </div>
+    </div>
+  );
+}
+
+// /* ─── DRIFT MINI VISUAL (crisp SVG-based, no emoji) ─── */
+// function DriftMiniVisual() {
+//   const [tick, setTick] = useState(0);
+//   useEffect(() => {
+//     const t = setInterval(() => setTick(n => n + 1), 80);
+//     return () => clearInterval(t);
+//   }, []);
+
+//   const W = 520, H = 144;
+//   const pts = 32;
+//   const forgettingPts = Array.from({ length: pts }, (_, i) => {
+//     const x = (i / (pts - 1)) * W;
+//     const y = snap(H - H * Math.exp(-i / 7) * 0.85 - 2);
+//     return `${x},${y}`;
+//   }).join(" ");
+//   const driftPts = Array.from({ length: pts }, (_, i) => {
+//     const x = snap((i / (pts - 1)) * W);
+//     const decay = Math.exp(-i / 22) * 0.82;
+//     const ripple = Math.sin(i * 0.7 + tick * 0.18) * 0.025;
+//     const y = H - H * (decay + ripple + 0.1) - 2;
+//     return `${x},${y}`;
+//   }).join(" ");
+
+//   const nodes = [
+//     { cx: 22,  cy: 28, r: 5,  label: "M₁", protected: true  },
+//     { cx: 62,  cy: 16, r: 4.5,label: "M₂", protected: true  },
+//     { cx: 104, cy: 30, r: 6,  label: "M₃", protected: false },
+//     { cx: 146, cy: 14, r: 4.5,label: "M₄", protected: true  },
+//     { cx: 186, cy: 26, r: 5,  label: "M₅", protected: true  },
+//   ];
+//   const edges = [[0,1],[1,2],[2,3],[3,4],[0,3]];
+//   const pulse = (base, i) => base + Math.sin(tick * 0.12 + i * 1.1) * 1.2;
+
+//   return (
+//     <div style={{ width:"100%", height:"100%", background:"#0d1117", display:"flex", flexDirection:"column", gap:6, padding:"12px 14px", fontFamily:"'Fira Code',monospace", overflow:"hidden" }}>
+//       {/* Header row */}
+//       <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+//         <div style={{ display:"flex", alignItems:"center", gap:5 }}>
+//           <span style={{ width:5, height:5, borderRadius:"50%", background:"#a78bfa", display:"inline-block", animation:"pulse 1.8s infinite" }} />
+//           <span style={{ fontSize:8, color:"#a78bfa", letterSpacing:"0.1em", fontWeight:700 }}>DRIFT</span>
+//         </div>
+//         <span style={{ fontSize:7, color:"#3d4a5a", letterSpacing:"0.06em" }}>MEMORY PROTECTION ACTIVE</span>
+//       </div>
+
+//       {/* Neural graph */}
+//       <div style={{ background:"#111827", borderRadius:7, padding:"6px 8px" }}>
+//         <span style={{ fontSize:7, color:"#3d4a5a", display:"block", marginBottom:4 }}>MEMORY GRAPH · T+{tick % 99 + 1}</span>
+//         <svg width="100%" viewBox="0 0 210 46" style={{ display:"block", overflow:"visible" }}>
+//           {edges.map(([a,b], i) => (
+//             <line key={i}
+//               x1={nodes[a].cx} y1={nodes[a].cy}
+//               x2={nodes[b].cx} y2={nodes[b].cy}
+//               stroke={nodes[a].protected && nodes[b].protected ? "rgba(167,139,250,0.28)" : "rgba(255,255,255,0.07)"}
+//               strokeWidth="0.9"
+//               strokeDasharray={nodes[a].protected && nodes[b].protected ? "none" : "3,3"}
+//             />
+//           ))}
+//           {nodes.map((n, i) => (
+//             <g key={i}>
+//               {n.protected && (
+//                 <circle cx={n.cx} cy={n.cy} r={pulse(n.r + 5.5, i)}
+//                   fill="none" stroke="rgba(167,139,250,0.18)" strokeWidth="0.9" />
+//               )}
+//               <circle cx={n.cx} cy={n.cy} r={pulse(n.r, i)}
+//                 fill={n.protected ? "rgba(167,139,250,0.22)" : "rgba(239,68,68,0.15)"}
+//                 stroke={n.protected ? "#a78bfa" : "#ef4444"}
+//                 strokeWidth="1.1"
+//               />
+//               <text x={n.cx} y={n.cy + 3} textAnchor="middle" fontSize="5.5" fill={n.protected ? "#c4b5fd" : "#fca5a5"} fontFamily="'Fira Code',monospace">{n.label}</text>
+//             </g>
+//           ))}
+//         </svg>
+//       </div>
+
+//       {/* Retention curves */}
+//       <div style={{ background:"#111827", borderRadius:7, padding:"5px 8px", flex:1 }}>
+//         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:3 }}>
+//           <span style={{ fontSize:7, color:"#3d4a5a" }}>RETENTION OVER TIME</span>
+//           <div style={{ display:"flex", gap:8 }}>
+//             <span style={{ fontSize:6.5, color:"#ef4444", display:"flex", alignItems:"center", gap:2 }}>
+//               <svg width="10" height="3" viewBox="0 0 10 3"><line x1="0" y1="1.5" x2="10" y2="1.5" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="2,2"/></svg>
+//               No protection
+//             </span>
+//             <span style={{ fontSize:6.5, color:"#a78bfa", display:"flex", alignItems:"center", gap:2 }}>
+//               <svg width="10" height="3" viewBox="0 0 10 3"><line x1="0" y1="1.5" x2="10" y2="1.5" stroke="#a78bfa" strokeWidth="1.5"/></svg>
+//               DRIFT
+//             </span>
+//           </div>
+//         </div>
+//         <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{ display:"block" }}>
+//           {[0.25,0.5,0.75].map(f => (
+//             <line key={f} x1="0" y1={H*f} x2={W} y2={H*f} stroke="rgba(255,255,255,0.035)" strokeWidth="1"/>
+//           ))}
+//           <polyline points={forgettingPts} fill="none" stroke="#ef4444" strokeWidth="1.2" strokeDasharray="3,3" opacity="0.7"/>
+//           <polyline points={`0,${H} ${driftPts} ${W},${H}`} fill="rgba(167,139,250,0.07)" stroke="none"/>
+//           <polyline points={driftPts} fill="none" stroke="#a78bfa" strokeWidth="1.5" opacity="0.9"/>
+//         </svg>
+//       </div>
+
+//       {/* Stats row */}
+//       <div style={{ display:"flex", gap:4 }}>
+//         {[
+//           { label:"Radius", val:"adaptive", color:"#a78bfa" },
+//           { label:"FT Score", val:(0.91 + Math.sin(tick*0.05)*0.02).toFixed(2), color:"#34d399" },
+//           { label:"Forgetting", val:"↓ 73%", color:"#fbbf24" },
+//         ].map(s => (
+//           <div key={s.label} style={{ flex:1, background:"rgba(255,255,255,0.025)", border:"1px solid rgba(255,255,255,0.05)", borderRadius:5, padding:"3px 5px" }}>
+//             <div style={{ fontSize:6.5, color:"#3d4a5a", marginBottom:1 }}>{s.label}</div>
+//             <div style={{ fontSize:8, fontWeight:700, color:s.color }}>{s.val}</div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+function DriftMiniVisual() {
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setTick(n => n + 1), 80);
+    return () => clearInterval(t);
+  }, []);
+
+  // 🔥 Retina resolution
+  const W = 520, H = 144;
+  const pts = 40;
+
+  const snap = (n) => Math.round(n * 2) / 2;
+
+  // 🔥 Smooth path generator (instead of polyline)
+  const buildPath = (points) => {
+    let d = `M ${points[0][0]} ${points[0][1]}`;
+    for (let i = 1; i < points.length - 1; i++) {
+      const [x0, y0] = points[i - 1];
+      const [x1, y1] = points[i];
+      const [x2, y2] = points[i + 1];
+
+      const cx = (x1 + x2) / 2;
+      const cy = (y1 + y2) / 2;
+
+      d += ` Q ${x1} ${y1} ${cx} ${cy}`;
+    }
+    return d;
+  };
+
+  const forgettingArr = Array.from({ length: pts }, (_, i) => {
+    const x = snap((i / (pts - 1)) * W);
+    const y = snap(H - H * Math.exp(-i / 7) * 0.85 - 2);
+    return [x, y];
+  });
+
+  const driftArr = Array.from({ length: pts }, (_, i) => {
+    const x = snap((i / (pts - 1)) * W);
+    const decay = Math.exp(-i / 22) * 0.82;
+    const ripple = Math.sin(i * 0.7 + tick * 0.18) * 0.02;
+    const y = snap(H - H * (decay + ripple + 0.1) - 2);
+    return [x, y];
+  });
+
+  const forgettingPath = buildPath(forgettingArr);
+  const driftPath = buildPath(driftArr);
+
+  const nodes = [
+    { cx: 44,  cy: 56, r: 6,  label: "M₁", protected: true  },
+    { cx: 124, cy: 32, r: 5,  label: "M₂", protected: true  },
+    { cx: 208, cy: 60, r: 7,  label: "M₃", protected: false },
+    { cx: 292, cy: 28, r: 5,  label: "M₄", protected: true  },
+    { cx: 372, cy: 52, r: 6,  label: "M₅", protected: true  },
+  ];
+
+  const edges = [[0,1],[1,2],[2,3],[3,4],[0,3]];
+
+  const pulse = (base, i) =>
+    snap(base + Math.sin(tick * 0.12 + i * 1.1) * 1);
+
+  return (
+    <div style={{
+      width:"100%",
+      height:"100%",
+      background:"#0d1117",
+      display:"flex",
+      flexDirection:"column",
+      gap:6,
+      padding:"12px 14px",
+      fontFamily:"'Fira Code',monospace",
+      overflow:"hidden",
+      transform:"translateZ(0)"
+    }}>
+
+      {/* HEADER */}
+      <div style={{ display:"flex", justifyContent:"space-between" }}>
+        <div style={{ display:"flex", gap:5, alignItems:"center" }}>
+          <span style={{ width:5, height:5, borderRadius:"50%", background:"#a78bfa" }} />
+          <span style={{ fontSize:8, color:"#a78bfa", fontWeight:700 }}>DRIFT</span>
+        </div>
+        <span style={{ fontSize:7, color:"#3d4a5a" }}>MEMORY PROTECTION ACTIVE</span>
+      </div>
+
+      {/* GRAPH */}
+      <div style={{ background:"#111827", borderRadius:7, padding:"6px 8px" }}>
+        <span style={{ fontSize:7, color:"#3d4a5a" }}>
+          MEMORY GRAPH · T+{tick % 99 + 1}
+        </span>
+
+        <svg
+          width="100%"
+          viewBox="0 0 420 90"
+          style={{ display:"block", shapeRendering:"geometricPrecision" }}
+        >
+          <defs>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="1.2" result="b"/>
+              <feMerge>
+                <feMergeNode in="b"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          {edges.map(([a,b], i) => (
+            <line
+              key={i}
+              x1={nodes[a].cx} y1={nodes[a].cy}
+              x2={nodes[b].cx} y2={nodes[b].cy}
+              stroke="rgba(167,139,250,0.25)"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+
+          {nodes.map((n, i) => (
+            <g key={i} filter={n.protected ? "url(#glow)" : "none"}>
+              {n.protected && (
+                <circle
+                  cx={n.cx}
+                  cy={n.cy}
+                  r={pulse(n.r + 6, i)}
+                  fill="none"
+                  stroke="rgba(167,139,250,0.15)"
+                />
+              )}
+              <circle
+                cx={n.cx}
+                cy={n.cy}
+                r={pulse(n.r, i)}
+                fill={n.protected ? "rgba(167,139,250,0.25)" : "rgba(239,68,68,0.15)"}
+                stroke={n.protected ? "#a78bfa" : "#ef4444"}
+                strokeWidth="1.2"
+              />
+              <text
+                x={n.cx}
+                y={n.cy}
+                fontSize="6"
+                textAnchor="middle"
+                dominantBaseline="middle"
+                fill={n.protected ? "#c4b5fd" : "#fca5a5"}
+              >
+                {n.label}
+              </text>
+            </g>
+          ))}
+        </svg>
+      </div>
+
+      {/* CURVES */}
+      <div style={{ background:"#111827", borderRadius:7, padding:"5px 8px", flex:1 }}>
+        <svg
+          width="100%"
+          viewBox={`0 0 ${W} ${H}`}
+          style={{ display:"block", shapeRendering:"geometricPrecision" }}
+        >
+          <path
+            d={forgettingPath}
+            fill="none"
+            stroke="#ef4444"
+            strokeWidth="1.2"
+            strokeDasharray="3,3"
+            opacity="0.7"
+            vectorEffect="non-scaling-stroke"
+          />
+
+          <path
+            d={driftPath}
+            fill="none"
+            stroke="#a78bfa"
+            strokeWidth="1.6"
+            vectorEffect="non-scaling-stroke"
+          />
+
+          <path
+            d={`${driftPath} L ${W} ${H} L 0 ${H} Z`}
+            fill="rgba(167,139,250,0.06)"
+          />
+        </svg>
+      </div>
+
+      {/* STATS */}
+      <div style={{ display:"flex", gap:4 }}>
+        {[
+          { label:"Radius", val:"adaptive", color:"#a78bfa" },
+          { label:"FT Score", val:(0.91 + Math.sin(tick*0.05)*0.02).toFixed(2), color:"#34d399" },
+          { label:"Forgetting", val:"↓ 73%", color:"#fbbf24" },
+        ].map(s => (
+          <div key={s.label} style={{
+            flex:1,
+            background:"rgba(255,255,255,0.025)",
+            border:"1px solid rgba(255,255,255,0.05)",
+            borderRadius:5,
+            padding:"3px 5px"
+          }}>
+            <div style={{ fontSize:6.5, color:"#3d4a5a" }}>{s.label}</div>
+            <div style={{ fontSize:8, fontWeight:700, color:s.color }}>{s.val}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+/* ─── HERO FEATURED ARTICLE (replaces carousel when only 1 item) ─── */
+function HeroCarousel({ dark }) {
+  const a = HERO_ARTICLES[0];
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div style={{ marginTop: 40, opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.75s forwards" }}>
+      {/* Label */}
+      <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+        <span style={{ fontFamily:"'Fira Code',monospace", fontSize:10, color:"var(--mid)", letterSpacing:"0.08em" }}>... /latest-writing ...</span>
+        <span style={{ height:1, flex:1, maxWidth:60, background: dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)" }} />
+      </div>
+
+      {/* Featured card — horizontal split */}
+      <a
+        href={a.link || "#"}
+        target={a.link ? "_blank" : undefined}
+        rel="noreferrer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "200px 1fr",
+          borderRadius: 16,
+          overflow: "hidden",
+          border: dark
+            ? `1px solid ${hovered ? "rgba(167,139,250,0.35)" : "rgba(255,255,255,0.08)"}`
+            : `1px solid ${hovered ? "rgba(109,40,217,0.3)"  : "rgba(0,0,0,0.08)"}`,
+          background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.025)",
+          textDecoration: "none",
+          transition: "border-color 0.3s, box-shadow 0.3s, transform 0.35s cubic-bezier(0.22,1,0.36,1)",
+          transform: hovered ? "translateY(-3px)" : "none",
+          boxShadow: hovered
+            ? (dark ? "0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.12)" : "0 12px 36px rgba(0,0,0,0.1)")
+            : "none",
+          maxWidth: 580,
+        }}
+      >
+        {/* Left — DRIFT live visual */}
+        <div style={{ height: 160, overflow:"hidden", flexShrink:0, position:"relative" }}>
+          <DriftMiniVisual />
+          {/* Subtle right-edge fade into the card body */}
+          <div style={{ position:"absolute", top:0, right:0, width:32, height:"100%", background: dark ? "linear-gradient(to right, transparent, rgba(18,18,18,0.55))" : "linear-gradient(to right, transparent, rgba(240,240,240,0.55))", pointerEvents:"none" }} />
+        </div>
+
+        {/* Right — text content */}
+        <div style={{ padding:"18px 20px", display:"flex", flexDirection:"column", justifyContent:"center", gap:8 }}>
+          {/* Badge */}
+          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <span style={{ fontFamily:"'Fira Code',monospace", fontSize:9, color:"#a78bfa", background:"rgba(167,139,250,0.1)", border:"1px solid rgba(167,139,250,0.2)", borderRadius:50, padding:"2px 8px", letterSpacing:"0.06em" }}>FEATURED ARTICLE</span>
+          </div>
+          <h4 style={{ fontFamily:"'Fira Code',monospace", fontSize:13, fontWeight:600, color:"var(--white)", lineHeight:1.45, margin:0 }}>{a.title}</h4>
+          <p style={{ fontSize:11, color:"var(--mid)", lineHeight:1.65, margin:0 }}>{a.desc}</p>
+          <div style={{ display:"inline-flex", alignItems:"center", gap:6, marginTop:2 }}>
+            <span style={{ fontSize:11, fontWeight:600, color: hovered ? "#a78bfa" : "var(--light)", transition:"color 0.25s", fontFamily:"'Open Sans',sans-serif" }}>Read on Medium</span>
+            <span style={{ fontSize:13, color: hovered ? "#a78bfa" : "var(--mid)", transition:"color 0.25s, transform 0.25s", display:"inline-block", transform: hovered ? "translateX(3px)" : "none" }}>→</span>
+          </div>
+        </div>
+      </a>
     </div>
   );
 }
@@ -744,7 +1062,7 @@ function DinoModal({ onClose, dark }) {
       dino:     { x: 80, y: GND, w: 40, h: 48, vy: 0, onGround: true, dead: false, frame: 0, frameTimer: 0, wasOnGround: true },
       obstacles: [],
       score:    0,
-      hi:       0,
+      hi:       (() => { try { return parseInt(localStorage.getItem('dino_hi') || '0'); } catch(e) { return 0; } })(),
       speed:    SPD0,
       spawnT:   0,
       started:  false,
@@ -987,7 +1305,10 @@ function DinoModal({ onClose, dark }) {
             d.dead     = true;
             state.shake = 1;
             play("die");
-            if (state.score > state.hi) state.hi = state.score;
+            if (state.score > state.hi) {
+              state.hi = state.score;
+              try { localStorage.setItem('dino_hi', String(state.hi)); } catch(e) {}
+            }
             // death explosion particles
             for (let i = 0; i < 14; i++) {
               const angle = (i / 14) * Math.PI * 2;
@@ -1079,7 +1400,6 @@ function DinoModal({ onClose, dark }) {
   );
 }
 
-
 /* ─── FOOTER QUOTE ─── */
 const FOOTER_QUOTES = [
   { line: "Let's build something", accent: "extraordinary." },
@@ -1125,92 +1445,191 @@ function FooterQuote({ dark }) {
 }
 
 /* ─── CONTACT FORM ─── */
-function ContactForm({ dark }) {
-  const [form, setForm]   = useState({ name: "", email: "", subject: "", message: "" });
-  const [status, setStatus] = useState("idle");
+function FloatInput({ name, placeholder, value, onChange, type = "text", dark, error }) {
+  const [focused, setFocused] = useState(false);
+  const filled = value.length > 0;
+  const active = focused || filled;
   const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
-  const border = dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.1)";
-  const color = dark ? "#f5f5f5" : "#121212";
-  const ph = dark ? "#a6a6a6" : "#888";
-  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+  const borderC = error
+    ? "#e06c75"
+    : focused
+    ? dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"
+    : dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)";
+  return (
+    <div style={{ position: "relative", width: "100%" }}>
+      <label style={{ position: "absolute", left: 14, top: active ? 6 : "50%", transform: active ? "none" : "translateY(-50%)", fontSize: active ? 10 : 13, color: error ? "#e06c75" : focused ? (dark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)") : "var(--mid)", transition: "all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents: "none", fontFamily: "'Open Sans',sans-serif", zIndex: 1 }}>
+        {placeholder}
+      </label>
+      <input name={name} type={type} value={value} onChange={onChange}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ width: "100%", background: bg, border: `1px solid ${borderC}`, borderRadius: 10, padding: active ? "22px 14px 8px" : "14px 14px", color: dark ? "#f5f5f5" : "#121212", fontSize: 13, fontFamily: "'Open Sans',sans-serif", outline: "none", transition: "border-color 0.2s, padding 0.2s", boxSizing: "border-box" }} />
+    </div>
+  );
+}
+
+function FloatTextarea({ name, placeholder, value, onChange, dark, error }) {
+  const [focused, setFocused] = useState(false);
+  const filled = value.length > 0;
+  const active = focused || filled;
+  const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+  const borderC = error
+    ? "#e06c75"
+    : focused
+    ? dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"
+    : dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)";
+  return (
+    <div style={{ position: "relative", width: "100%" }}>
+      <label style={{ position: "absolute", left: 14, top: active ? 8 : 14, fontSize: active ? 10 : 13, color: error ? "#e06c75" : focused ? (dark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)") : "var(--mid)", transition: "all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents: "none", fontFamily: "'Open Sans',sans-serif", zIndex: 1 }}>
+        {placeholder}
+      </label>
+      <textarea name={name} value={value} onChange={onChange}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ width: "100%", background: bg, border: `1px solid ${borderC}`, borderRadius: 10, padding: active ? "26px 14px 10px" : "14px", color: dark ? "#f5f5f5" : "#121212", fontSize: 13, fontFamily: "'Open Sans',sans-serif", outline: "none", resize: "vertical", minHeight: 120, transition: "border-color 0.2s", boxSizing: "border-box" }} />
+    </div>
+  );
+}
+
+function ContactForm({ dark }) {
+  const [form, setForm]     = useState({ name: "", email: "", subject: "", message: "" });
+  const [errors, setErrors] = useState({ name: false, email: false, subject: false, message: false });
+  const [touched, setTouched] = useState({ name: false, email: false, subject: false, message: false });
+  const [status, setStatus] = useState("idle");
+  const [flying, setFlying] = useState(false);
+
+  const validate = (field, value) => {
+    if (field === "email") return value.trim() === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    return value.trim() === "";
+  };
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+    if (touched[name]) setErrors(er => ({ ...er, [name]: validate(name, value) }));
+  };
+
+  const handleBlur = e => {
+    const { name, value } = e.target;
+    setTouched(t => ({ ...t, [name]: true }));
+    setErrors(er => ({ ...er, [name]: validate(name, value) }));
+  };
+
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.message) return;
+    const newTouched = { name: true, email: true, subject: true, message: true };
+    const newErrors = {
+      name:    validate("name",    form.name),
+      email:   validate("email",   form.email),
+      subject: validate("subject", form.subject),
+      message: validate("message", form.message),
+    };
+    setTouched(newTouched);
+    setErrors(newErrors);
+    if (Object.values(newErrors).some(Boolean)) return;
+
+    setFlying(true);
     setStatus("sending");
     try {
-      // ─────────────────────────────────────────────────────
-      // EMAILJS SETUP — replace these 3 values:
-      // 1. Sign up free at https://www.emailjs.com
-      // 2. Add Email Service (Gmail etc.) → copy Service ID
-      // 3. Create Template using {{from_name}}, {{from_email}}, {{subject}}, {{message}} → copy Template ID
-      // 4. Account → API Keys → copy Public Key
-      const SERVICE_ID  = "YOUR_SERVICE_ID";
-      const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-      const PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
-      // ─────────────────────────────────────────────────────
       const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ service_id: SERVICE_ID, template_id: TEMPLATE_ID, user_id: PUBLIC_KEY,
+        body: JSON.stringify({ service_id: EMAILJS_SERVICE_ID, template_id: EMAILJS_TEMPLATE_ID, user_id: EMAILJS_PUBLIC_KEY,
           template_params: { from_name: form.name, from_email: form.email, subject: form.subject, message: form.message } }),
       });
-      if (res.ok) { setStatus("success"); setForm({ name: "", email: "", subject: "", message: "" }); }
+      if (res.ok) { setStatus("success"); setForm({ name: "", email: "", subject: "", message: "" }); setTouched({ name: false, email: false, subject: false, message: false }); setErrors({ name: false, email: false, subject: false, message: false }); }
       else setStatus("error");
     } catch { setStatus("error"); }
   };
-  const inp = { width: "100%", background: bg, border, borderRadius: 10, padding: "12px 14px", color, fontSize: 13, fontFamily: "'Open Sans',sans-serif", outline: "none", transition: "border-color 0.2s", boxSizing: "border-box" };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <style>{`.ci::placeholder{color:${ph}}.ci:focus{border-color:rgba(255,255,255,0.25)!important}`}</style>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="contact-form-grid">
-        <input className="ci" style={inp} name="name" placeholder="Your name" value={form.name} onChange={handleChange} />
-        <input className="ci" style={inp} name="email" placeholder="your@email.com" value={form.email} onChange={handleChange} />
+        <FloatInput dark={dark} name="name"    placeholder="Your name"      value={form.name}    onChange={handleChange} onBlur={handleBlur} error={errors.name} />
+        <FloatInput dark={dark} name="email"   placeholder="your@email.com" value={form.email}   onChange={handleChange} onBlur={handleBlur} error={errors.email} type="email" />
       </div>
-      <input className="ci" style={inp} name="subject" placeholder="Subject" value={form.subject} onChange={handleChange} />
-      <textarea className="ci" style={{ ...inp, minHeight: 120, resize: "vertical" }} name="message" placeholder="Your message..." value={form.message} onChange={handleChange} />
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <button onClick={handleSubmit} disabled={status === "sending"} style={{ background: dark ? "#fff" : "#121212", color: dark ? "#121212" : "#fff", border: "none", borderRadius: 50, padding: "11px 26px", fontFamily: "'Open Sans',sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer", opacity: status === "sending" ? 0.6 : 1 }}>
-          {status === "sending" ? "Sending…" : "Send Message →"}
-        </button>
-        {status === "success" && <span style={{ fontSize: 12, color: "#22c55e" }}>✓ Message sent!</span>}
-        {status === "error"   && <span style={{ fontSize: 12, color: "#e06c75" }}>Something went wrong. Try again.</span>}
+      <FloatInput   dark={dark} name="subject" placeholder="Subject"        value={form.subject} onChange={handleChange} onBlur={handleBlur} error={errors.subject} />
+      <FloatTextarea dark={dark} name="message" placeholder="Your message…" value={form.message} onChange={handleChange} onBlur={handleBlur} error={errors.message} />
+      <div style={{ display: "flex", alignItems: "center", gap: 14, minHeight: 38 }}>
+        {flying ? (
+          <PaperPlane onDone={() => setFlying(false)} />
+        ) : (
+          <button onClick={handleSubmit} disabled={status === "sending"} style={{ background: dark ? "#fff" : "#121212", color: dark ? "#121212" : "#fff", border: "none", borderRadius: 50, padding: "11px 26px", fontFamily: "'Open Sans',sans-serif", fontWeight: 600, fontSize: 13, cursor: "pointer", opacity: status === "sending" ? 0.6 : 1, position: "relative", overflow: "hidden" }}>
+            {status === "sending" ? "Sending…" : "Send Message →"}
+          </button>
+        )}
+        {status === "success" && !flying && <span style={{ fontSize: 12, color: "#22c55e" }}>✓ Message sent!</span>}
+        {status === "error"   && !flying && <span style={{ fontSize: 12, color: "#e06c75" }}>Something went wrong.</span>}
       </div>
     </div>
   );
 }
 
-/* ─── HERO TITLE COLOR PAIRS ─── */
-// Each pair: [word1color, word2color]
-// They cycle independently — word1 runs on one interval, word2 on a staggered one
+
+/* ─── HERO COLOR PAIRS ─── */
 const HERO_COLOR_PAIRS_DARK = [
-  ["#ffffff", "#a78bfa"],   // white  + violet
-  ["#f472b6", "#ffffff"],   // pink   + white
-  ["#38bdf8", "#fb923c"],   // sky    + orange
-  ["#4ade80", "#ffffff"],   // green  + white
-  ["#ffffff", "#f472b6"],   // white  + pink
-  ["#fb923c", "#38bdf8"],   // orange + sky
-  ["#a78bfa", "#4ade80"],   // violet + green
-  ["#ffffff", "#facc15"],   // white  + yellow
+  ["#ffffff", "#a78bfa"],
+  ["#f472b6", "#ffffff"],
+  ["#38bdf8", "#fb923c"],
+  ["#4ade80", "#ffffff"],
+  ["#ffffff", "#f472b6"],
+  ["#fb923c", "#38bdf8"],
+  ["#a78bfa", "#4ade80"],
+  ["#ffffff", "#facc15"],
 ];
 const HERO_COLOR_PAIRS_LIGHT = [
-  ["#121212", "#7c3aed"],   // black  + purple
-  ["#db2777", "#121212"],   // pink   + black
-  ["#0284c7", "#ea580c"],   // blue   + orange
-  ["#16a34a", "#121212"],   // green  + black
-  ["#121212", "#db2777"],   // black  + pink
-  ["#ea580c", "#0284c7"],   // orange + blue
-  ["#7c3aed", "#16a34a"],   // purple + green
-  ["#121212", "#ca8a04"],   // black  + amber
+  ["#121212", "#7c3aed"],
+  ["#db2777", "#121212"],
+  ["#0284c7", "#ea580c"],
+  ["#16a34a", "#121212"],
+  ["#121212", "#db2777"],
+  ["#ea580c", "#0284c7"],
+  ["#7c3aed", "#16a34a"],
+  ["#121212", "#ca8a04"],
 ];
+
+const GLITCH_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&";
+
+function useGlitchText(target) {
+  const [display, setDisplay] = useState(target);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    let frame = 0;
+    const totalFrames = 18;
+    const len = Math.max(target.length, display.length);
+
+    function tick() {
+      frame++;
+      const progress = frame / totalFrames;
+      const resolved = Math.floor(progress * target.length);
+      let next = "";
+      for (let i = 0; i < len; i++) {
+        if (i < resolved) {
+          next += target[i] ?? "";
+        } else if (i < target.length) {
+          next += GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+        } else {
+          next += "";
+        }
+      }
+      setDisplay(next);
+      if (frame < totalFrames) rafRef.current = setTimeout(tick, 28);
+      else setDisplay(target);
+    }
+
+    rafRef.current = setTimeout(tick, 0);
+    return () => clearTimeout(rafRef.current);
+  }, [target]);
+
+  return display;
+}
 
 function HeroTitle({ dark, roleIdx, roleVisible }) {
   const pairs = dark ? HERO_COLOR_PAIRS_DARK : HERO_COLOR_PAIRS_LIGHT;
-
-  // Word 1 cycles on its own cadence, Word 2 is offset
   const [w1pair, setW1pair] = useState(0);
-  const [w2pair, setW2pair] = useState(3); // start offset
+  const [w2pair, setW2pair] = useState(3);
   const [w1vis,  setW1vis]  = useState(true);
   const [w2vis,  setW2vis]  = useState(true);
 
-  // Word 1 color cycles every ~2.4s
   useEffect(() => {
     const t = setInterval(() => {
       setW1vis(false);
@@ -1219,22 +1638,25 @@ function HeroTitle({ dark, roleIdx, roleVisible }) {
     return () => clearInterval(t);
   }, [pairs.length]);
 
-  // Word 2 cycles every ~3.1s, offset start
   useEffect(() => {
+    let t2;
     const delay = setTimeout(() => {
-      const t = setInterval(() => {
+      t2 = setInterval(() => {
         setW2vis(false);
         setTimeout(() => { setW2pair(i => (i + 1) % pairs.length); setW2vis(true); }, 350);
       }, 3100);
-      return () => clearInterval(t);
     }, 1200);
-    return () => clearTimeout(delay);
+    return () => { clearTimeout(delay); clearInterval(t2); };
   }, [pairs.length]);
 
-  const word1 = ROLES[roleIdx].split(" ")[0];
-  const word2 = ROLES[roleIdx].split(" ").slice(1).join(" ");
+  const role = ROLES[roleIdx];
+  const word1 = role.split(" ")[0];
+  const word2 = role.split(" ").slice(1).join(" ");
   const color1 = pairs[w1pair][0];
   const color2 = pairs[w2pair][1];
+
+  const glitchWord1 = useGlitchText(word1);
+  const glitchWord2 = useGlitchText(word2);
 
   const baseStyle = {
     fontFamily: "'Fira Code',monospace",
@@ -1246,1023 +1668,749 @@ function HeroTitle({ dark, roleIdx, roleVisible }) {
 
   return (
     <>
-      {/* Row 1: Word 1 + CTA button */}
       <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s forwards" }}>
-        <div
-          className="hero-title-size"
-          style={{
-            ...baseStyle,
-            color: color1,
-            opacity: (roleVisible && w1vis) ? 1 : 0,
-            transform: (roleVisible && w1vis) ? "none" : "translateY(10px)",
-            transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)",
-            willChange: "color, opacity, transform",
-          }}
-        >
-          {word1}
+        <div className="hero-title-size" style={{ ...baseStyle, color: color1, opacity: (roleVisible && w1vis) ? 1 : 0, transform: (roleVisible && w1vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform" }}>
+          {glitchWord1}
         </div>
-        <button
-          id="cat-spawn-btn"
-          onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
-          style={{
-            display: "flex", alignItems: "center", gap: 8,
-            background: "var(--white)", color: "var(--bg)",
-            border: "none", borderRadius: 50, padding: "12px 24px",
-            fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600,
-            cursor: "pointer", whiteSpace: "nowrap",
-            transition: "transform 0.2s, box-shadow 0.2s",
-            backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)",
-            backgroundSize: "200% auto",
-            animation: "shimmer 3s linear infinite",
-            position: "relative",
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}
-        >
-          Projects
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ opacity: 0.6 }}>
-            <ellipse cx="6"  cy="7"  rx="2.5" ry="3"/>
-            <ellipse cx="18" cy="7"  rx="2.5" ry="3"/>
-            <ellipse cx="10" cy="4"  rx="2"   ry="2.5"/>
-            <ellipse cx="14" cy="4"  rx="2"   ry="2.5"/>
-            <path d="M12 10c-4 0-7 3-6 7 .5 2 2 3 3.5 2.5.8-.3 1.7-.5 2.5-.5s1.7.2 2.5.5c1.5.5 3-.5 3.5-2.5 1-4-2-7-6-7z"/>
-          </svg>
-        </button>
       </div>
-
-      {/* Row 2: Word 2, right-aligned */}
-      <div
-        className="hero-title-size"
-        style={{
-          ...baseStyle,
-          color: color2,
-          textAlign: "right",
-          opacity: (roleVisible && w2vis) ? 1 : 0,
-          transform: (roleVisible && w2vis) ? "none" : "translateY(10px)",
-          transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)",
-          willChange: "color, opacity, transform",
-          animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both",
-        }}
-      >
-        {word2}
+      <div className="hero-title-size" style={{ ...baseStyle, color: color2, textAlign: "right", opacity: (roleVisible && w2vis) ? 1 : 0, transform: (roleVisible && w2vis) ? "none" : "translateY(10px)", transition: "opacity 0.38s cubic-bezier(0.22,1,0.36,1), transform 0.38s cubic-bezier(0.22,1,0.36,1), color 0.55s cubic-bezier(0.22,1,0.36,1)", willChange: "color, opacity, transform", animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both" }}>
+        {glitchWord2}
       </div>
     </>
   );
 }
 
-/* ══════════════════════════════════════════════════════
-   ─── PIXEL CAT SYSTEM ───────────────────────────────
-   ══════════════════════════════════════════════════════ */
 
-/* App palette — ball colors cycle through these */
-const CAT_PALETTE = [
-  "#a78bfa","#f472b6","#38bdf8","#fb923c",
-  "#4ade80","#facc15","#e06c75","#2cb67d",
-  "#ffffff","#7c3aed","#db2777","#0284c7",
+/* ─── CUSTOM CURSOR ─── */
+function CustomCursor() {
+  const dotRef  = useRef(null);
+  const ringRef = useRef(null);
+  const pos     = useRef({ x: -100, y: -100 });
+  const ring    = useRef({ x: -100, y: -100 });
+  const hovering = useRef(false);
+  const rafId   = useRef(null);
+
+  useEffect(() => {
+    const onMove = e => { pos.current = { x: e.clientX, y: e.clientY }; };
+    const onOver = e => {
+      const t = e.target.closest('a,button,[data-magnetic]');
+      hovering.current = !!t;
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseover", onOver);
+
+    function tick() {
+      rafId.current = requestAnimationFrame(tick);
+      const dot  = dotRef.current;
+      const rng  = ringRef.current;
+      if (!dot || !rng) return;
+      dot.style.transform  = `translate(${pos.current.x - 4}px, ${pos.current.y - 4}px)`;
+      ring.current.x += (pos.current.x - ring.current.x) * 0.12;
+      ring.current.y += (pos.current.y - ring.current.y) * 0.12;
+      rng.style.transform  = `translate(${ring.current.x - 20}px, ${ring.current.y - 20}px) scale(${hovering.current ? 1.8 : 1})`;
+      rng.style.opacity    = hovering.current ? "0.6" : "0.35";
+      rng.style.borderColor = hovering.current ? "var(--white)" : "var(--mid)";
+    }
+    tick();
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseover", onOver);
+      cancelAnimationFrame(rafId.current);
+    };
+  }, []);
+
+  return (
+    <>
+      <div ref={dotRef}  style={{ position:"fixed", top:0, left:0, width:8,  height:8,  borderRadius:"50%", background:"var(--white)", pointerEvents:"none", zIndex:9999, transition:"opacity 0.2s" }} />
+      <div ref={ringRef} style={{ position:"fixed", top:0, left:0, width:40, height:40, borderRadius:"50%", border:"1.5px solid var(--mid)", pointerEvents:"none", zIndex:9998, transition:"transform 0.08s linear, opacity 0.2s, border-color 0.2s, scale 0.25s cubic-bezier(0.22,1,0.36,1)" }} />
+    </>
+  );
+}
+
+/* ─── READING PROGRESS BAR ─── */
+function ReadingProgress({ dark }) {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const h = () => {
+      const el  = document.documentElement;
+      const sc  = window.scrollY;
+      const max = el.scrollHeight - el.clientHeight;
+      setPct(max > 0 ? (sc / max) * 100 : 0);
+    };
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  return (
+    <div style={{ position:"fixed", top:0, left:0, right:0, height:2, zIndex:9997, background:"transparent", pointerEvents:"none" }}>
+      <div style={{ height:"100%", width:`${pct}%`, background: dark ? "rgba(255,255,255,0.6)" : "rgba(0,0,0,0.4)", transition:"width 0.1s linear", borderRadius:"0 1px 1px 0" }} />
+    </div>
+  );
+}
+
+/* ─── RIPPLE ─── */
+function useRipple() {
+  const [ripples, setRipples] = useState([]);
+  const fire = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const id = Date.now();
+    setRipples(r => [...r, { id, x, y }]);
+    setTimeout(() => setRipples(r => r.filter(rp => rp.id !== id)), 900);
+  };
+  const layer = (
+    <div style={{ position:"absolute", inset:0, overflow:"hidden", pointerEvents:"none", borderRadius:"inherit" }}>
+      {ripples.map(rp => (
+        <span key={rp.id} style={{
+          position:"absolute", left: rp.x, top: rp.y,
+          width:8, height:8, borderRadius:"50%",
+          background:"rgba(255,255,255,0.18)",
+          transform:"translate(-50%,-50%) scale(0)",
+          animation:"rippleOut 0.9s cubic-bezier(0.22,1,0.36,1) forwards",
+          pointerEvents:"none",
+        }} />
+      ))}
+    </div>
+  );
+  return [fire, layer];
+}
+
+/* ─── 3D TILT CARD ─── */
+function TiltCard({ children, style = {}, dark }) {
+  const ref = useRef(null);
+  const raf = useRef(null);
+  const cur = useRef({ rx:0, ry:0, gx:50, gy:50 });
+  const tgt = useRef({ rx:0, ry:0, gx:50, gy:50 });
+
+  const onMove = e => {
+    const rect = ref.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top)  / rect.height;
+    tgt.current = { rx: (y - 0.5) * -14, ry: (x - 0.5) * 14, gx: x * 100, gy: y * 100 };
+  };
+  const onLeave = () => { tgt.current = { rx:0, ry:0, gx:50, gy:50 }; };
+
+  useEffect(() => {
+    let running = true;
+    function tick() {
+      if (!running) return;
+      raf.current = requestAnimationFrame(tick);
+      const c = cur.current, t = tgt.current;
+      c.rx += (t.rx - c.rx) * 0.1;
+      c.ry += (t.ry - c.ry) * 0.1;
+      c.gx += (t.gx - c.gx) * 0.1;
+      c.gy += (t.gy - c.gy) * 0.1;
+      if (!ref.current) return;
+      ref.current.style.transform = `perspective(800px) rotateX(${c.rx}deg) rotateY(${c.ry}deg)`;
+      const shine = ref.current.querySelector(".tilt-shine");
+      if (shine) shine.style.background = `radial-gradient(circle at ${c.gx}% ${c.gy}%, rgba(255,255,255,${dark ? 0.07 : 0.12}) 0%, transparent 65%)`;
+    }
+    tick();
+    return () => { running = false; cancelAnimationFrame(raf.current); };
+  }, [dark]);
+
+  return (
+    <div ref={ref}
+      style={{ ...style, position:"relative", transformStyle:"preserve-3d", transition:"box-shadow 0.3s", willChange:"transform" }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}>
+      <div className="tilt-shine" style={{ position:"absolute", inset:0, borderRadius:"inherit", pointerEvents:"none", zIndex:2, transition:"background 0.05s" }} />
+      {children}
+    </div>
+  );
+}
+
+/* ─── MAGNETIC BUTTON ─── */
+function Magnetic({ children, strength = 0.35 }) {
+  const ref = useRef(null);
+  const onMove = e => {
+    const rect = ref.current.getBoundingClientRect();
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = e.clientX - cx, dy = e.clientY - cy;
+    ref.current.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+  };
+  const onLeave = () => { ref.current.style.transform = "translate(0,0)"; };
+  return (
+    <div ref={ref} style={{ display:"inline-flex", transition:"transform 0.4s cubic-bezier(0.22,1,0.36,1)" }}
+      onMouseMove={onMove} onMouseLeave={onLeave}>
+      {children}
+    </div>
+  );
+}
+
+/* ─── TERMINAL ─── */
+const CONTACT_STEPS = ["name","email","subject","message"];
+
+const ALL_COMMANDS = ["help","message","contact","about","projects","articles","skills","whoami","banner","open","theme","resume","date","time","echo","sudo","rm","hack","coffee","dino","clear","close","exit"];
+
+const ASCII_BANNER = [
+  " ██████╗  █████╗  ██████╗ ██╗  ██╗██╗   ██╗██╗",
+  " ██╔══██╗██╔══██╗██╔════╝ ██║  ██║██║   ██║██║",
+  " ██████╔╝███████║██║  ███╗███████║██║   ██║██║",
+  " ██╔══██╗██╔══██║██║   ██║██╔══██║██║   ██║██║",
+  " ██║  ██║██║  ██║╚██████╔╝██║  ██║╚██████╔╝███████╗",
+  " ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝",
+  "",
+  " Full-Stack Dev · UI/UX · Chennai",
 ];
 
-/* ── Cat sounds (Web Audio, zero files) ── */
-function createCatSounds() {
-  let ctx = null;
-  function ac() {
-    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-    if (ctx.state === "suspended") ctx.resume();
-    return ctx;
-  }
-  function osc(freq, type, vol, atk, sus, rel, t, freqEnd) {
-    const a = ac(); const o = a.createOscillator(); const g = a.createGain();
-    o.connect(g); g.connect(a.destination);
-    o.type = type;
-    o.frequency.setValueAtTime(freq, t);
-    if (freqEnd) o.frequency.linearRampToValueAtTime(freqEnd, t + atk + sus);
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(vol, t + atk);
-    g.gain.setValueAtTime(vol, t + atk + sus);
-    g.gain.linearRampToValueAtTime(0, t + atk + sus + rel);
-    o.start(t); o.stop(t + atk + sus + rel + 0.01);
-  }
-  function noise(vol, dur, freq, t) {
-    const a = ac();
-    const buf = a.createBuffer(1, a.sampleRate * dur, a.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    const src = a.createBufferSource(); const g = a.createGain();
-    const filt = a.createBiquadFilter(); filt.type = "bandpass"; filt.frequency.value = freq;
-    src.buffer = buf; src.connect(filt); filt.connect(g); g.connect(a.destination);
-    g.gain.setValueAtTime(vol, t); g.gain.linearRampToValueAtTime(0, t + dur);
-    src.start(t); src.stop(t + dur);
-  }
-  return {
-    mew()   { try { const t=ac().currentTime; osc(900,"sine",0.22,0.02,0.04,0.12,t,600); osc(1100,"sine",0.1,0.01,0.02,0.08,t+0.04,800); } catch(e){} },
-    purr()  { try { const t=ac().currentTime; osc(55,"sawtooth",0.06,0.05,0.4,0.2,t); osc(60,"sine",0.04,0.05,0.4,0.2,t); } catch(e){} },
-    hiss()  { try { const t=ac().currentTime; noise(0.25,0.22,2400,t); noise(0.12,0.15,4000,t+0.05); } catch(e){} },
-    boing() { try { const t=ac().currentTime; osc(520,"sine",0.2,0.005,0.01,0.18,t,140); } catch(e){} },
-    thud()  { try { const t=ac().currentTime; osc(80,"sine",0.28,0.005,0.02,0.1,t); noise(0.15,0.08,300,t); } catch(e){} },
-    chirp() { try { const t=ac().currentTime; osc(1400,"sine",0.12,0.01,0.01,0.06,t,1800); } catch(e){} },
-  };
-}
+function Terminal({ onClose, dark, onThemeToggle, onDinoOpen }) {
+  const BOOT_LINES = [
+    { type:"ban", text: ASCII_BANNER[0] },
+    { type:"ban", text: ASCII_BANNER[1] },
+    { type:"ban", text: ASCII_BANNER[2] },
+    { type:"ban", text: ASCII_BANNER[3] },
+    { type:"ban", text: ASCII_BANNER[4] },
+    { type:"ban", text: ASCII_BANNER[5] },
+    { type:"ban", text: ASCII_BANNER[6] },
+    { type:"out", text: ASCII_BANNER[7] },
+    { type:"out", text: "" },
+    { type:"sys", text: '  Type "help" for available commands.' },
+  ];
 
-/* ── Pixel cat renderer ── */
-const CAT_SCALE = 3; // base px per grid cell — doubled on mobile
-function drawPixelCat(ctx, x, y, state, frame, dark, facingLeft, ballColor, ballX, ballY, scale, hat) {
-  const S  = CAT_SCALE * (scale||1);
-  const c  = dark ? "#e8e8e8" : "#2a2a2a";
-  const eye = dark ? "#121212" : "#f0f0f0";
-  const nose= "#f472b6";
-  const tail= dark ? "#c8c8c8" : "#3a3a3a";
-  function px(gx,gy,col){ ctx.fillStyle=col||c; ctx.fillRect(x+gx*S,y+gy*S,S,S); }
-  const f  = Math.floor(frame/6)%2;
-  const tw = Math.floor(frame/8)%3;
+  const [lines,        setLines]       = useState([]);
+  const [input,        setInput]       = useState("");
+  const [hist,         setHist]        = useState([]);
+  const [hIdx,         setHIdx]        = useState(-1);
+  const [contactMode,  setContactMode] = useState(null);
+  const [contactData,  setContactData] = useState({ name:"", email:"", subject:"", message:"" });
+  const [sending,      setSending]     = useState(false);
+  const [tabMatches,   setTabMatches]  = useState([]);
+  const [hackMode,     setHackMode]    = useState(false);
+  const endRef   = useRef(null);
+  const inputRef = useRef(null);
+  const timers   = useRef([]);
 
-  // Shadow
-  ctx.fillStyle = dark?"rgba(0,0,0,0.18)":"rgba(0,0,0,0.09)";
-  ctx.beginPath(); ctx.ellipse(x+7*S, y+14*S, 5*S, S*0.7, 0,0,Math.PI*2); ctx.fill();
-
-  // Body
-  for(let r=6;r<=10;r++) for(let col=3;col<=10;col++) px(col,r);
-  // Head
-  for(let r=1;r<=6;r++) for(let col=3;col<=11;col++) px(col,r);
-  // Ears
-  px(3,0);px(4,0);px(4,1);px(10,0);px(11,0);px(10,1);
-  px(4,1,"#f9a8d4");px(10,1,"#f9a8d4");
-
-  // Eyes
-  if(state==="sleeping"){
-    px(5,5,eye);px(6,5,eye);px(8,5,eye);px(9,5,eye);
-  } else if(state==="startled"||state==="batting"){
-    px(5,3,eye);px(6,3,eye);px(5,4,eye);px(6,4,eye);
-    px(8,3,eye);px(9,3,eye);px(8,4,eye);px(9,4,eye);
-  } else if(state==="petting"||state==="happy"){
-    px(5,4,eye);px(6,3,eye);px(7,3,eye);
-    px(8,4,eye);px(9,3,eye);px(10,3,eye);
-  } else if(state==="eating"){
-    px(5,3,eye);px(6,2,eye);px(7,3,eye);
-    px(8,3,eye);px(9,2,eye);px(10,3,eye);
-  } else if(state==="sulking"){
-    // heavy lidded
-    px(5,3,eye);px(6,3,eye);px(5,4,eye);
-    px(8,3,eye);px(9,3,eye);px(9,4,eye);
-    // furrowed brow lines
-    ctx.fillStyle=dark?"rgba(255,255,255,0.3)":"rgba(0,0,0,0.2)";
-    ctx.fillRect(x+4*S,y+2*S,S*3,Math.max(1,S/2));
-    ctx.fillRect(x+8*S,y+2*S,S*3,Math.max(1,S/2));
-  } else {
-    px(5,3,eye);px(6,3,eye);px(8,3,eye);px(9,3,eye);
-  }
-
-  px(7,5,nose);
-
-  // Open mouth on eating
-  if(state==="eating"){
-    ctx.fillStyle=eye;
-    ctx.fillRect(x+5*S,y+6*S,S*4,S);
-    ctx.fillRect(x+6*S,y+7*S,S*2,S);
-  }
-
-  // Whiskers
-  ctx.fillStyle=dark?"rgba(255,255,255,0.35)":"rgba(0,0,0,0.2)";
-  ctx.fillRect(x,       y+4*S,S*3,Math.max(1,S/3));
-  ctx.fillRect(x,       y+5*S,S*3,Math.max(1,S/3));
-  ctx.fillRect(x+11*S,  y+4*S,S*3,Math.max(1,S/3));
-  ctx.fillRect(x+11*S,  y+5*S,S*3,Math.max(1,S/3));
-
-  // Legs
-  const tucked=["sleeping","perching","grooming","petting","eating","happy","sulking"];
-  if(tucked.includes(state)){
-    for(let col=3;col<=10;col++){px(col,11);px(col,12);}
-  } else if(state==="jumping"||state==="startled"){
-    px(2,11);px(3,11);px(4,11);px(9,11);px(10,11);px(11,11);px(2,12);px(11,12);
-  } else {
-    if(f===0){px(4,11);px(4,12);px(4,13);px(8,11);px(9,11);px(5,11);px(5,12);px(9,12);px(9,13);}
-    else     {px(4,11);px(5,11);px(8,11);px(8,12);px(8,13);px(4,12);px(4,13);px(9,11);px(9,12);}
-  }
-
-  // Tail
-  if(state==="sleeping"){
-    px(11,10,tail);px(12,9,tail);px(12,8,tail);px(11,7,tail);
-  } else if(["perching","grooming","petting","eating","happy","sulking"].includes(state)){
-    if(tw===0)      {px(11,10,tail);px(12,9,tail);px(13,8,tail);px(13,7,tail);}
-    else if(tw===1) {px(11,10,tail);px(12,9,tail);px(13,8,tail);px(14,8,tail);}
-    else            {px(11,10,tail);px(12,10,tail);px(13,9,tail);px(14,8,tail);}
-  } else {
-    const tx=facingLeft?2:11, td=facingLeft?-1:1;
-    px(tx,10,tail);px(tx,9,tail);px(tx+td,8,tail);px(tx+td,7,tail);
-  }
-
-  // Grooming paw
-  if(state==="grooming"&&Math.floor(frame/12)%2===0){px(5,4);px(6,3);}
-
-  // Petting hand + hearts
-  if(state==="petting"){
-    const hf=Math.floor(frame/10)%2;
-    ctx.fillStyle="#fbbf24";
-    ctx.fillRect(x+4*S,y+(hf?-3*S:-4*S),S*6,S*2);
-    ctx.fillRect(x+5*S,y+(hf?-2*S:-3*S),S*4,S);
-    const hts=Math.floor(frame/15)%3;
-    ctx.font=`${S*3}px serif`;
-    if(hts>=1)ctx.fillText("♥",x+12*S,y-2*S);
-    if(hts>=2)ctx.fillText("♥",x+14*S,y-5*S);
-  }
-
-  // Happy spin sparkles
-  if(state==="happy"){
-    const sf=Math.floor(frame/5)%6;
-    const cols=["#f472b6","#facc15","#38bdf8","#4ade80","#a78bfa","#fb923c"];
-    ctx.fillStyle=cols[sf];
-    const ang=sf*(Math.PI/3);
-    ctx.fillRect(x+7*S+Math.cos(ang)*6*S,y+6*S+Math.sin(ang)*6*S,S*1.5,S*1.5);
-    ctx.fillStyle=cols[(sf+2)%6];
-    const ang2=ang+Math.PI;
-    ctx.fillRect(x+7*S+Math.cos(ang2)*5*S,y+6*S+Math.sin(ang2)*5*S,S,S);
-  }
-
-  // Eating fish
-  if(state==="eating"){
-    const nf=Math.floor(frame/8)%3;
-    ctx.fillStyle="#38bdf8";
-    ctx.fillRect(x-4*S,y+5*S,S*3,S*2);
-    ctx.fillRect(x-5*S,y+4*S,S,S*4);
-    ctx.fillStyle="#ffffff";
-    ctx.fillRect(x-3*S,y+5*S,S,S);
-    if(nf>0){
-      ctx.font=`${S*2}px serif`;
-      ctx.fillStyle="#fbbf24";
-      ctx.fillText("nom",x+13*S,y+(nf===1?3*S:2*S));
-    }
-  }
-
-  // Sulking rain cloud
-  if(state==="sulking"){
-    ctx.fillStyle=dark?"rgba(150,170,255,0.5)":"rgba(100,120,200,0.5)";
-    ctx.beginPath();ctx.ellipse(x+7*S,y-5*S,4*S,2*S,0,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.ellipse(x+5*S,y-4*S,2*S,1.5*S,0,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.ellipse(x+9*S,y-4*S,2*S,1.5*S,0,0,Math.PI*2);ctx.fill();
-    const rf=Math.floor(frame/8)%4;
-    ctx.fillStyle=dark?"rgba(150,200,255,0.7)":"rgba(80,130,220,0.7)";
-    for(let i=0;i<3;i++){
-      if((rf+i)%4<2) ctx.fillRect(x+(5+i*2)*S,y-(1-i%2)*S,Math.max(1,S/2),S*2);
-    }
-  }
-
-  // Zzz
-  if(state==="sleeping"){
-    const zf=Math.floor(frame/20)%3;
-    ctx.fillStyle=dark?"rgba(255,255,255,0.5)":"rgba(0,0,0,0.35)";
-    ctx.font=`bold ${S*3}px 'Fira Code',monospace`;
-    if(zf>=1)ctx.fillText("z",x+14*S,y+2*S);
-    if(zf>=2)ctx.fillText("z",x+16*S,y-S);
-  }
-
-  // Hats
-  if(hat===1){// Crown
-    const gc=["#facc15","#f97316","#facc15"];
-    for(let i=0;i<5;i++)px(4+i,-2,gc[i%gc.length]);
-    for(let i=0;i<3;i++)px(4+i*2,-3,"#facc15");
-    px(4,-4,"#facc15");px(6,-4,"#facc15");px(8,-4,"#facc15");
-    px(5,-2,"#f472b6");px(7,-2,"#f472b6");
-  } else if(hat===2){// Party hat
-    px(6,-2,"#f472b6");px(5,-3,"#a78bfa");px(6,-3,"#f472b6");
-    px(4,-4,"#38bdf8");px(5,-4,"#a78bfa");px(6,-4,"#f472b6");
-    px(5,-5,"#facc15");px(6,-5,"#f472b6");
-    px(6,-6,"#fb923c");// tip
-    ctx.fillStyle="#facc15";ctx.font=`${S}px serif`;ctx.fillText("★",x+4.5*S,y-6.5*S);
-  } else if(hat===3){// Wizard hat
-    px(6,-2,"#7c3aed");px(5,-3,"#7c3aed");px(6,-3,"#7c3aed");px(7,-3,"#7c3aed");
-    px(4,-4,"#7c3aed");px(5,-4,"#7c3aed");px(6,-4,"#7c3aed");
-    px(5,-5,"#7c3aed");px(6,-5,"#7c3aed");
-    px(6,-6,"#7c3aed");// tip
-    px(5,-3,"#facc15");px(7,-5,"#facc15");// stars
-    // brim
-    for(let i=2;i<=10;i++)px(i,-1,"#7c3aed");
-  } else if(hat===4){// Beanie
-    for(let i=3;i<=11;i++)px(i,-1,"#ef4444");
-    for(let i=4;i<=10;i++)px(i,-2,"#ef4444");
-    for(let i=5;i<=9;i++) px(i,-3,"#ef4444");
-    px(7,-4,"#ffffff");px(6,-4,"#ffffff");px(8,-4,"#ffffff");// pompom
-  }
-
-  // Paw trail dots — drawn externally, but draw footstep here if walking
-  if((state==="walking"||state==="chasing")&&f===0&&Math.floor(frame/6)%4===0){
-    ctx.fillStyle=dark?"rgba(255,255,255,0.18)":"rgba(0,0,0,0.12)";
-    ctx.beginPath();ctx.ellipse(x+(facingLeft?10:4)*S,y+14*S,S,S*0.7,0,0,Math.PI*2);ctx.fill();
-  }
-
-  // Ball
-  if(ballX!==null&&ballY!==null){
-    ctx.fillStyle=ballColor;
-    ctx.fillRect(ballX,ballY,S*3,S*3);
-    ctx.fillStyle="rgba(255,255,255,0.55)";
-    ctx.fillRect(ballX+S*0.5,ballY+S*0.5,S,S);
-  }
-}
-
-/* ── Main PixelCat component ── */
-function PixelCat({ dark }) {
-  const canvasRef = useRef(null);
-  const [uiState, setUiState] = useState({
-    toolbar:{ visible:false, x:0, y:0, catState:"chasing" },
-    mood:100, hunger:100, hat:0,
-    speechBubble:null,
-    pawPrints:[],
-  });
-  const uiRef = useRef(uiState);
-  uiRef.current = uiState;
-
-  const sRef = useRef({
-    alive:false, x:200, y:300, vx:0, vy:0,
-    state:"hidden", frame:0, facingLeft:false,
-    idleTimer:0, perchTarget:null,
-    ballX:220, ballY:320, ballVx:0, ballVy:0, bounceCount:0,
-    ballColor:"#a78bfa", ballOnGround:true,
-    cursor:{x:-999,y:-999}, lastCursorMove:0,
-    squeezeProgress:0, laserVisible:false,
-    soundCooldown:0, purrTimer:0, scale:1,
-    lastScrollY:0, currentPlatform:null,
-    // Mood/hunger/hat
-    mood:100, hunger:100, hat:0,
-    moodTimer:0, hungerTimer:0,
-    lastPerchEl:null, lastPerchText:"",
-    // Paw trail
-    pawTrail:[],
-    // Drag-throw
-    dragging:false, dragStartX:0, dragStartY:0,
-    // Speech
-    speechText:null, speechTimer:0,
-    // Dark mode reaction
-    lastDark:dark,
-  });
-  const soundRef = useRef(null);
-  const rafRef   = useRef(null);
-
-  function getSectionTargets() {
-    const t=[];
-    document.querySelectorAll('.work-heading,.hero-title-size').forEach(el=>{
-      const r=el.getBoundingClientRect();
-      if(r.width>40&&r.top>40&&r.top<window.innerHeight-30)
-        t.push({x:r.left+20,y:r.top,el,text:el.textContent.trim().slice(0,12)});
+  /* ── Typewriter: adds lines one by one with a delay ── */
+  const typeLines = (newLines, delay = 32) => {
+    newLines.forEach((line, idx) => {
+      const t = setTimeout(() => {
+        setLines(l => [...l, line]);
+      }, idx * delay);
+      timers.current.push(t);
     });
-    return t;
-  }
+  };
 
-  useEffect(()=>{
-    soundRef.current = createCatSounds();
-    const S = sRef.current;
-    const canvas = canvasRef.current;
-    canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-    S.scale=window.innerWidth<768?1.5:1;
-    S.hat = uiRef.current.hat;
+  /* ── Immediate: add all lines at once ── */
+  const addImmediate = (newLines) => {
+    setLines(l => [...l, ...newLines]);
+  };
 
-    const onResize=()=>{
-      canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-      S.scale=window.innerWidth<768?1.5:1;
-      platformCacheDirty=true;
-    };
-    window.addEventListener("resize",onResize);
+  /* Boot */
+  useEffect(() => {
+    typeLines(BOOT_LINES, 40);
+    setTimeout(() => inputRef.current?.focus(), 0);
+    return () => timers.current.forEach(clearTimeout);
+  }, []);
 
-    const onMove=e=>{
-      const pt=e.touches?e.touches[0]:e;
-      S.cursor.x=pt.clientX; S.cursor.y=pt.clientY;
-      S.lastCursorMove=Date.now(); S.laserVisible=true;
-    };
-    window.addEventListener("mousemove",onMove);
-    window.addEventListener("touchmove",onMove,{passive:true});
+  useEffect(() => { endRef.current?.scrollIntoView({ behavior:"smooth" }); }, [lines]);
 
-    // Scroll reaction
-    const onScroll=()=>{
-      if(!S.alive||S.state==="going-home"||S.state==="squeezing-home") return;
-      S.lastScrollY=window.scrollY; platformCacheDirty=true;
-      if(S.state!=="jumping"){
-        S.state="startled"; S.idleTimer=0;
-        setTimeout(()=>{
-          if(!S.alive) return;
-          const t=getSectionTargets();
-          if(!t.length) return;
-          const SC2=CAT_SCALE*S.scale;
-          const pick=t[Math.floor(Math.random()*t.length)];
-          S.perchTarget={x:pick.x,y:pick.y-SC2*14,el:pick.el,text:pick.text};
-          S.state="walking-to-perch";
-        },600);
-      }
-    };
-    window.addEventListener("scroll",onScroll,{passive:true});
-
-    // Auto-spawn 4s
-    const autoSpawn=setTimeout(()=>{
-      if(!S.alive){
-        const btn=document.getElementById("cat-spawn-btn");
-        const r=btn?btn.getBoundingClientRect():{left:window.innerWidth/2-60,top:window.innerHeight*0.42,width:120,height:44};
-        spawnCat(r);
-      }
-    },4000);
-
-    // Double-click/tap Projects button
-    let lastBtnClick=0;
-    const onBtnClick=e=>{
-      const btn=document.getElementById("cat-spawn-btn"); if(!btn) return;
-      const r=btn.getBoundingClientRect();
-      if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){
-        const now=Date.now();
-        if(now-lastBtnClick<400){if(!S.alive)spawnCat(r);lastBtnClick=0;}
-        else lastBtnClick=now;
-      }
-    };
-    let lastTap=0;
-    const onBtnTap=e=>{
-      const btn=document.getElementById("cat-spawn-btn"); if(!btn) return;
-      const r=btn.getBoundingClientRect();
-      const t=e.changedTouches&&e.changedTouches[0]; if(!t) return;
-      if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom){
-        const now=Date.now();
-        if(now-lastTap<400){if(!S.alive)spawnCat(r);lastTap=0;}
-        else lastTap=now;
-      }
-    };
-    window.addEventListener("click",onBtnClick);
-    window.addEventListener("touchend",onBtnTap,{passive:true});
-
-    // Click cat → toolbar
-    const onClickCat=e=>{
-      if(!S.alive) return;
-      const SC=CAT_SCALE*S.scale;
-      const cx=S.x+7*SC,cy=S.y+6*SC;
-      const dx=e.clientX-cx,dy=e.clientY-cy;
-      const dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<44*S.scale){
-        setUiState(u=>({...u,toolbar:{visible:true,x:Math.round(cx),y:Math.round(S.y-8),catState:S.state}}));
-        S.state="perching"; S.idleTimer=0; S.vx=0;
-      } else if(dist<110*S.scale){
-        setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-        S.state="batting"; S.idleTimer=0; S.facingLeft=dx<0;
-        if(soundRef.current&&S.soundCooldown<=0){soundRef.current.chirp();S.soundCooldown=30;}
-        S.ballVx=(Math.random()-0.5)*12; S.ballVy=-9; S.ballOnGround=false; S.bounceCount=0;
-        S.ballColor=CAT_PALETTE[Math.floor(Math.random()*CAT_PALETTE.length)];
-        if(soundRef.current) soundRef.current.boing();
-      } else {
-        setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-      }
-    };
-    const onTapCat=e=>{
-      if(!S.alive) return;
-      const t=e.changedTouches&&e.changedTouches[0]; if(!t) return;
-      const SC=CAT_SCALE*S.scale;
-      const cx=S.x+7*SC,cy=S.y+6*SC;
-      const dx=t.clientX-cx,dy=t.clientY-cy;
-      const dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<60*S.scale){
-        setUiState(u=>({...u,toolbar:{visible:true,x:Math.round(cx),y:Math.round(S.y-8),catState:S.state}}));
-        S.state="perching"; S.idleTimer=0; S.vx=0;
-      } else if(dist<130*S.scale){
-        setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-        S.state="batting"; S.idleTimer=0; S.facingLeft=dx<0;
-        if(soundRef.current&&S.soundCooldown<=0){soundRef.current.chirp();S.soundCooldown=30;}
-        S.ballVx=(Math.random()-0.5)*12; S.ballVy=-9; S.ballOnGround=false; S.bounceCount=0;
-        S.ballColor=CAT_PALETTE[Math.floor(Math.random()*CAT_PALETTE.length)];
-        if(soundRef.current) soundRef.current.boing();
-      } else {
-        setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-      }
-    };
-    window.addEventListener("click",onClickCat);
-    window.addEventListener("touchend",onTapCat,{passive:true});
-
-    function spawnCat(btnRect){
-      S.alive=true;
-      S.x=btnRect.left+btnRect.width/2-20;
-      S.y=btnRect.top-10;
-      S.vx=0; S.vy=0; S.state="squeezing-out"; S.squeezeProgress=0;
-      S.ballX=S.x+24; S.ballY=S.y+40;
-      S.ballColor=CAT_PALETTE[Math.floor(Math.random()*CAT_PALETTE.length)];
-      S.mood=Math.max(S.mood,50); S.hunger=Math.max(S.hunger,40);
-      if(soundRef.current) soundRef.current.mew();
+  /* ── Tab completion ── */
+  const handleTab = () => {
+    const val = input.trim().toLowerCase();
+    if (!val) return;
+    const matches = ALL_COMMANDS.filter(c => c.startsWith(val));
+    if (matches.length === 1) {
+      setInput(matches[0]);
+      setTabMatches([]);
+    } else if (matches.length > 1) {
+      setTabMatches(matches);
+      addImmediate([{ type:"sys", text: "  " + matches.join("   ") }]);
     }
+  };
 
-    // Platform cache
-    let platformCache=[]; let platformCacheDirty=true;
-    function rebuildPlatforms(){
-      platformCache=[];
-      const seen=new Set();
-      try{
-        document.querySelectorAll('nav,section,footer,header,h1,h2,h3,h4,.work-heading,.hero-title-size,[class*="card"],[class*="project"],[class*="article"],[class*="skill"],button,a,[style*="border-radius"]').forEach(el=>{
-          if(el.tagName==="CANVAS"||el.tagName==="INPUT"||el.tagName==="TEXTAREA"||seen.has(el)) return;
-          seen.add(el);
-          const r=el.getBoundingClientRect();
-          if(r.width<60||r.height<8||r.top>window.innerHeight+200||r.bottom<-200) return;
-          platformCache.push({left:r.left-2,right:r.right+2,top:r.top,el});
-        });
-      }catch(e){}
-      platformCache.sort((a,b)=>a.top-b.top);
-      platformCache.push({left:-200,right:window.innerWidth+200,top:window.innerHeight-2,el:null});
-      platformCacheDirty=false;
-    }
-    const markDirty=()=>{platformCacheDirty=true;};
-    window.addEventListener("scroll",markDirty,{passive:true});
-    window.addEventListener("resize",markDirty);
+  /* ── Contact field prompts ── */
+  const fieldPrompt = (step) => ({
+    name:    "  👤 Your name:",
+    email:   "  📧 Your email:",
+    subject: "  📋 Subject:",
+    message: "  💬 Message:",
+  }[step]);
 
-    function findFloorBelow(x,y,w){
-      const l=x+w*0.15,r=x+w*0.85;
-      let best=null;
-      for(const p of platformCache){
-        if(p.top<y-2) continue;
-        if(p.right<l||p.left>r) continue;
-        if(!best||p.top<best.top) best=p;
-      }
-      return best;
-    }
-    function snapToFloor(){
-      const SC=CAT_SCALE*S.scale, CAT_H=14*SC;
-      const floor=findFloorBelow(S.x,S.y+CAT_H,14*SC);
-      if(floor){S.y=floor.top-CAT_H;S.vy=0;S.currentPlatform=floor;return true;}
-      return false;
-    }
-
-    const G=0.5;
-
-    function loop(){
-      rafRef.current=requestAnimationFrame(loop);
-      const canvas=canvasRef.current;
-      const ctx=canvas.getContext("2d");
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      // Draw paw trail
-      S.pawTrail=S.pawTrail.filter(p=>p.alpha>0);
-      S.pawTrail.forEach(p=>{
-        p.alpha-=0.008;
-        ctx.globalAlpha=p.alpha;
-        ctx.fillStyle=dark?"rgba(255,255,255,0.6)":"rgba(0,0,0,0.35)";
-        ctx.beginPath();ctx.ellipse(p.x,p.y,p.r,p.r*0.65,0,0,Math.PI*2);ctx.fill();
-        ctx.beginPath();ctx.ellipse(p.x+p.r*1.2,p.y-p.r*0.5,p.r*0.6,p.r*0.45,0,0,Math.PI*2);ctx.fill();
-        ctx.beginPath();ctx.ellipse(p.x-p.r*1.2,p.y-p.r*0.5,p.r*0.6,p.r*0.45,0,0,Math.PI*2);ctx.fill();
+  /* ── Submit via EmailJS (same service as ContactForm) ── */
+  const submitContact = async (data) => {
+    setSending(true);
+    addImmediate([{ type:"sys", text:"" }, { type:"sys", text:"  ✈️  Sending your message..." }]);
+    try {
+      const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id:  EMAILJS_SERVICE_ID,
+          template_id: EMAILJS_TEMPLATE_ID,
+          user_id:     EMAILJS_PUBLIC_KEY,
+          template_params: {
+            from_name:  data.name,
+            from_email: data.email,
+            subject:    data.subject,
+            message:    data.message,
+          },
+        }),
       });
-      ctx.globalAlpha=1;
-
-      drawLaser(ctx);
-      if(!S.alive) return;
-
-      if(platformCacheDirty) rebuildPlatforms();
-
-      const SC=CAT_SCALE*S.scale;
-      const CAT_W=14*SC, CAT_H=14*SC;
-      const now=Date.now();
-      S.frame++; if(S.soundCooldown>0) S.soundCooldown--;
-
-      // Dark mode reaction
-      if(S.lastDark!==dark){
-        S.lastDark=dark; S.state="startled"; S.idleTimer=0;
-        S.speechText="??"; S.speechTimer=60;
-        if(soundRef.current) soundRef.current.hiss();
-      }
-
-      // Mood & hunger decay (very slow)
-      S.moodTimer++; S.hungerTimer++;
-      if(S.moodTimer>300){S.moodTimer=0; S.mood=Math.max(0,S.mood-1);}
-      if(S.hungerTimer>400){S.hungerTimer=0; S.hunger=Math.max(0,S.hunger-1);}
-      // Sync to React state every 120 frames
-      if(S.frame%120===0){
-        setUiState(u=>({...u,mood:S.mood,hunger:S.hunger}));
-      }
-
-      // Speech bubble timer
-      if(S.speechTimer>0){S.speechTimer--;}
-      else if(S.speechText){S.speechText=null;}
-
-      // Squeeze-out
-      if(S.state==="squeezing-out"){
-        S.squeezeProgress+=0.035;
-        const btn=document.getElementById("cat-spawn-btn");
-        if(btn){const r=btn.getBoundingClientRect();S.x=r.left+r.width/2-7*SC;S.y=r.top-S.squeezeProgress*55;}
-        ctx.save();
-        ctx.translate(S.x+7*SC,S.y+7*SC);
-        ctx.scale(1.2,Math.min(S.squeezeProgress,1));
-        ctx.translate(-(S.x+7*SC),-(S.y+7*SC));
-        drawPixelCat(ctx,S.x,S.y,"walking",S.frame,dark,S.facingLeft,S.ballColor,null,null,S.scale,S.hat);
-        ctx.restore();
-        if(S.squeezeProgress>=1){S.state="stretching";S.frame=0;snapToFloor();if(soundRef.current)soundRef.current.mew();}
-        return;
-      }
-
-      // Stretching
-      if(S.state==="stretching"){
-        drawPixelCat(ctx,S.x,S.y,"startled",S.frame,dark,S.facingLeft,S.ballColor,null,null,S.scale,S.hat);
-        if(S.frame>55){S.state="chasing";snapToFloor();}
-        return;
-      }
-
-      // Physics
-      const pinned=["perching","grooming","sleeping","petting","eating","happy","sulking"];
-      if(!pinned.includes(S.state)&&S.state!=="squeezing-home"){
-        const prevY=S.y;
-        S.vy+=G; S.x+=S.vx; S.y+=S.vy; S.vx*=0.87;
-        const feetPrev=prevY+CAT_H, feetNow=S.y+CAT_H;
-        const floor=findFloorBelow(S.x,Math.min(feetPrev,feetNow)-4,CAT_W);
-        if(floor&&S.vy>=0&&feetNow>=floor.top){
-          if(S.vy>3&&soundRef.current)soundRef.current.thud();
-          S.y=floor.top-CAT_H; S.vy=0; S.vx*=0.72; S.currentPlatform=floor;
-          if(S.state==="jumping")S.state="chasing";
-          // Paw print on land
-          S.pawTrail.push({x:S.x+4*SC,y:S.y+CAT_H,r:SC*1.2,alpha:0.7});
-        }
-        if(S.currentPlatform&&S.vy===0){
-          const p=S.currentPlatform;
-          if(S.x+CAT_W*0.5<p.left+4||S.x+CAT_W*0.5>p.right-4){S.currentPlatform=null;S.vy=0.5;}
-        }
-        if(S.vy>8&&!findFloorBelow(S.x,S.y+CAT_H,CAT_W))snapToFloor();
-        if(S.x<-CAT_W-10)S.x=window.innerWidth+5;
-        if(S.x>window.innerWidth+10)S.x=-CAT_W;
-        if(S.y>window.innerHeight+60){S.x=Math.random()*(window.innerWidth-100)+50;S.y=60;S.vy=0;snapToFloor();}
-        if(S.y<-CAT_H*3){S.y=0;S.vy=0;}
-
-        // Paw trail while walking
-        if((S.state==="chasing"||S.state==="walking")&&S.frame%18===0&&S.vy===0){
-          const r=SC*1.0;
-          S.pawTrail.push({x:S.x+(S.facingLeft?10:4)*SC,y:S.y+CAT_H,r,alpha:0.5});
-          if(S.pawTrail.length>40)S.pawTrail.shift();
-        }
-      } else if(S.state!=="squeezing-home"){
-        if(S.currentPlatform&&S.currentPlatform.el){
-          const r=S.currentPlatform.el.getBoundingClientRect();
-          S.y=r.top-CAT_H;
-          S.currentPlatform.top=r.top; S.currentPlatform.left=r.left-2; S.currentPlatform.right=r.right+2;
-        }
-      }
-
-      // Ball physics
-      const ballFloor=(()=>{
-        if(S.currentPlatform)return S.currentPlatform.top;
-        const bf=findFloorBelow(S.ballX,S.ballY+SC*3,SC*3);
-        return bf?bf.top:window.innerHeight-4;
-      })();
-      if(!S.ballOnGround){
-        S.ballVy+=G; S.ballX+=S.ballVx; S.ballY+=S.ballVy; S.ballVx*=0.91;
-        const bf=ballFloor-SC*3;
-        if(S.ballY>=bf){
-          S.ballY=bf; S.bounceCount=(S.bounceCount||0)+1;
-          if(S.bounceCount>=2){S.ballVy=0;S.ballVx=0;S.ballOnGround=true;S.bounceCount=0;}
-          else{S.ballVy*=-0.45;S.ballVx*=0.65;if(soundRef.current)soundRef.current.boing();}
-        }
-        if(S.ballX<0){S.ballX=0;S.ballVx*=-0.7;}
-        if(S.ballX>window.innerWidth-SC*3){S.ballX=window.innerWidth-SC*3;S.ballVx*=-0.7;}
-        if(S.ballY>window.innerHeight+40){S.ballY=S.y+CAT_H;S.ballVy=0;S.ballOnGround=true;S.bounceCount=0;}
+      if (res.ok) {
+        typeLines([
+          { type:"ok",  text:"  ✓ Message sent! I'll get back to you soon." },
+          { type:"sys", text:"  Closing terminal..." },
+        ], 40);
+        setTimeout(onClose, 2200);
       } else {
-        S.ballX+=(S.x+13*SC-S.ballX)*0.08;
-        S.ballY=ballFloor-SC*3;
+        addImmediate([{ type:"err", text:"  ✗ Failed to send. Check your EmailJS keys." }]);
+        setSending(false);
       }
-
-      // State machine
-      const idleSecs=(now-S.lastCursorMove)/1000;
-      const catCX=S.x+7*SC, catCY=S.y+6*SC;
-      const cdx=S.cursor.x-catCX, cdy=S.cursor.y-catCY;
-      const cursorDist=Math.sqrt(cdx*cdx+cdy*cdy);
-      const onGround=S.vy===0&&!pinned.includes(S.state)&&S.state!=="squeezing-home";
-
-      // Mood auto-sulk
-      if(S.mood<30&&S.state==="chasing"&&idleSecs>6){
-        S.state="sulking"; S.idleTimer=0;
-        S.speechText="..."; S.speechTimer=120;
-      }
-      // Hunger hint
-      if(S.hunger<25&&S.frame%200===0){
-        S.speechText="hungry 🐟"; S.speechTimer=100;
-      }
-
-      if(S.state==="startled"){
-        S.idleTimer++;
-        if(S.idleTimer>35){S.state="chasing";S.idleTimer=0;}
-
-      }else if(S.state==="batting"){
-        S.idleTimer++;
-        if(S.idleTimer>22){S.state="chasing";S.idleTimer=0;}
-
-      }else if(S.state==="petting"){
-        S.idleTimer++; S.purrTimer=(S.purrTimer||0)+1;
-        if(S.purrTimer%80===0&&soundRef.current)soundRef.current.purr();
-        S.mood=Math.min(100,S.mood+0.4);
-        if(S.idleTimer>180){S.state="grooming";S.idleTimer=0;}
-        setUiState(u=>({...u,toolbar:{visible:true,x:Math.round(catCX),y:Math.round(S.y-8),catState:"petting"},mood:Math.round(S.mood)}));
-
-      }else if(S.state==="eating"){
-        S.idleTimer++;
-        S.hunger=Math.min(100,S.hunger+1.5);
-        S.mood=Math.min(100,S.mood+0.5);
-        if(S.idleTimer>120){
-          S.state="happy"; S.idleTimer=0;
-          S.speechText="purr ♥"; S.speechTimer=80;
-          if(soundRef.current)soundRef.current.purr();
-        }
-        setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false},hunger:Math.round(S.hunger)}));
-
-      }else if(S.state==="happy"){
-        S.idleTimer++;
-        if(S.frame%6===0)S.vx=(Math.random()-0.5)*2; // wiggle
-        if(S.idleTimer>90){S.state="grooming";S.idleTimer=0;}
-
-      }else if(S.state==="sulking"){
-        S.idleTimer++;
-        if(S.idleTimer>300){S.state="chasing";S.idleTimer=0;}
-        if(idleSecs<1)S.state="chasing"; // cursor moved → perk up
-
-      }else if(S.state==="going-home"){
-        setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-        if(window.scrollY>10){
-          window.scrollTo({top:0,behavior:"smooth"});
-          S.vx*=0.85;
-        } else {
-          const btn=document.getElementById("cat-spawn-btn");
-          if(!btn){S.state="chasing";return;}
-          const r=btn.getBoundingClientRect();
-          const homeX=r.left+r.width/2-7*SC;
-          const homeY=r.top+r.height/2-CAT_H/2;
-          const dx=homeX-S.x, dy=homeY-S.y;
-          const dist=Math.sqrt(dx*dx+dy*dy);
-          S.facingLeft=dx<0;
-          if(dist>18){
-            const spd=Math.min(dist*0.12,6);
-            S.vx=(dx/dist)*spd;
-            if(dy<-40&&onGround)S.vy=-11;
-          } else {
-            S.x=homeX; S.y=homeY; S.vx=0; S.vy=0;
-            // Unlock next hat
-            const nextHat=((S.hat||0)%4)+1;
-            S.hat=nextHat;
-            S.state="squeezing-home"; S.idleTimer=0;
-            if(soundRef.current)soundRef.current.mew();
-            setUiState(u=>({...u,hat:nextHat}));
-          }
-        }
-
-      }else if(S.state==="squeezing-home"){
-        S.idleTimer++;
-        const prog=Math.min(S.idleTimer/35,1);
-        const SC2=CAT_SCALE*S.scale;
-        ctx.save();
-        ctx.translate(S.x+7*SC2,S.y+7*SC2);
-        ctx.scale(1-prog*0.95,1-prog*0.95);
-        ctx.translate(-(S.x+7*SC2),-(S.y+7*SC2));
-        drawPixelCat(ctx,Math.round(S.x),Math.round(S.y),"walking",S.frame,dark,S.facingLeft,S.ballColor,null,null,S.scale,S.hat);
-        ctx.restore();
-        if(S.idleTimer>40){
-          S.alive=false; S.state="hidden"; S.currentPlatform=null;
-          setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-        }
-        return;
-
-      }else if(S.state==="chasing"||S.state==="walking"){
-        if(idleSecs<4){
-          S.state="chasing";
-          if(cursorDist>20){
-            const spd=Math.min(cursorDist*0.09,7);
-            S.vx=(cdx/cursorDist)*spd; S.facingLeft=cdx<0;
-            if(cdy<-60&&onGround){S.vy=-12;S.state="jumping";}
-          } else {
-            S.vx*=0.5;
-            if(S.frame%28===0){
-              S.state="batting"; S.idleTimer=0;
-              if(soundRef.current&&S.soundCooldown<=0){soundRef.current.chirp();S.soundCooldown=40;}
-            }
-          }
-        } else {
-          const targets=getSectionTargets();
-          if(targets.length){
-            const pick=targets[Math.floor(Math.random()*targets.length)];
-            S.perchTarget={x:pick.x,y:pick.y-CAT_H,el:pick.el,text:pick.text};
-            S.state="walking-to-perch";
-          }
-        }
-
-      }else if(S.state==="walking-to-perch"){
-        if(!S.perchTarget){S.state="chasing";return;}
-        if(idleSecs<1.5){S.state="chasing";S.perchTarget=null;return;}
-        const pdx=S.perchTarget.x-S.x, pdy=S.perchTarget.y-S.y;
-        const pdist=Math.sqrt(pdx*pdx+pdy*pdy);
-        S.facingLeft=pdx<0;
-        if(pdist>16){
-          S.vx=(pdx/pdist)*Math.min(pdist*0.07,4.5);
-          if(pdy<-50&&onGround)S.vy=-13;
-        } else {
-          S.x=S.perchTarget.x; S.y=S.perchTarget.y;
-          S.vx=0; S.vy=0;
-          S.currentPlatform={top:S.perchTarget.y+CAT_H,left:0,right:window.innerWidth,el:S.perchTarget.el};
-          S.state="perching"; S.idleTimer=0;
-          // Speech bubble with section name
-          if(S.perchTarget.text){
-            S.speechText=S.perchTarget.text; S.speechTimer=120;
-          }
-          if(soundRef.current)soundRef.current.purr();
-        }
-
-      }else if(S.state==="perching"){
-        S.idleTimer++; S.purrTimer=(S.purrTimer||0)+1;
-        if(S.purrTimer%90===0&&soundRef.current)soundRef.current.purr();
-        if(S.idleTimer>200){S.state="grooming";S.idleTimer=0;}
-        if(idleSecs<1.2){S.state="chasing";S.perchTarget=null;}
-
-      }else if(S.state==="grooming"){
-        S.idleTimer++;
-        if(S.idleTimer>260)S.state="sleeping";
-        if(idleSecs<1.2){S.state="chasing";S.perchTarget=null;}
-
-      }else if(S.state==="sleeping"){
-        if(S.frame%130===0&&soundRef.current)soundRef.current.purr();
-        if(idleSecs<2){
-          S.state="startled"; S.idleTimer=0;
-          if(soundRef.current)soundRef.current.hiss();
-        }
-      }
-
-      // Render
-      const stateMap={"chasing":"walking","walking-to-perch":"walking","batting":"startled","jumping":"jumping","going-home":"walking","sulking":"sulking","happy":"happy"};
-      const drawSt=stateMap[S.state]||S.state;
-      drawPixelCat(ctx,Math.round(S.x),Math.round(S.y),drawSt,S.frame,dark,S.facingLeft,S.ballColor,Math.round(S.ballX),Math.round(S.ballY),S.scale,S.hat);
-
-      // Speech bubble
-      if(S.speechText&&S.speechTimer>0){
-        const bx=S.x+7*SC, by=S.y-4*SC;
-        const alpha=Math.min(1,S.speechTimer/20);
-        ctx.globalAlpha=alpha;
-        ctx.fillStyle=dark?"rgba(30,30,40,0.92)":"rgba(250,250,255,0.95)";
-        ctx.strokeStyle=dark?"rgba(255,255,255,0.15)":"rgba(0,0,0,0.12)";
-        ctx.lineWidth=1;
-        ctx.beginPath();ctx.roundRect(bx-24,by-18,56,22,8);ctx.fill();ctx.stroke();
-        // Tail
-        ctx.fillStyle=dark?"rgba(30,30,40,0.92)":"rgba(250,250,255,0.95)";
-        ctx.beginPath();ctx.moveTo(bx-4,by+4);ctx.lineTo(bx+4,by+4);ctx.lineTo(bx,by+10);ctx.closePath();ctx.fill();
-        ctx.fillStyle=dark?"#f5f5f5":"#1a1a1a";
-        ctx.font=`bold ${SC*2.5}px 'Fira Code',monospace`;
-        ctx.textAlign="center";
-        ctx.fillText(S.speechText,bx+4,by-2);
-        ctx.textAlign="left";
-        ctx.globalAlpha=1;
-      }
-
-      // Mood aura when very happy
-      if(S.mood>85){
-        const auraAlpha=(S.mood-85)/15*0.12;
-        ctx.globalAlpha=auraAlpha;
-        ctx.fillStyle="#4ade80";
-        ctx.beginPath();ctx.ellipse(catCX,catCY,CAT_W*0.9,CAT_H*0.9,0,0,Math.PI*2);ctx.fill();
-        ctx.globalAlpha=1;
-      }
-      // Hunger warning aura
-      if(S.hunger<20){
-        const ha=(1-S.hunger/20)*0.15*Math.abs(Math.sin(S.frame*0.05));
-        ctx.globalAlpha=ha;
-        ctx.fillStyle="#fb923c";
-        ctx.beginPath();ctx.ellipse(catCX,catCY,CAT_W*0.85,CAT_H*0.85,0,0,Math.PI*2);ctx.fill();
-        ctx.globalAlpha=1;
-      }
+    } catch {
+      addImmediate([{ type:"err", text:"  ✗ Network error. Please try the contact form." }]);
+      setSending(false);
     }
-
-    function drawLaser(ctx){
-      const S=sRef.current;
-      if(!S.laserVisible||(Date.now()-S.lastCursorMove)>3000){S.laserVisible=false;return;}
-      const grad=ctx.createRadialGradient(S.cursor.x,S.cursor.y,0,S.cursor.x,S.cursor.y,16);
-      grad.addColorStop(0,"rgba(255,50,50,0.92)");
-      grad.addColorStop(0.35,"rgba(255,50,50,0.35)");
-      grad.addColorStop(1,"rgba(255,50,50,0)");
-      ctx.fillStyle=grad;
-      ctx.beginPath();ctx.arc(S.cursor.x,S.cursor.y,16,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle="#ff3c3c";
-      ctx.beginPath();ctx.arc(S.cursor.x,S.cursor.y,3.5,0,Math.PI*2);ctx.fill();
-    }
-
-    loop();
-    return()=>{
-      cancelAnimationFrame(rafRef.current);
-      clearTimeout(autoSpawn);
-      window.removeEventListener("resize",onResize);
-      window.removeEventListener("resize",markDirty);
-      window.removeEventListener("mousemove",onMove);
-      window.removeEventListener("touchmove",onMove);
-      window.removeEventListener("scroll",onScroll);
-      window.removeEventListener("scroll",markDirty);
-      window.removeEventListener("click",onBtnClick);
-      window.removeEventListener("touchend",onBtnTap);
-      window.removeEventListener("click",onClickCat);
-      window.removeEventListener("touchend",onTapCat);
-    };
-  },[dark]);
-
-  // Contextual toolbar buttons based on cat state + mood/hunger
-  const S = sRef.current;
-  const { toolbar, mood, hunger, hat } = uiState;
-
-  const handlePet=()=>{
-    const S=sRef.current; S.state="petting"; S.idleTimer=0; S.vx=0; S.vy=0;
-    if(soundRef.current)soundRef.current.purr();
   };
-  const handleFeed=()=>{
-    const S=sRef.current;
-    if(S.hunger>80){
-      // Not hungry — cat turns away
-      S.state="startled"; S.facingLeft=!S.facingLeft;
-      S.speechText="not hungry"; if(!S.speechTimer)S.speechTimer=80;
+
+  /* ── Contact step handler ── */
+  const runContactStep = (value) => {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      addImmediate([
+        { type:"err", text:`  ✗ This field cannot be empty.` },
+        { type:"sys", text: fieldPrompt(contactMode) },
+      ]);
+      return;
+    }
+    if (contactMode === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      addImmediate([
+        { type:"err", text:"  ✗ Invalid email address." },
+        { type:"sys", text: fieldPrompt("email") },
+      ]);
+      return;
+    }
+    addImmediate([{ type:"in", text:`  ${trimmed}` }]);
+    const updated = { ...contactData, [contactMode]: trimmed };
+    setContactData(updated);
+    const idx  = CONTACT_STEPS.indexOf(contactMode);
+    const next = CONTACT_STEPS[idx + 1];
+    if (next) {
+      setContactMode(next);
+      addImmediate([{ type:"sys", text: fieldPrompt(next) }]);
     } else {
-      S.state="eating"; S.idleTimer=0; S.vx=0; S.vy=0;
-      if(soundRef.current)soundRef.current.mew();
+      setContactMode(null);
+      typeLines([
+        { type:"sys", text:"" },
+        { type:"sys", text:"  ┌─ Review ───────────────────────────────────┐" },
+        { type:"out", text:`  │  Name    › ${updated.name}` },
+        { type:"out", text:`  │  Email   › ${updated.email}` },
+        { type:"out", text:`  │  Subject › ${updated.subject}` },
+        { type:"out", text:`  │  Message › ${updated.message}` },
+        { type:"sys", text:"  └────────────────────────────────────────────┘" },
+      ], 30);
+      setTimeout(() => submitContact(updated), 500);
     }
-    setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-  };
-  const handleHome=()=>{
-    const S=sRef.current; S.state="going-home"; S.idleTimer=0;
-    setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-    if(soundRef.current)soundRef.current.mew();
-  };
-  const handleWake=()=>{
-    const S=sRef.current; S.state="startled"; S.idleTimer=0;
-    if(soundRef.current)soundRef.current.hiss();
-    setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
-  };
-  const handleDismiss=()=>{
-    const S=sRef.current; S.state="chasing";
-    setUiState(u=>({...u,toolbar:{...u.toolbar,visible:false}}));
   };
 
-  const isHungry = hunger < 40;
-  const isSleeping = toolbar.catState==="sleeping";
-  const isSulking = toolbar.catState==="sulking";
+  /* ── Hack easter egg ── */
+  const runHack = () => {
+    setHackMode(true);
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*";
+    let count = 0;
+    const interval = setInterval(() => {
+      const line = Array.from({ length: 48 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+      addImmediate([{ type:"hack", text: "  " + line }]);
+      count++;
+      if (count >= 18) {
+        clearInterval(interval);
+        setHackMode(false);
+        addImmediate([
+          { type:"ok",  text:"  ACCESS GRANTED. Just kidding 😄" },
+          { type:"out", text:"  Nice try though." },
+        ]);
+      }
+    }, 80);
+  };
 
-  const btnStyle=(col,highlight=false)=>({
-    background:col, border:highlight?"2px solid #facc15":"none",
-    borderRadius:20, padding:"5px 10px", fontSize:12, fontWeight:700,
-    fontFamily:"'Fira Code',monospace", cursor:"pointer",
-    color:"#fff", whiteSpace:"nowrap",
-    boxShadow:highlight?"0 0 8px #facc1580, 0 2px 8px rgba(0,0,0,0.25)":"0 2px 8px rgba(0,0,0,0.25)",
-    transition:"transform 0.15s",
-  });
+  /* ── Main command runner ── */
+  const run = (cmd) => {
+    const trimmed = cmd.trim();
+    const lower   = trimmed.toLowerCase();
+    setTabMatches([]);
 
-  const HAT_NAMES=["","👑 Crown","🎉 Party","🧙 Wizard","🧢 Beanie"];
+    if (contactMode) {
+      runContactStep(trimmed);
+      setInput(""); setHIdx(-1);
+      return;
+    }
 
-  return(
-    <>
-      <canvas ref={canvasRef} style={{position:"fixed",inset:0,zIndex:1000,pointerEvents:"none",width:"100vw",height:"100vh"}}/>
+    addImmediate([{ type:"in", text:`~ % ${trimmed}` }]);
+    setHist(h => [trimmed, ...h.slice(0, 19)]);
+    setHIdx(-1);
+    setInput("");
+    if (!trimmed) return;
 
-      {/* Interaction toolbar */}
-      {toolbar.visible&&(
-        <div style={{
-          position:"fixed",zIndex:1001,
-          left:toolbar.x, top:toolbar.y,
-          transform:"translate(-50%,-100%)",
-          display:"flex",flexDirection:"column",alignItems:"center",gap:4,
-          animation:"fadeSlideUp 0.2s cubic-bezier(0.22,1,0.36,1)",
-        }}>
-          {/* Mood + hunger bars */}
-          <div style={{
-            background:dark?"rgba(18,18,18,0.95)":"rgba(255,255,255,0.95)",
-            border:dark?"1px solid rgba(255,255,255,0.1)":"1px solid rgba(0,0,0,0.08)",
-            borderRadius:16,padding:"8px 12px",backdropFilter:"blur(12px)",
-            boxShadow:"0 8px 24px rgba(0,0,0,0.2)",minWidth:180,
-          }}>
-            <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:5}}>
-              <span style={{fontSize:10,color:dark?"#a6a6a6":"#888",fontFamily:"'Fira Code',monospace",width:40}}>mood</span>
-              <div style={{flex:1,height:5,background:dark?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)",borderRadius:3,overflow:"hidden"}}>
-                <div style={{width:`${mood}%`,height:"100%",background:mood>60?"#4ade80":mood>30?"#facc15":"#ef4444",borderRadius:3,transition:"width 0.5s"}}/>
-              </div>
-            </div>
-            <div style={{display:"flex",alignItems:"center",gap:6}}>
-              <span style={{fontSize:10,color:dark?"#a6a6a6":"#888",fontFamily:"'Fira Code',monospace",width:40}}>hunger</span>
-              <div style={{flex:1,height:5,background:dark?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)",borderRadius:3,overflow:"hidden"}}>
-                <div style={{width:`${hunger}%`,height:"100%",background:hunger>60?"#38bdf8":hunger>30?"#fb923c":"#ef4444",borderRadius:3,transition:"width 0.5s"}}/>
-              </div>
-            </div>
-            {hat>0&&<div style={{marginTop:6,fontSize:10,color:dark?"#a6a6a6":"#888",fontFamily:"'Fira Code',monospace",textAlign:"center"}}>wearing: {HAT_NAMES[hat]}</div>}
-          </div>
+    /* ── commands ── */
+    if (lower === "close" || lower === "exit") { setTimeout(onClose, 180); return; }
+    if (lower === "clear") { setLines([]); return; }
 
-          {/* Action buttons */}
-          <div style={{
-            background:dark?"rgba(18,18,18,0.95)":"rgba(255,255,255,0.95)",
-            border:dark?"1px solid rgba(255,255,255,0.1)":"1px solid rgba(0,0,0,0.08)",
-            borderRadius:24,padding:"6px 10px",backdropFilter:"blur(12px)",
-            boxShadow:"0 8px 24px rgba(0,0,0,0.2)",
-            display:"flex",gap:6,alignItems:"center",
-          }}>
-            {isSleeping?(
-              <button style={btnStyle("#f472b6")} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.1)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"} onClick={handleWake}>💤 Wake</button>
-            ):(
-              <button style={btnStyle(isSulking?"#a78bfa":"#f472b6",isSulking)} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.1)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"} onClick={handlePet}>🤚 Pet</button>
-            )}
-            <button style={btnStyle("#38bdf8",isHungry)} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.1)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"} onClick={handleFeed}>🐟 Feed</button>
-            <button style={btnStyle("#a78bfa")} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.1)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"} onClick={handleHome}>🏠 Home</button>
-            <button style={{...btnStyle("transparent"),color:dark?"rgba(255,255,255,0.35)":"rgba(0,0,0,0.25)",boxShadow:"none",padding:"4px 6px"}} onClick={handleDismiss}>✕</button>
-          </div>
+    if (lower === "help") {
+      typeLines([
+        { type:"sys", text:"  Commands:" },
+        { type:"out", text:"  message            send me a message" },
+        { type:"out", text:"  whoami             who is Raghul?" },
+        { type:"out", text:"  banner             show ASCII banner" },
+        { type:"out", text:"  skills             tech proficiency" },
+        { type:"out", text:"  open <github|linkedin|instagram|resume>  open link" },
+        { type:"out", text:"  theme <dark|light>  toggle site theme" },
+        { type:"out", text:"  resume             open resume PDF" },
+        { type:"out", text:"  date / time        current date & time" },
+        { type:"out", text:"  echo <text>        echo text" },
+        { type:"out", text:"  about / projects / articles  navigate" },
+        { type:"out", text:"  dino               🦕 " },
+        { type:"out", text:"  hack               👾 " },
+        { type:"out", text:"  coffee             ☕ " },
+        { type:"out", text:"  sudo               🤫 " },
+        { type:"out", text:"  clear              clear terminal" },
+        { type:"out", text:"  close / exit       close terminal" },
+        { type:"sys", text:"  Tip: Tab to autocomplete · ↑↓ for history" },
+      ], 22);
+      return;
+    }
+
+    if (lower === "banner") {
+      typeLines(ASCII_BANNER.map((t, i) => ({ type: i < 6 ? "ban" : "out", text: t })), 40);
+      return;
+    }
+
+    if (lower === "whoami") {
+      typeLines([
+        { type:"sys", text:"  raghul@portfolio" },
+        { type:"out", text:"  ─────────────────────────────────────" },
+        { type:"out", text:"  Name    : Raghul Prasanth S P" },
+        { type:"out", text:"  Role    : Full-Stack Developer & UI/UX Designer" },
+        { type:"out", text:"  Based   : Chennai, India" },
+        { type:"out", text:"  Stack   : Golang · React · Node.js · PostgreSQL" },
+        { type:"out", text:"  Current : Associate Consultant @ Oracle OFSS" },
+        { type:"out", text:"  Loves   : Clean code, great UX, late nights ☕" },
+        { type:"out", text:"  ─────────────────────────────────────" },
+      ], 30);
+      return;
+    }
+
+    if (lower === "message" || lower === "contact") {
+      setContactData({ name:"", email:"", subject:"", message:"" });
+      setContactMode("name");
+      typeLines([
+        { type:"sys", text:"" },
+        { type:"sys", text:"  📬 New message to Raghul" },
+        { type:"sys", text:"  ─────────────────────────────────────" },
+        { type:"sys", text: fieldPrompt("name") },
+      ], 30);
+      return;
+    }
+
+    if (lower === "skills") {
+      typeLines([
+        { type:"sys", text:"  Tech Proficiency:" },
+        { type:"out", text:"  Python  ████████░░  4/5" },
+        { type:"out", text:"  Golang        ████████░░  4/5" },
+        { type:"out", text:"  React / Next  ██████████  5/5" },
+        { type:"out", text:"  TypeScript    ████████░░  4/5" },
+        { type:"out", text:"  PostgreSQL    ████████░░  4/5" },
+        { type:"out", text:"  Docker        ██████░░░░  3/5" },
+        { type:"out", text:"  Figma         ████████░░  4/5" },
+        { type:"out", text:"  UI/UX Design  ████████░░  4/5" },
+      ], 28);
+      return;
+    }
+
+    if (lower === "resume" || lower === "open resume") {
+      window.open("https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link", "_blank");
+      addImmediate([{ type:"ok", text:"  ✓ Opened resume in new tab." }]);
+      setTimeout(onClose, 900);
+      return;
+    }
+
+    if (lower.startsWith("open ")) {
+      const target = lower.slice(5).trim();
+      const links = {
+        github:    "https://github.com/Raghul-18",
+        linkedin:  "https://www.linkedin.com/in/raghul-prasanth/",
+        instagram: "https://www.instagram.com/rag.hul._/",
+        resume:    "https://drive.google.com/file/d/119aWs2pg2xOLRaC2MV-uAVG8rILT1D4a/view?usp=drive_link",
+      };
+      if (links[target]) {
+        window.open(links[target], "_blank");
+        addImmediate([{ type:"ok", text:`  ✓ Opened ${target} in new tab.` }]);
+        setTimeout(onClose, 900);
+      } else {
+        addImmediate([{ type:"err", text:`  ✗ Unknown target "${target}". Try: github, linkedin, instagram, resume` }]);
+      }
+      return;
+    }
+
+    if (lower.startsWith("theme ")) {
+      const t = lower.slice(6).trim();
+      if (t === "dark" || t === "light") {
+        onThemeToggle(t === "dark");
+        addImmediate([{ type:"ok", text:`  ✓ Theme set to ${t}.` }]);
+        setTimeout(onClose, 700);
+      } else {
+        addImmediate([{ type:"err", text:'  ✗ Usage: theme dark | theme light' }]);
+      }
+      return;
+    }
+
+    if (lower === "date") {
+      addImmediate([{ type:"out", text:`  ${new Date().toDateString()}` }]);
+      return;
+    }
+    if (lower === "time") {
+      addImmediate([{ type:"out", text:`  ${new Date().toLocaleTimeString()}` }]);
+      return;
+    }
+
+    if (lower.startsWith("echo ")) {
+      addImmediate([{ type:"out", text:`  ${trimmed.slice(5)}` }]);
+      return;
+    }
+
+    if (lower === "about")    { document.getElementById("about")?.scrollIntoView({ behavior:"smooth" });    addImmediate([{ type:"out", text:"→ Scrolling to About..." }]);    setTimeout(onClose, 700); return; }
+    if (lower === "projects") { document.getElementById("projects")?.scrollIntoView({ behavior:"smooth" }); addImmediate([{ type:"out", text:"→ Scrolling to Projects..." }]); setTimeout(onClose, 700); return; }
+    if (lower === "articles") { document.getElementById("articles")?.scrollIntoView({ behavior:"smooth" }); addImmediate([{ type:"out", text:"→ Scrolling to Articles..." }]); setTimeout(onClose, 700); return; }
+
+    if (lower === "dino") {
+      addImmediate([{ type:"ok", text:"  🦕  Launching Dino Run..." }]);
+      setTimeout(() => { onClose(); onDinoOpen(); }, 600);
+      return;
+    }
+
+    if (lower === "coffee") {
+      typeLines([
+        { type:"out", text:"  ☕  Brewing..." },
+        { type:"out", text:"  Raghul runs on coffee and late-night debugging sessions." },
+        { type:"out", text:"  Current caffeine level: ████████░░  80%" },
+      ], 60);
+      return;
+    }
+
+    if (lower === "hack") {
+      addImmediate([{ type:"sys", text:"  Initialising hack sequence..." }]);
+      setTimeout(runHack, 400);
+      return;
+    }
+
+    if (lower.startsWith("sudo")) {
+      addImmediate([{ type:"err", text:"  sudo: permission denied. Nice try 😄" }]);
+      return;
+    }
+
+    if (lower.startsWith("rm ")) {
+      addImmediate([{ type:"err", text:"  rm: cannot remove '/': you wish 😂" }]);
+      return;
+    }
+
+    addImmediate([{ type:"err", text:`  command not found: ${trimmed}. Type "help".` }]);
+  };
+
+  const onKey = e => {
+    if (sending || hackMode) return;
+    if (e.key === "Enter")  { run(input); }
+    if (e.key === "Tab")    { e.preventDefault(); handleTab(); }
+    if (e.key === "ArrowUp"   && !contactMode) { const i = Math.min(hIdx+1, hist.length-1); setHIdx(i); setInput(hist[i] || ""); }
+    if (e.key === "ArrowDown" && !contactMode) { const i = Math.max(hIdx-1, -1); setHIdx(i); setInput(i === -1 ? "" : hist[i]); }
+    if (e.key === "Escape") {
+      if (contactMode) { setContactMode(null); setContactData({ name:"", email:"", subject:"", message:"" }); addImmediate([{ type:"err", text:"  ✗ Message cancelled." }]); }
+      else onClose();
+    }
+  };
+
+  const lineColor = (type) => {
+    if (type === "in")   return "#a78bfa";
+    if (type === "sys")  return "#fbbf24";
+    if (type === "ok")   return "#34d399";
+    if (type === "err")  return "#f87171";
+    if (type === "ban")  return "#7dd3fc";
+    if (type === "hack") return "#22c55e";
+    return "#e2e8f0";
+  };
+
+  return (
+    <div style={{ position:"fixed", inset:0, zIndex:9990, background:"rgba(0,0,0,0.75)", backdropFilter:"blur(6px)", display:"flex", alignItems:"center", justifyContent:"center" }}
+      onClick={e => e.target === e.currentTarget && onClose()}>
+      <div style={{ width:"min(700px,98vw)", background:"#0a0a0a", borderRadius:16, border:"1px solid rgba(255,255,255,0.1)", overflow:"hidden", boxShadow:"0 40px 100px rgba(0,0,0,0.8)", display:"flex", flexDirection:"column", maxHeight:"92vh" }}>
+
+        {/* ── title bar ── */}
+        <div style={{ display:"flex", alignItems:"center", gap:8, padding:"12px 16px", borderBottom:"1px solid rgba(255,255,255,0.07)", background:"rgba(255,255,255,0.025)", flexShrink:0 }}>
+          {["#f87171","#fbbf24","#34d399"].map(c => (
+            <span key={c} style={{ width:12, height:12, borderRadius:"50%", background:c, cursor: c==="#f87171"?"pointer":"default", flexShrink:0 }}
+              onClick={c==="#f87171" ? onClose : undefined} />
+          ))}
+          <span style={{ marginLeft:8, fontSize:12, color:"#6b7280", fontFamily:"'Fira Code',monospace" }}>
+            raghul@portfolio:~{contactMode ? ` [msg·${contactMode}]` : ""}
+          </span>
+          <span style={{ marginLeft:"auto", fontSize:11, color:"#374151", fontFamily:"'Fira Code',monospace" }}>
+            {hackMode ? "● HACKING" : "● zsh"}
+          </span>
         </div>
-      )}
-    </>
+
+        {/* ── output ── */}
+        <div style={{ flex:1, overflowY:"auto", padding:"14px 16px", fontFamily:"'Fira Code',monospace", fontSize:"clamp(10px,2.5vw,13px)", lineHeight:1.9, minHeight:0, overflowX:"auto", wordBreak:"break-all", WebkitOverflowScrolling:"touch" }}>
+          {lines.map((l, i) => (
+            <div key={i} className={l.type === "ban" ? "terminal-ban" : ""} style={{ color: lineColor(l.type), whiteSpace: l.type === "ban" ? "pre" : "pre-wrap", fontWeight: l.type === "ban" ? 700 : 400, fontSize: l.type === "ban" ? "clamp(7px,1.6vw,13px)" : undefined }}>{l.text}</div>
+          ))}
+          {/* blinking cursor line */}
+          <div style={{ display:"flex", alignItems:"center", height:20 }}>
+            <span style={{ display:"inline-block", width:8, height:15, background:"#a78bfa", opacity:1, animation:"pulse 1.1s step-end infinite", borderRadius:1 }} />
+          </div>
+          <div ref={endRef} />
+        </div>
+
+        {/* ── input ── */}
+        <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 20px", borderTop:"1px solid rgba(255,255,255,0.07)", background: contactMode ? "rgba(52,211,153,0.04)" : "rgba(167,139,250,0.03)", flexShrink:0, transition:"background 0.3s" }}>
+          <span style={{ color: contactMode ? "#34d399" : "#a78bfa", fontFamily:"'Fira Code',monospace", fontSize:13, flexShrink:0 }}>
+            {contactMode ? `[${contactMode}] ›` : "~ %"}
+          </span>
+          <input
+            ref={inputRef}
+            value={input}
+            onChange={e => { setInput(e.target.value); setTabMatches([]); }}
+            onKeyDown={onKey}
+            disabled={sending || hackMode}
+            style={{ flex:1, background:"transparent", border:"none", outline:"none", color:"#f1f5f9", fontFamily:"'Fira Code',monospace", fontSize:13, caretColor: contactMode ? "#34d399" : "#a78bfa", opacity: (sending || hackMode) ? 0.4 : 1 }}
+            placeholder={contactMode ? `enter your ${contactMode}…` : "type a command… (Tab to complete)"}
+            autoComplete="off" spellCheck="false"
+          />
+        </div>
+
+        {/* ── tab completions ── */}
+        {tabMatches.length > 1 && (
+          <div style={{ padding:"6px 20px 10px", fontFamily:"'Fira Code',monospace", fontSize:12, color:"#6b7280", borderTop:"1px solid rgba(255,255,255,0.04)", display:"flex", gap:16, flexWrap:"wrap" }}>
+            {tabMatches.map(m => <span key={m} style={{ color:"#a78bfa" }}>{m}</span>)}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
-/* ── Paw print SVG for spawn button ── */
-function PawPrint() {
-  return(
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" style={{opacity:0.32,marginLeft:2}}>
-      <ellipse cx="6"  cy="7"  rx="2.5" ry="3"/>
-      <ellipse cx="18" cy="7"  rx="2.5" ry="3"/>
-      <ellipse cx="10" cy="4"  rx="2"   ry="2.5"/>
-      <ellipse cx="14" cy="4"  rx="2"   ry="2.5"/>
-      <path d="M12 10c-4 0-7 3-6 7 .5 2 2 3 3.5 2.5.8-.3 1.7-.5 2.5-.5s1.7.2 2.5.5c1.5.5 3-.5 3.5-2.5 1-4-2-7-6-7z"/>
-    </svg>
+
+
+/* ─── COUNT UP ─── */
+function CountUp({ target, suffix = "", duration = 1800 }) {
+  const [count, setCount] = useState(0);
+  const [ref, visible] = useFadeIn();
+  const started = useRef(false);
+  useEffect(() => {
+    if (!visible || started.current) return;
+    started.current = true;
+    const start = Date.now();
+    const tick = () => {
+      const elapsed = Date.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(ease * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [visible]);
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+/* ─── TIMEZONE WIDGET ─── */
+function TimezoneWidget({ dark }) {
+  const [localTime,   setLocalTime]   = useState("");
+  const [istTime,     setIstTime]     = useState("");
+  const [isWorkHours, setIsWorkHours] = useState(false);
+  const [tzLabel,     setTzLabel]     = useState("");
+
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+
+      // Visitor local time
+      const local = now.toLocaleTimeString([], { hour:"2-digit", minute:"2-digit", hour12:true });
+      setLocalTime(local);
+
+      // Detect visitor timezone label (e.g. "EST", "GMT+1")
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const short = now.toLocaleTimeString("en-US", { timeZoneName:"short" }).split(" ").pop();
+        setTzLabel(short || tz);
+      } catch { setTzLabel(""); }
+
+      // IST time for working hours check
+      const istHourStr = now.toLocaleString("en-IN", { timeZone:"Asia/Kolkata", hour:"numeric", hour12:false });
+      const istH = parseInt(istHourStr);
+      setIsWorkHours(istH >= 9 && istH < 22);
+
+      // Show IST time too
+      const ist = now.toLocaleTimeString("en-IN", { timeZone:"Asia/Kolkata", hour:"2-digit", minute:"2-digit", hour12:true });
+      setIstTime(ist);
+    };
+    update();
+    const t = setInterval(update, 15000);
+    return () => clearInterval(t);
+  }, []);
+
+  return (
+    <div style={{ display:"flex", alignItems:"center", gap:12, padding:"12px 16px", background: dark?"rgba(255,255,255,0.03)":"rgba(0,0,0,0.03)", border: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)", borderRadius:12 }}>
+      <span style={{ width:8, height:8, borderRadius:"50%", background: isWorkHours ? "#22c55e" : "#f59e0b", flexShrink:0, animation:"pulse 2s infinite" }} />
+      <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+        <span style={{ fontSize:12, color:"var(--white)", fontFamily:"'Fira Code',monospace" }}>
+          {isWorkHours ? "Available now" : "Outside work hours"} · Chennai, IN
+        </span>
+        <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Fira Code',monospace" }}>
+          Your time: {localTime}{tzLabel ? ` (${tzLabel})` : ""} · IST: {istTime} · Usually responds within 24hrs
+        </span>
+      </div>
+    </div>
   );
 }
 
+/* ─── FLOATING LABEL INPUT ─── */
+// function FloatInput({ name, placeholder, value, onChange, type="text", dark }) {
+//   const [focused, setFocused] = useState(false);
+//   const filled = value.length > 0;
+//   const active = focused || filled;
+//   const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+//   const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
+//   return (
+//     <div style={{ position:"relative", width:"100%" }}>
+//       <label style={{ position:"absolute", left:14, top: active ? 6 : "50%", transform: active ? "none" : "translateY(-50%)", fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
+//         {placeholder}
+//       </label>
+//       <input name={name} type={type} value={value} onChange={onChange}
+//         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+//         style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "22px 14px 8px" : "14px 14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", transition:"border-color 0.2s, padding 0.2s", boxSizing:"border-box" }} />
+//     </div>
+//   );
+// }
+// function FloatTextarea({ name, placeholder, value, onChange, dark }) {
+//   const [focused, setFocused] = useState(false);
+//   const filled = value.length > 0;
+//   const active = focused || filled;
+//   const bg = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)";
+//   const borderC = focused ? (dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)") : (dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)");
+//   return (
+//     <div style={{ position:"relative", width:"100%" }}>
+//       <label style={{ position:"absolute", left:14, top: active ? 8 : 14, fontSize: active ? 10 : 13, color: focused ? (dark?"rgba(255,255,255,0.7)":"rgba(0,0,0,0.5)") : "var(--mid)", transition:"all 0.2s cubic-bezier(0.22,1,0.36,1)", pointerEvents:"none", fontFamily:"'Open Sans',sans-serif", zIndex:1 }}>
+//         {placeholder}
+//       </label>
+//       <textarea name={name} value={value} onChange={onChange}
+//         onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+//         style={{ width:"100%", background:bg, border:`1px solid ${borderC}`, borderRadius:10, padding: active ? "26px 14px 10px" : "14px", color: dark?"#f5f5f5":"#121212", fontSize:13, fontFamily:"'Open Sans',sans-serif", outline:"none", resize:"vertical", minHeight:120, transition:"border-color 0.2s", boxSizing:"border-box" }} />
+//     </div>
+//   );
+// }
 
+/* ─── PAPER AIRPLANE SEND ─── */
+function PaperPlane({ onDone }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.animate([
+      { transform:"translate(0,0) rotate(0deg)",   opacity:1 },
+      { transform:"translate(180px,-120px) rotate(25deg)", opacity:1, offset:0.6 },
+      { transform:"translate(420px,-60px) rotate(15deg)",  opacity:0 },
+    ], { duration:800, easing:"cubic-bezier(0.22,1,0.36,1)", fill:"forwards" }).onfinish = onDone;
+  }, []);
+  return (
+    <span ref={ref} style={{ display:"inline-block", fontSize:18, pointerEvents:"none" }}>✈️</span>
+  );
+}
 
 /* ─── MAIN APP ─── */
 export default function Portfolio() {
@@ -2272,22 +2420,26 @@ export default function Portfolio() {
   const [expandedWork, setExpandedWork]   = useState(null);
   const [articlePage, setArticlePage]     = useState(0);
   const [heroSlide, setHeroSlide]         = useState(0);
-  const [lang, setLang]               = useState("En");
   const [roleIdx, setRoleIdx]         = useState(0);
   const [roleVisible, setRoleVisible] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [dinoOpen, setDinoOpen]           = useState(false);
+  const [terminalOpen, setTerminalOpen]   = useState(false);
+  const [scrollPct, setScrollPct]         = useState(0);
+  const [mousePos, setMousePos]           = useState({ x: 0, y: 0 });
+  const [activeTag, setActiveTag]         = useState(null);
+  const heroRef = useRef(null);
 
   const theme = dark
     ? { "--black":"#121212","--dark":"#3D3D3D","--mid":"#A6A6A6","--light":"#F5F5F5","--white":"#ffffff","--bg":"#121212","--text":"#F5F5F5" }
     : { "--black":"#f5f5f5","--dark":"#d0d0d0","--mid":"#666","--light":"#1a1a1a","--white":"#121212","--bg":"#f0f0f0","--text":"#121212" };
 
-  /* Role typing cycle */
+  /* Role glitch cycle */
   useEffect(() => {
     const t = setInterval(() => {
       setRoleVisible(false);
-      setTimeout(() => { setRoleIdx(i => (i + 1) % ROLES.length); setRoleVisible(true); }, 400);
-    }, 3000);
+      setTimeout(() => { setRoleIdx(i => (i + 1) % ROLES.length); setRoleVisible(true); }, 80);
+    }, 3200);
     return () => clearInterval(t);
   }, []);
 
@@ -2300,8 +2452,28 @@ export default function Portfolio() {
       setActiveSection(cur);
       setShowScrollTop(window.scrollY > 400);
     };
-    window.addEventListener("scroll", handler);
+    window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  /* Terminal shortcut: press "/" */
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+        e.preventDefault();
+        setTerminalOpen(t => !t);
+      }
+      if (e.key === "Escape") setTerminalOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  /* Mouse tracking for spotlight */
+  useEffect(() => {
+    const h = e => setMousePos({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", h, { passive: true });
+    return () => window.removeEventListener("mousemove", h);
   }, []);
 
   /* System dark mode */
@@ -2325,6 +2497,10 @@ export default function Portfolio() {
 
   return (
     <div style={{ ...theme, background: "var(--bg)", color: "var(--text)", fontFamily: "'Open Sans',sans-serif", fontSize: 14, lineHeight: 1.6, overflowX: "hidden", minHeight: "100vh" }}>
+      <ReadingProgress dark={dark} />
+      {/* Spotlight overlay */}
+      <div style={{ position:"fixed", inset:0, pointerEvents:"none", zIndex:1, background:`radial-gradient(circle 380px at ${mousePos.x}px ${mousePos.y}px, transparent 0%, ${dark ? "rgba(0,0,0,0.18)" : "rgba(0,0,0,0.06)"} 100%)` }} />
+      {terminalOpen && <Terminal onClose={() => setTerminalOpen(false)} dark={dark} onThemeToggle={v => setDark(v)} onDinoOpen={() => setDinoOpen(true)} />}
       <FontLink />
       <style>{`
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -2344,7 +2520,9 @@ export default function Portfolio() {
         @keyframes scorePopIn{0%{transform:scale(0.6) translateY(4px);opacity:0}60%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:1}}
         @keyframes dinoJumpParticle{0%{transform:translateY(0) scale(1);opacity:0.8}100%{transform:translateY(-28px) scale(0);opacity:0}}
         .nav-score-pop{animation:scorePopIn 0.35s cubic-bezier(0.22,1,0.36,1) both}
+        @keyframes rippleOut{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(40);opacity:0}}
         .section-hr{border:none;border-top:1px solid rgba(128,128,128,0.08)}
+        @keyframes meshFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.05)}}
         @media(max-width:768px){
           .nav-links-desktop{display:none!important}
           .hamburger-btn{display:flex!important}
@@ -2359,21 +2537,24 @@ export default function Portfolio() {
           .work-heading{font-size:clamp(36px,10vw,80px)!important}
           .contact-form-grid{grid-template-columns:1fr!important}
           .skills-grid-resp{grid-template-columns:1fr!important}
+          .about-stack-grid{grid-template-columns:1fr!important}
+          .about-prof-grid{grid-template-columns:1fr 1fr!important}
           .work-row-grid{grid-template-columns:80px 1fr auto!important}
           .work-expanded-pad{padding-left:80px!important}
+          .terminal-ban{font-size:7px!important;letter-spacing:-0.5px!important}
         }
       `}</style>
 
       {/* ── NAV ── */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 48px", background: dark ? "rgba(18,18,18,0.9)" : "rgba(240,240,240,0.9)", backdropFilter: "blur(12px)", borderBottom: divider }}>
         <div style={{ fontFamily: "'Fira Code',monospace", fontWeight: 600, fontSize: 15, color: "var(--white)", lineHeight: 1.3 }}>
-          Raghul Prasanth
+          Raghul Prasanth S P
           <span style={{ display: "block", fontWeight: 300, color: "var(--mid)", fontSize: 11 }}>Full-Stack Developer · UI/UX Designer</span>
         </div>
         <ul className="nav-links-desktop" style={{ display: "flex", gap: 36, listStyle: "none" }}>
           {navLinks.map(l => (
             <li key={l.id} style={{ position: "relative" }}>
-              <button onClick={() => scrollTo(l.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, color: activeSection === l.id ? "var(--white)" : "var(--mid)", fontFamily: "'Open Sans',sans-serif", transition: "color 0.2s", padding: "4px 0" }}>{l.label}</button>
+              <Magnetic strength={0.4}><button onClick={() => scrollTo(l.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13, color: activeSection === l.id ? "var(--white)" : "var(--mid)", fontFamily: "'Open Sans',sans-serif", transition: "color 0.2s", padding: "4px 0" }}>{l.label}</button></Magnetic>
               <span style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: 1.5, borderRadius: 1, background: "var(--white)", transform: activeSection === l.id ? "scaleX(1)" : "scaleX(0)", transformOrigin: "left", transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1)" }} />
             </li>
           ))}
@@ -2402,25 +2583,72 @@ export default function Portfolio() {
       )}
 
       {/* ── HERO ── */}
-      <section id="hero" style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "120px 48px 60px", position: "relative", overflow: "hidden" }} className="hero-pad">
-        <div style={{ position: "absolute", top: 80, right: -80, width: 420, height: 420, border: dark ? "1px solid rgba(255,255,255,0.05)" : "1px solid rgba(0,0,0,0.05)", borderRadius: "50%", pointerEvents: "none", animation: "floatA 9s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", top: 220, right: 80, width: 180, height: 180, border: dark ? "1px solid rgba(255,255,255,0.03)" : "1px solid rgba(0,0,0,0.03)", borderRadius: "50%", pointerEvents: "none", animation: "floatB 7s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", top: 300, right: -20, width: 80, height: 80, border: dark ? "1px solid rgba(255,255,255,0.04)" : "1px solid rgba(0,0,0,0.04)", borderRadius: "50%", pointerEvents: "none", animation: "floatA 11s ease-in-out infinite 2s" }} />
-        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 8, letterSpacing: "0.05em", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s forwards" }}>... /Main ...</div>
+      <section id="hero" ref={heroRef} style={{ minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "120px 48px 60px", position: "relative", overflow: "hidden" }} className="hero-pad">
+        <GradientMesh dark={dark} />
+        <div style={{ position:"absolute", top: 80 + mousePos.y * 0.018, right: -80 - mousePos.x * 0.008, width:420, height:420, border: dark?"1px solid rgba(255,255,255,0.05)":"1px solid rgba(0,0,0,0.05)", borderRadius:"50%", pointerEvents:"none", animation:"floatA 9s ease-in-out infinite", transition:"top 0.6s cubic-bezier(0.22,1,0.36,1), right 0.6s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
+        <div style={{ position:"absolute", top: 220 + mousePos.y * 0.028, right: 80 - mousePos.x * 0.014, width:180, height:180, border: dark?"1px solid rgba(255,255,255,0.03)":"1px solid rgba(0,0,0,0.03)", borderRadius:"50%", pointerEvents:"none", animation:"floatB 7s ease-in-out infinite", transition:"top 0.5s cubic-bezier(0.22,1,0.36,1), right 0.5s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
+        <div style={{ position:"absolute", top: 300 + mousePos.y * 0.038, right: -20 - mousePos.x * 0.02, width:80, height:80, border: dark?"1px solid rgba(255,255,255,0.04)":"1px solid rgba(0,0,0,0.04)", borderRadius:"50%", pointerEvents:"none", animation:"floatA 11s ease-in-out infinite 2s", transition:"top 0.4s cubic-bezier(0.22,1,0.36,1), right 0.4s cubic-bezier(0.22,1,0.36,1)", zIndex:1 }} />
+        <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, color: "var(--mid)", marginBottom: 8, letterSpacing: "0.05em", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s forwards", zIndex:2, position:"relative" }}>... /Main ...</div>
+        <div onClick={() => setTerminalOpen(true)} style={{ position:"absolute", top:130, right:48, zIndex:2, display:"flex", alignItems:"center", gap:6, opacity:0, animation:"fadeSlideUp 0.5s cubic-bezier(0.22,1,0.36,1) 1.2s forwards", cursor:"pointer" }} title="Open terminal">
+          <kbd style={{ fontFamily:"'Fira Code',monospace", fontSize:11, color:"var(--mid)", background: dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)", border: dark?"1px solid rgba(255,255,255,0.12)":"1px solid rgba(0,0,0,0.12)", borderRadius:5, padding:"2px 7px", transition:"all 0.2s" }}>/</kbd>
+          <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Open Sans',sans-serif" }}>terminal</span>
+        </div>
+
         <HeroTitle dark={dark} roleIdx={roleIdx} roleVisible={roleVisible} />
+
+        {/* Projects button — fixed position below title, never shifts */}
+        <div style={{ opacity: 0, animation: "fadeSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.4s forwards", marginTop: 20 }}>
+          <button
+            onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+            style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--white)", color: "var(--bg)", border: "none", borderRadius: 50, padding: "12px 24px", fontFamily: "'Open Sans',sans-serif", fontSize: 14, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", transition: "transform 0.2s, box-shadow 0.2s", backgroundImage: "linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%, transparent 100%)", backgroundSize: "200% auto", animation: "shimmer 3s linear infinite" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.2)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "none"; }}>
+            Projects <span style={{ width: 28, height: 28, background: "var(--bg)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>→</span>
+          </button>
+        </div>
+
         <p style={{ marginTop: 20, maxWidth: 340, fontSize: 13, color: "var(--mid)", lineHeight: 1.8, opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.45s forwards" }}>
-          My goal is to write <em style={{ fontStyle: "italic", color: "var(--light)" }}>maintainable, clean</em> and <em style={{ fontStyle: "italic", color: "var(--light)" }}>understandable code</em> while crafting <em style={{ fontStyle: "italic", color: "var(--light)" }}>delightful user experiences</em>.
+          I write{" "}
+          <em style={{ fontStyle: "italic", color: "var(--light)" }}>code that lasts</em>{" "}
+          and build{" "}
+          <em style={{ fontStyle: "italic", color: "var(--light)" }}>interfaces people remember</em>.{" "}
+          Good code shouldn't sacrifice great design.<br></br>I craft full-stack products as{" "}
+          <em style={{ fontStyle: "italic", color: "var(--light)" }}>thoughtful under the hood</em>{" "}
+          as they are on the surface.
         </p>
+
         <div style={{ display: "flex", gap: 10, marginTop: 36, flexWrap: "wrap", opacity: 0, animation: "fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.55s forwards" }}>
-          {[{ icon: <GithubIcon />, label: "Github" }, { icon: <LinkedInIcon />, label: "LinkedIn" }, { icon: <TelegramIcon />, label: "Telegram" }, { icon: <EmailIcon />, label: "E-mail" }].map(s => (
-            <a key={s.label} href="#" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
+          {[
+            { icon: <GithubIcon />,    label: "Github",    href: "https://github.com/Raghul-18" },
+            { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "https://www.linkedin.com/in/raghul-prasanth/" },
+            { icon: <InstagramIcon />, label: "Instagram", href: "https://www.instagram.com/rag.hul._/" },
+            { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghulprasanth@email.com" },
+          ].map(s => (
+            <a key={s.label} href={s.href} target={s.label !== "E-mail" ? "_blank" : undefined} rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: 7, background: dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "8px 16px", fontSize: 12, color: "var(--light)", textDecoration: "none", transition: "background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.09)"}
               onMouseLeave={e => e.currentTarget.style.background = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"}
             >{s.icon}{s.label}</a>
           ))}
         </div>
-        {/* Hero carousel — centered active card, swipeable */}
-        <HeroCarousel dark={dark} heroSlide={heroSlide} setHeroSlide={setHeroSlide} />
+
+        {/* Stats row */}
+        <div style={{ display:"flex", gap:32, marginTop:32, opacity:0, animation:"fadeSlideUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.65s forwards", flexWrap:"wrap" }}>
+          {[
+            { label:"Years of exp in Dev", value:5, suffix:"+" },
+            { label:"Projects shipped", value:10, suffix:"+" },
+            { label:"Technologies", value:15, suffix:"+" },
+          ].map(s => (
+            <div key={s.label} style={{ display:"flex", flexDirection:"column", gap:2 }}>
+              <span style={{ fontFamily:"'Fira Code',monospace", fontSize:28, fontWeight:700, color:"var(--white)", lineHeight:1 }}>
+                <CountUp target={s.value} suffix={s.suffix} />
+              </span>
+              <span style={{ fontSize:11, color:"var(--mid)" }}>{s.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Hero carousel */}
+        <HeroCarousel dark={dark} />
       </section>
 
       <hr style={{ border: "none", borderTop: divider }} />
@@ -2428,44 +2656,61 @@ export default function Portfolio() {
       {/* ── ABOUT ── */}
       <section id="about" style={{ padding: "80px 48px" }} className="about-pad">
         <SectionHeader label="About" title="About" mb={40} />
-        <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
-          <FadeIn>
+
+        {/* ── Bio + badge ── */}
+        <FadeIn>
+          <div style={{ maxWidth: 680, marginBottom: 40 }}>
             <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
-              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces — bridging the gap between engineering and design.
+              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces, bridging the gap between engineering and design.
             </p>
-            <p style={{ fontSize: 12, color: "var(--mid)", maxWidth: 300, lineHeight: 1.7, margin: "32px 0 14px" }}>
-              My <em style={{ color: "var(--light)", fontStyle: "italic" }}>core stack</em> spans backend, frontend, cloud infrastructure, and design.
-            </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 32 }}>
-              {SKILL_CARDS.map(s => (
-                <div key={s.title}
-                  style={{ background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 16, transition: "border-color 0.25s, background 0.25s, transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = dark ? "0 8px 24px rgba(0,0,0,0.4)" : "0 8px 24px rgba(0,0,0,0.08)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.background = dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-                  <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, fontWeight: 600, color: "var(--white)", marginBottom: 7 }}>{s.title}</h4>
-                  <p style={{ fontSize: 11, color: "var(--mid)", lineHeight: 1.9 }}>{s.items}</p>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16 }}>
+              <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite", flexShrink:0 }} />
+              <span style={{ fontSize:12, color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>Currently @ Oracle OFSS · Building cloud-native MVPs</span>
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* ── Tech stack — 3-col grid ── */}
+        <FadeIn delay={60}>
+          <p style={{ fontSize: 12, color: "var(--mid)", marginBottom: 14, fontFamily: "'Fira Code',monospace", letterSpacing: "0.04em" }}>CORE STACK</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginBottom: 48 }} className="about-stack-grid">
+            {SKILL_CARDS.map(s => (
+              <div key={s.title}
+                style={{
+                  background: s.learning
+                    ? (dark ? "rgba(167,139,250,0.06)" : "rgba(124,58,237,0.04)")
+                    : (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"),
+                  border: s.learning
+                    ? (dark ? "1px solid rgba(167,139,250,0.2)" : "1px solid rgba(124,58,237,0.15)")
+                    : (dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)"),
+                  borderRadius: 14, padding: 16,
+                  transition: "border-color 0.25s, background 0.25s, transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s"
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = s.learning ? (dark?"rgba(167,139,250,0.4)":"rgba(124,58,237,0.3)") : (dark?"rgba(255,255,255,0.14)":"rgba(0,0,0,0.14)"); e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = dark ? "0 8px 24px rgba(0,0,0,0.4)" : "0 8px 24px rgba(0,0,0,0.08)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = s.learning ? (dark?"rgba(167,139,250,0.2)":"rgba(124,58,237,0.15)") : (dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)"); e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
+                <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:7 }}>
+                  <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 12, fontWeight: 600, color: s.learning ? (dark?"#a78bfa":"#7c3aed") : "var(--white)", margin:0 }}>{s.title}</h4>
+                  {s.learning && <span style={{ fontSize:9, background: dark?"rgba(167,139,250,0.15)":"rgba(124,58,237,0.1)", color: dark?"#a78bfa":"#7c3aed", border: dark?"1px solid rgba(167,139,250,0.2)":"1px solid rgba(124,58,237,0.2)", borderRadius:50, padding:"1px 7px", fontFamily:"'Fira Code',monospace" }}>in progress</span>}
                 </div>
-              ))}
-            </div>
-            <p style={{ fontSize: 12, color: "var(--mid)", marginBottom: 14, fontFamily: "'Fira Code',monospace", letterSpacing: "0.04em" }}>PROFICIENCY</p>
-            <div className="skills-grid-resp" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 32px" }}>
-              {SKILLS.map(s => (
-                <div key={s.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                  <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Fira Code',monospace" }}>{s.label}</span>
-                  <DotRating dots={s.dots} color={dotColor} />
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-          <FadeIn delay={100}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", padding: "20px 0" }}>
-              <img src="/photo.jpeg" alt="Raghul Prasanth"
-                style={{ width: "100%", maxWidth: 280, aspectRatio: "3/4", objectFit: "cover", borderRadius: 16, display: "block" }}
-                onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
-              <div style={{ display: "none", width: "100%", maxWidth: 280, aspectRatio: "3/4", background: dark ? "linear-gradient(160deg,#222,#181818)" : "linear-gradient(160deg,#ddd,#e8e8e8)", borderRadius: 16, alignItems: "center", justifyContent: "center", color: "var(--dark)", fontSize: 13, fontFamily: "'Fira Code',monospace" }}>[ photo ]</div>
-            </div>
-          </FadeIn>
-        </div>
+                <p style={{ fontSize: 11, color: "var(--mid)", lineHeight: 1.9, margin:0 }}>{s.items}</p>
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+
+        {/* ── Proficiency — 3-col bars ── */}
+        <FadeIn delay={120}>
+          <p style={{ fontSize: 12, color: "var(--mid)", marginBottom: 20, fontFamily: "'Fira Code',monospace", letterSpacing: "0.04em" }}>PROFICIENCY</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px 48px" }} className="about-prof-grid">
+            {SKILLS.map(s => (
+              <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Fira Code',monospace", width: 88, flexShrink: 0 }}>{s.label}</span>
+                <DotRating dots={s.dots} color={dotColor} />
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+
       </section>
 
       <hr style={{ border: "none", borderTop: divider }} />
@@ -2473,49 +2718,58 @@ export default function Portfolio() {
       {/* ── WORK ── */}
       <section id="work" style={{ padding: "80px 48px" }} className="work-pad">
         <FadeIn>
-          <SectionHeader label="Work" title="Experience" mb={32} />
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <SectionHeader label="Work" title="Experience" mb={48} />
+          {/* Vertical timeline */}
+          <div style={{ position:"relative", paddingLeft:32 }}>
+            {/* Timeline spine — left:12 centers on the 12px dots (paddingLeft32 - dotLeft26 + dotRadius6) */}
+            <div style={{ position:"absolute", left:12, top:16, bottom:16, width:1, background: dark?"rgba(255,255,255,0.1)":"rgba(0,0,0,0.1)" }} />
             {WORK.map((w, wi) => (
-              <FadeIn key={w.id} delay={wi * 80}>
-              <div style={{ borderTop: divider }}>
-                <div className="work-row-grid"
-                  onClick={() => setExpandedWork(expandedWork === w.id ? null : w.id)}
-                  style={{ display: "grid", gridTemplateColumns: "110px 1fr auto", gap: "0 20px", alignItems: "center", padding: "22px 12px", cursor: "pointer", borderRadius: 8, transition: "background 0.2s", background: expandedWork === w.id ? (dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)") : "transparent" }}
-                  onMouseEnter={e => { if (expandedWork !== w.id) e.currentTarget.style.background = dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)"; }}
-                  onMouseLeave={e => { if (expandedWork !== w.id) e.currentTarget.style.background = "transparent"; }}>
-                  <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 11, color: "var(--mid)" }}>
-                    <div>{w.date}</div><div style={{ opacity: 0.7 }}>{w.dur}</div>
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 12px" }}>
-                    <span style={{ fontWeight: 700, fontSize: 15, color: "var(--white)", fontFamily: "'Fira Code',monospace" }}>{w.company}</span>
-                    <span style={{ fontSize: 12, color: "var(--mid)" }}>·</span>
-                    <span style={{ fontSize: 13, color: "var(--mid)" }}>{w.role}</span>
-                    <span style={{ fontSize: 12, color: "var(--mid)" }}>·</span>
-                    <span style={{ fontSize: 12, color: "var(--mid)" }}>{w.location}</span>
-                    <span style={{ fontSize: 11, background: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 50, padding: "2px 8px", color: "var(--mid)", fontFamily: "'Fira Code',monospace" }}>{w.type}</span>
-                  </div>
-                  <div style={{ color: "var(--mid)", transition: "transform 0.3s cubic-bezier(0.22,1,0.36,1)", transform: expandedWork === w.id ? "rotate(180deg)" : "rotate(0deg)", display: "flex" }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6,9 12,15 18,9"/></svg>
+              <FadeIn key={w.id} delay={wi * 100}>
+                <div style={{ position:"relative", marginBottom: wi < WORK.length-1 ? 40 : 0 }}>
+                  {/* Timeline dot */}
+                  <div style={{ position:"absolute", left:-26, top:6, width:12, height:12, borderRadius:"50%", background: wi === 0 ? "#22c55e" : (dark?"#3D3D3D":"#d0d0d0"), border: wi === 0 ? "2px solid #22c55e" : (dark?"2px solid rgba(255,255,255,0.12)":"2px solid rgba(0,0,0,0.12)"), boxShadow: wi === 0 ? "0 0 0 3px rgba(34,197,94,0.15)" : "none", transition:"all 0.3s" }} />
+                  {/* Card */}
+                  <div onClick={() => setExpandedWork(expandedWork === w.id ? null : w.id)}
+                    style={{ background: expandedWork === w.id ? (dark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.04)") : (dark?"rgba(255,255,255,0.02)":"rgba(0,0,0,0.02)"), border: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)", borderRadius:14, padding:"18px 20px", cursor:"pointer", transition:"background 0.2s, border-color 0.2s, transform 0.2s", userSelect:"none" }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = dark?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.12)"; e.currentTarget.style.transform="translateX(3px)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = dark?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.06)"; e.currentTarget.style.transform="translateX(0)"; }}>
+                    <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap:12, flexWrap:"wrap" }}>
+                      <div>
+                        <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap", marginBottom:4 }}>
+                          <span style={{ fontWeight:700, fontSize:15, color:"var(--white)", fontFamily:"'Fira Code',monospace" }}>{w.company}</span>
+                          <span style={{ fontSize:11, background: dark?"rgba(255,255,255,0.05)":"rgba(0,0,0,0.05)", border: dark?"1px solid rgba(255,255,255,0.08)":"1px solid rgba(0,0,0,0.08)", borderRadius:50, padding:"2px 8px", color:"var(--mid)", fontFamily:"'Fira Code',monospace" }}>{w.type}</span>
+                          {wi === 0 && <span style={{ fontSize:11, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"2px 8px", color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>● Current</span>}
+                        </div>
+                        <div style={{ fontSize:13, color:"var(--mid)", marginBottom:2 }}>{w.role}</div>
+                        <div style={{ fontSize:11, color:"var(--mid)", opacity:0.7 }}>{w.location}</div>
+                      </div>
+                      <div style={{ display:"flex", alignItems:"center", gap:10, flexShrink:0 }}>
+                        <div style={{ textAlign:"right" }}>
+                          <div style={{ fontFamily:"'Fira Code',monospace", fontSize:11, color:"var(--mid)" }}>{w.date}</div>
+                          <div style={{ fontFamily:"'Fira Code',monospace", fontSize:11, color:"var(--mid)", opacity:0.6 }}>→ {w.dur}</div>
+                        </div>
+                        <div style={{ color:"var(--mid)", transition:"transform 0.3s cubic-bezier(0.22,1,0.36,1)", transform: expandedWork === w.id ? "rotate(180deg)" : "rotate(0deg)" }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6,9 12,15 18,9"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                    {expandedWork === w.id && (
+                      <ul style={{ listStyle:"none", display:"flex", flexDirection:"column", gap:8, marginTop:16, paddingTop:16, borderTop: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)" }}>
+                        {w.bullets.map((b, bi) => (
+                          <li key={bi} style={{ display:"flex", gap:10, alignItems:"flex-start", fontSize:13, color:"var(--mid)", lineHeight:1.7, opacity:0, animation:`fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) ${bi * 60}ms forwards` }}>
+                            <span style={{ color:"#22c55e", marginTop:2, flexShrink:0, fontSize:10 }}>▸</span>{b}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
-                {expandedWork === w.id && (
-                  <div className="work-expanded-pad" style={{ padding: "0 12px 20px 130px", animation: "fadeSlideUp 0.35s cubic-bezier(0.22,1,0.36,1)" }}>
-                    <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-                      {w.bullets.map((b, bi) => (
-                        <li key={bi} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13, color: "var(--mid)", lineHeight: 1.7, opacity: 0, animation: `fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) ${bi * 60}ms forwards` }}>
-                          <span style={{ color: dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)", marginTop: 2, flexShrink: 0 }}>▸</span>{b}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
               </FadeIn>
             ))}
           </div>
-          <div style={{ textAlign: "right", paddingTop: 16 }}>
-            <p style={{ fontSize: 12, color: "var(--mid)" }}>Total experience</p>
-            <strong style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, color: "var(--white)", fontStyle: "italic" }}>~ 1.5 years</strong>
+          <div style={{ textAlign:"right", paddingTop:24, marginTop:8 }}>
+            <p style={{ fontSize:12, color:"var(--mid)" }}>Corporate experience</p>
+            <strong style={{ fontFamily:"'Fira Code',monospace", fontSize:13, color:"var(--white)", fontStyle:"italic" }}>~ 1.5 years</strong>
           </div>
         </FadeIn>
       </section>
@@ -2524,16 +2778,25 @@ export default function Portfolio() {
 
       {/* ── PROJECTS ── */}
       <section id="projects" style={{ padding: "80px 48px" }} className="projects-pad">
-        <SectionHeader label="Projects" title="Projects" mb={48} />
-        {PROJECTS.map((p, pi) => (
-          <FadeIn key={p.id} delay={pi * 60} style={{ direction: "ltr" }}>
+        <SectionHeader label="Projects" title="Projects" mb={24} />
+        {/* Tag filter */}
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:40 }}>
+          <button onClick={() => setActiveTag(null)} style={{ background: activeTag === null ? "var(--white)" : "transparent", color: activeTag === null ? "var(--bg)" : "var(--mid)", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius:50, padding:"5px 14px", fontFamily:"'Fira Code',monospace", fontSize:11, cursor:"pointer", transition:"all 0.2s" }}>All</button>
+          {[...new Set(PROJECTS.flatMap(p => p.tags))].map(tag => (
+            <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} style={{ background: activeTag === tag ? "var(--white)" : "transparent", color: activeTag === tag ? "var(--bg)" : "var(--mid)", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius:50, padding:"5px 14px", fontFamily:"'Fira Code',monospace", fontSize:11, cursor:"pointer", transition:"all 0.2s" }}>{tag}</button>
+          ))}
+        </div>
+        {PROJECTS.filter(p => !activeTag || p.tags.includes(activeTag)).map((p, pi) => (
+          <FadeIn key={p.id} delay={pi * 60}>
             <div className="project-item-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, padding: "48px 0", borderTop: pi === 0 ? "none" : divider, alignItems: "center", direction: p.rev ? "rtl" : "ltr" }}>
               <div style={{ direction: "ltr" }}>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 12 }}>
                   {p.status.map(s => <StatusBadge key={s} type={s} />)}
                 </div>
                 <div style={{ display: "flex", gap: 7, flexWrap: "wrap", marginBottom: 14 }}>
-                  {p.tags.map(t => <span key={t} style={{ background: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)", border: dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)", borderRadius: 6, padding: "4px 10px", fontFamily: "'Fira Code',monospace", fontSize: 11, color: "var(--mid)" }}>{t}</span>)}
+                  {p.tags.map(t => (
+                    <span key={t} onClick={() => setActiveTag(activeTag === t ? null : t)} style={{ background: activeTag === t ? (dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)") : (dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"), border: activeTag === t ? (dark ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,0,0,0.2)") : (dark ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(0,0,0,0.08)"), borderRadius: 6, padding: "4px 10px", fontFamily: "'Fira Code',monospace", fontSize: 11, color: activeTag === t ? "var(--white)" : "var(--mid)", cursor:"pointer", transition:"all 0.2s" }}>{t}</span>
+                  ))}
                 </div>
                 <div style={{ fontFamily: "'Fira Code',monospace", fontSize: 22, fontWeight: 700, color: "var(--white)", marginBottom: 12 }}>{p.name}</div>
                 {p.desc.map((d, di) => <p key={di} style={{ fontSize: 13, color: "var(--mid)", lineHeight: 1.8, marginBottom: 6 }}>{d}</p>)}
@@ -2546,15 +2809,15 @@ export default function Portfolio() {
                   ))}
                 </div>
               </div>
-              <div style={{ direction: "ltr", borderRadius: 16, overflow: "hidden", background: dark ? "#1a1a26" : "#e8e8f0", aspectRatio: "4/3", display: "flex", alignItems: "center", justifyContent: "center", padding: 20, transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-6px) scale(1.01)"; e.currentTarget.style.boxShadow = dark ? "0 20px 48px rgba(0,0,0,0.5)" : "0 20px 48px rgba(0,0,0,0.1)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}>
+              <TiltCard dark={dark} style={{ direction:"ltr", borderRadius:16, overflow:"hidden", background: dark?"#1a1a26":"#e8e8f0", aspectRatio:"4/3", display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
+                {p.visual === "drift"  && <DriftMiniVisual />}
                 {p.visual === "gostat" && <GostatVisual />}
                 {p.visual === "kana"   && <KanaVisual />}
                 {p.visual === "anime"  && <AnimeVisual />}
                 {p.visual === "chat"   && <ChatVisual />}
                 {p.visual === "ai"     && <AIVisual />}
-              </div>
+                {p.visual === "zoro"   && <ZoroVisual />}
+              </TiltCard>
             </div>
           </FadeIn>
         ))}
@@ -2562,7 +2825,7 @@ export default function Portfolio() {
 
       <hr style={{ border: "none", borderTop: divider }} />
 
-      {/* ── ARTICLES ── */}
+      {/* ── ARTICLES ──
       <section id="articles" style={{ padding: "80px 48px" }} className="articles-pad">
         <SectionHeader label="Articles" title="Articles" mb={48} />
         <div style={{ display: "grid", gridTemplateColumns: "36px 1fr", gap: "0 24px" }}>
@@ -2577,21 +2840,24 @@ export default function Portfolio() {
                 <div style={{ background: dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)", border: dark ? "1px solid rgba(255,255,255,0.06)" : "1px solid rgba(0,0,0,0.06)", borderRadius: 14, padding: 20, transition: "border-color 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s", height: "100%" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.14)"; e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = dark ? "0 12px 32px rgba(0,0,0,0.35)" : "0 12px 32px rgba(0,0,0,0.07)"; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-                  <div style={{ fontSize: 24, marginBottom: 10 }}>{a.emoji}</div>
+                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:10 }}>
+                    <span style={{ fontSize: 24 }}>{a.emoji}</span>
+                    <span style={{ fontSize:10, color:"var(--mid)", fontFamily:"'Fira Code',monospace", background: dark?"rgba(255,255,255,0.04)":"rgba(0,0,0,0.04)", border: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)", borderRadius:50, padding:"2px 8px" }}>{Math.max(3, Math.ceil(a.desc.split(" ").length / 40 * 5))} min read</span>
+                  </div>
                   <h4 style={{ fontFamily: "'Fira Code',monospace", fontSize: 13, fontWeight: 600, color: "var(--white)", marginBottom: 10, lineHeight: 1.5 }}>{a.title}</h4>
                   <p style={{ fontSize: 12, color: "var(--mid)", lineHeight: 1.7, marginBottom: 16 }}>{a.desc}</p>
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <a href="#" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none", transition: "opacity 0.2s" }}
+                    <a href={a.link || "#"} target={a.link ? "_blank" : undefined} rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "var(--white)", color: "var(--bg)", borderRadius: 50, padding: "7px 16px", fontSize: 12, fontWeight: 600, textDecoration: "none", transition: "opacity 0.2s" }}
                       onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
                       onMouseLeave={e => e.currentTarget.style.opacity = "1"}>Read more</a>
-                    <button style={{ width: 28, height: 28, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12 }}>→</button>
+                    <a href={a.link || "#"} target={a.link ? "_blank" : undefined} rel="noreferrer" style={{ width: 28, height: 28, borderRadius: "50%", border: dark ? "1px solid rgba(255,255,255,0.1)" : "1px solid rgba(0,0,0,0.1)", background: "transparent", color: "var(--white)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, textDecoration: "none" }}>→</a>
                   </div>
                 </div>
               </FadeIn>
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ── FOOTER / CONTACT ── */}
       <footer id="contact" style={{ borderTop: divider, padding: "64px 48px 40px" }} className="footer-pad">
@@ -2604,10 +2870,10 @@ export default function Portfolio() {
             {/* Social icon buttons */}
             <div style={{ display: "flex", gap: 10, marginBottom: 32, flexWrap: "wrap" }}>
               {[
-                { icon: <GithubIcon />,   label: "Github",   href: "#" },
-                { icon: <LinkedInIcon />, label: "LinkedIn", href: "#" },
-                { icon: <EmailIcon />,    label: "E-mail",   href: "#" },
-                { icon: <TelegramIcon />, label: "Telegram", href: "#" },
+                { icon: <GithubIcon />,    label: "Github",    href: "https://github.com/Raghul-18" },
+                { icon: <LinkedInIcon />,  label: "LinkedIn",  href: "https://www.linkedin.com/in/raghul-prasanth/" },
+                { icon: <EmailIcon />,     label: "E-mail",    href: "mailto:raghul.18sp@gmail.com" },
+                { icon: <InstagramIcon />, label: "Instagram", href: "https://www.instagram.com/rag.hul._/" },
               ].map(s => (
                 <a key={s.label} href={s.href}
                   title={s.label}
@@ -2616,6 +2882,10 @@ export default function Portfolio() {
                   onMouseLeave={e => { e.currentTarget.style.background = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)"; e.currentTarget.style.color = "var(--mid)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"; }}
                 >{s.icon}</a>
               ))}
+            </div>
+            {/* Timezone + availability */}
+            <div style={{ marginBottom:24, display:"flex", flexDirection:"column", gap:8 }}>
+              <TimezoneWidget dark={dark} />
             </div>
             <ContactForm dark={dark} />
           </FadeIn>
@@ -2644,11 +2914,17 @@ export default function Portfolio() {
                 </button>
               ))}
             </div>
-            <a href={RESUME_LINK} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius: 50, padding: "10px 20px", fontSize: 13, color: "var(--mid)", textDecoration: "none", transition: "all 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.color = "var(--white)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "var(--mid)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"; }}>
-              <DownloadIcon /> Download Resume
-            </a>
+            <div style={{ display:"flex", gap:10, flexWrap:"wrap", alignItems:"center" }}>
+              <a href={RESUME_LINK} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", border: dark ? "1px solid rgba(255,255,255,0.12)" : "1px solid rgba(0,0,0,0.12)", borderRadius: 50, padding: "10px 20px", fontSize: 13, color: "var(--mid)", textDecoration: "none", transition: "all 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--white)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "var(--mid)"; e.currentTarget.style.borderColor = dark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)"; }}>
+                <DownloadIcon /> Download Resume
+              </a>
+              <span style={{ fontSize:11, color:"var(--mid)", fontFamily:"'Fira Code',monospace", display:"flex", alignItems:"center", gap:5 }}>
+                <span style={{ width:5, height:5, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite" }} />
+                Usually responds within 24hrs
+              </span>
+            </div>
 
             {/* Cycling quote */}
             <FooterQuote dark={dark} />
@@ -2685,10 +2961,10 @@ export default function Portfolio() {
         </div>
         <div style={{ marginTop: 48, paddingTop: 24, borderTop: divider, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth</span>
+            Made in React with ❤️ by <span style={{ color: "var(--white)", fontWeight: 600 }}>Raghul Prasanth S P</span>
           </span>
           <span style={{ fontSize: 12, color: "var(--mid)", fontFamily: "'Open Sans',sans-serif" }}>
-            © {new Date().getFullYear()} Raghul Prasanth. All rights reserved.
+            © {new Date().getFullYear()} Raghul Prasanth S P. All rights reserved.
           </span>
         </div>
       </footer>
@@ -2715,9 +2991,6 @@ export default function Portfolio() {
 
       {/* ── DINO GAME MODAL ── */}
       {dinoOpen && <DinoModal onClose={() => setDinoOpen(false)} dark={dark} />}
-
-      {/* ── PIXEL CAT (easter egg — double-click Projects button to spawn) ── */}
-      <PixelCat dark={dark} />
     </div>
   );
-}
+}// INSERTION_POINT
