@@ -48,15 +48,20 @@ function AnimWord({ text, color, delay = 0, align = "left" }) {
 }
 
 const WORK = [
-  {
-    id: 1, date: "Jun 2025", dur: "May 2026", company: "Oracle OFSS",
-    location: "Chennai, India", role: "Associate Consultant", type: "Full-time",
-    bullets: [
-      "Developing MVPs using Oracle VBCS with an emphasis on scalability, rapid iteration, and cloud-native design.",
-      "Integrated OCI services and Oracle Autonomous Database to develop fault-tolerant cloud-native applications.",
-      "Implemented AI-driven automation using Generative AI to optimize user workflows and system intelligence.",
-    ],
-  },
+{
+  id: 1, date: "Jun 2025", dur: "May 2026", company: "Oracle Financial Services Software (OFSS)",
+  location: "Chennai, India", role: "Associate Consultant, Delivery Innovation Hub", type: "Full-time",
+  bullets: [
+    "── Ricoh Capital · B2B Lending & Leasing SaaS ──",
+    "Built mobile responsive frontend workflows for originator onboarding, KYC verification, credit assessment and contract management using React and Tailwind CSS.",
+    "Designed PostgreSQL schema on Supabase, wrote migrations for evolving data models and structured queries for multi role lending workflows without impacting existing data.",
+    "Reduced API latency by 60 percent by introducing multiple connection pools scoped to different database task types.",
+    "Containerized the platform using Docker enabling smooth deployments and faster feature releases.",
+    "── Insurify · Insurance Self Service Portal ──",
+    "Built mobile responsive portal on Oracle Visual Builder Cloud Service with IAM based RBAC for secure multi role access.",
+    "Designed and integrated a context aware RAG chatbot with FAQ retrieval pipelines to deliver accurate responses to user queries.",
+  ],
+},
   {
     id: 2, date: "Nov 2024", dur: "May 2025", company: "Bluestock Fintech",
     location: "Remote", role: "Software Development Intern", type: "Internship",
@@ -2668,12 +2673,12 @@ export default function Portfolio() {
         {/* ── Bio + badge ── */}
         <FadeIn>
           <div style={{ maxWidth: 680, marginBottom: 40 }}>
-            <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
-              I'm <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle: "italic", fontWeight: 600, color: "var(--white)" }}>Full-Stack Developer & UI/UX Designer</em> based in Chennai, India. I build scalable cloud-native applications and craft delightful, user-centred interfaces, bridging the gap between engineering and design.
+            <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}
+              I'm <em style={{ fontStyle:"italic", fontWeight:600, color:"var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle:"italic", fontWeight:600, color:"var(--white)" }}>Full-Stack Developer</em> based in Chennai, India. I spent a year at Oracle OFSS building two enterprise MVPs end to end — a B2B lending platform in React and Node.js, and an insurance portal with a RAG chatbot — owning everything from schema design to Docker deployments. I care about code that's maintainable and interfaces that actually make sense to use.
             </p>
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16 }}>
               <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite", flexShrink:0 }} />
-              <span style={{ fontSize:12, color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>Worked @ Oracle OFSS · Building cloud-native MVPs</span>
+              <span style={{ fontSize:12, color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>Prev @ Oracle OFSS · Open to full-time roles</span>
             </div>
           </div>
         </FadeIn>
@@ -2763,11 +2768,25 @@ export default function Portfolio() {
                     </div>
                     {expandedWork === w.id && (
                       <ul style={{ listStyle:"none", display:"flex", flexDirection:"column", gap:8, marginTop:16, paddingTop:16, borderTop: dark?"1px solid rgba(255,255,255,0.06)":"1px solid rgba(0,0,0,0.06)" }}>
-                        {w.bullets.map((b, bi) => (
-                          <li key={bi} style={{ display:"flex", gap:10, alignItems:"flex-start", fontSize:13, color:"var(--mid)", lineHeight:1.7, opacity:0, animation:`fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) ${bi * 60}ms forwards` }}>
-                            <span style={{ color:"#22c55e", marginTop:2, flexShrink:0, fontSize:10 }}>▸</span>{b}
-                          </li>
-                        ))}
+                        {w.bullets.map((b, bi) => {
+                          const isHeader = b.startsWith("──");
+                          return (
+                            <li key={bi} style={{
+                              display: "flex", gap: 10, alignItems: "flex-start",
+                              fontSize: isHeader ? 11 : 13,
+                              color: isHeader ? "var(--white)" : "var(--mid)",
+                              lineHeight: 1.7,
+                              marginTop: isHeader && bi !== 0 ? 12 : 0,
+                              fontFamily: isHeader ? "'Fira Code',monospace" : "inherit",
+                              fontWeight: isHeader ? 600 : 400,
+                              opacity: 0,
+                              animation: `fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) ${bi * 60}ms forwards`
+                            }}>
+                              {!isHeader && <span style={{ color:"#22c55e", marginTop:2, flexShrink:0, fontSize:10 }}>▸</span>}
+                              {b}
+                            </li>
+                          );
+                        })}
                       </ul>
                     )}
                   </div>
