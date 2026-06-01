@@ -49,7 +49,7 @@ function AnimWord({ text, color, delay = 0, align = "left" }) {
 
 const WORK = [
   {
-    id: 1, date: "Jun 2025", dur: "Present", company: "Oracle OFSS",
+    id: 1, date: "Jun 2025", dur: "May 2026", company: "Oracle OFSS",
     location: "Chennai, India", role: "Associate Consultant", type: "Full-time",
     bullets: [
       "Developing MVPs using Oracle VBCS with an emphasis on scalability, rapid iteration, and cloud-native design.",
