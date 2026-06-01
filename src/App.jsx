@@ -205,7 +205,7 @@ const HERO_ARTICLES = [
   { title: "I Built an Algorithm to Stop AI from Forgetting", desc: "DRIFT: adaptive memory protection for continual learning — why AI assistants forget, and how to stop it mathematically.", emoji: "🧠", link: "https://medium.com/@raghul01020405/i-built-an-algorithm-to-stop-ai-from-forgetting-heres-what-i-found-8c8ad6125741" },
 ];
 
-const RESUME_LINK = "https://drive.google.com/file/d/1nhl979AV7NmIj4Q0GMf-iMP0ksQfDO16/view?usp=sharing";
+const RESUME_LINK = "https://drive.google.com/file/d/1r5_fzo-Se8XOcuvszFMioiTm-tCFnymB/view?usp=sharing";
 
 /* ─── EMAILJS CONFIG (Vite) ──────────────────────────────────────────
    Add these to your .env file in the project root:
