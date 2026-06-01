@@ -2673,8 +2673,8 @@ export default function Portfolio() {
         {/* ── Bio + badge ── */}
         <FadeIn>
           <div style={{ maxWidth: 680, marginBottom: 40 }}>
-            <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}
-              I'm <em style={{ fontStyle:"italic", fontWeight:600, color:"var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle:"italic", fontWeight:600, color:"var(--white)" }}>Full-Stack Developer</em> based in Chennai, India. I spent a year at Oracle OFSS building two enterprise MVPs end to end — a B2B lending platform in React and Node.js, and an insurance portal with a RAG chatbot — owning everything from schema design to Docker deployments. I care about code that's maintainable and interfaces that actually make sense to use.
+            <p style={{ fontSize: 15, color: "var(--light)", lineHeight: 1.9 }}>
+              I'm <em style={{ fontStyle:"italic", fontWeight:600, color:"var(--white)" }}>Raghul Prasanth</em>, a <em style={{ fontStyle:"italic", fontWeight:600, color:"var(--white)" }}>Full-Stack Developer</em> based in Chennai, India. I spent a year at Oracle OFSS building two enterprise MVPs end to end: a B2B lending platform in React and Node.js, and an insurance portal with a RAG chatbot. I owned everything from schema design to Docker deployments. I care about code that is maintainable and interfaces that actually make sense to use.
             </p>
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16 }}>
               <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite", flexShrink:0 }} />
