@@ -2673,7 +2673,7 @@ export default function Portfolio() {
             </p>
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, background: dark?"rgba(34,197,94,0.08)":"rgba(34,197,94,0.06)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"6px 14px", marginTop:16 }}>
               <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", animation:"pulse 2s infinite", flexShrink:0 }} />
-              <span style={{ fontSize:12, color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>Currently @ Oracle OFSS · Building cloud-native MVPs</span>
+              <span style={{ fontSize:12, color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>Worked @ Oracle OFSS · Building cloud-native MVPs</span>
             </div>
           </div>
         </FadeIn>
@@ -2746,7 +2746,7 @@ export default function Portfolio() {
                         <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap", marginBottom:4 }}>
                           <span style={{ fontWeight:700, fontSize:15, color:"var(--white)", fontFamily:"'Fira Code',monospace" }}>{w.company}</span>
                           <span style={{ fontSize:11, background: dark?"rgba(255,255,255,0.05)":"rgba(0,0,0,0.05)", border: dark?"1px solid rgba(255,255,255,0.08)":"1px solid rgba(0,0,0,0.08)", borderRadius:50, padding:"2px 8px", color:"var(--mid)", fontFamily:"'Fira Code',monospace" }}>{w.type}</span>
-                          {wi === 0 && <span style={{ fontSize:11, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"2px 8px", color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>● Current</span>}
+                          {wi === 0 && <span style={{ fontSize:11, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:50, padding:"2px 8px", color:"#22c55e", fontFamily:"'Fira Code',monospace" }}>● Recent</span>}
                         </div>
                         <div style={{ fontSize:13, color:"var(--mid)", marginBottom:2 }}>{w.role}</div>
                         <div style={{ fontSize:11, color:"var(--mid)", opacity:0.7 }}>{w.location}</div>
